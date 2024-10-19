@@ -14,7 +14,7 @@ Projektni tim TG06.2 ("Produktivni momci") sastoji se od:
 * [Filip Pogač](filip.pogac@fer.unizg.hr)
 * [Ivan Stipic](ivan.stipic@fer.unizg.hr)
 # Licenca
-Repozitorij je licenciran prema [MIT licenci](https://opensource.org/license/mit). Licenca dozvoljava neograničeno korištenje preuzimanje, uređivanje, publiciranje i
+Repozitorij je licenciran prema [MIT licenci](https://opensource.org/license/mit). Licenca dozvoljava neograničeno korištenje, preuzimanje, uređivanje, publiciranje i
 prodaju bilo koje datoteke koja se nalazi u repozitoriju. 
 # **Kodeks ponašanja (možda zaseban file)
 # **Kontribucije (možda zaseban file)
