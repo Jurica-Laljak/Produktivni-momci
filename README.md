@@ -10,6 +10,7 @@ U ovakvom okruženju, smisleno bi bilo implementirati sustav koji velikom broju 
 
 # Funkcijski zahtjevi
 Grubo se dijele na dvije skupine.
+
 **Zahtjevi korisnika** - oni zahtjevi koji se odražavaju na korisničko iskustvo
 * Sustav mora neregistriranim korisnicima omogućiti pregled popisa događaja i oglasa za ulaznice.
 * Sustav mora omogućiti korisnicima da se registriraju. 
