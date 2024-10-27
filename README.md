@@ -6,7 +6,7 @@ U današnje doba, velika količina ljudi pohađa koncerte. Na primjer, Ultra Eur
 
 Gledano iz druge perspektive, naši životi su svake godine sve kaotičniji. U [članku za ZME Science](https://www.zmescience.com/feature-post/pieces/theres-way-more-chaos-in-our-lives-than-you-think-this-scientist-says-its-empowering/) dr. Brian Klass govori: “There’s this bizarre aspect where we feel more in control of our daily lives than has ever been true in human history, at the same time that the overall structure of the world is changing at an unprecedented pace”. Stoga, velika većina ljudi traži fleksibilnost i prilagodljivost u uslugama koje koriste.
 
-U ovakvom okruženju, smisleno bi bilo implementirati sustav koji velikom broju posjetitelja glazbenih festivala smanjuje rizik od kupnje ulaznica za festival. Predstavljamo {ime aplikacije}, aplikacija koja nastoji smanjiti rizik kod kupnje ulaznicama, te koja svojim korisnicima daje veću fleksibilnost u odabiru točno one ulaznice koju žele. 
+U ovakvom okruženju, smisleno bi bilo implementirati sustav koji velikom broju posjetitelja glazbenih festivala smanjuje rizik od kupnje ulaznica za festival. Predstavljamo Ticket4Ticket, aplikacija koja nastoji smanjiti rizik kod kupnje ulaznicama, te koja svojim korisnicima daje veću fleksibilnost u odabiru točno one ulaznice koju žele. 
 
 # Funkcijski zahtjevi
 * Sustav mora neregistriranim korisnicima omogućiti pregled popisa događaja i oglasa za ulaznice.
