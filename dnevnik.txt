@@ -1,0 +1,29 @@
+1. sastanak grupe (19.10.)
+Prisutni svi članovi grupe
+
+odabrali ime grupe - "Produktivni momci"
+voditelj je napravio GitHub projekt repozitorij i pridružio sve ostale članove
+dogovorili tehnologije u kojima će se raditi
+otprilike podijelili uloge
+
+
+2. sastanak grupe (21.10.)
+Prisutni svi članovi grupe osim Ivana K, Ivana S, Andrije
+
+podijelili uloge
+zapisali funkcijske zahtjeve
+
+
+1.  konzultacije (22.10.)
+Prisutni svi članovi grupe osim Ivana S
+
+problem kreiranja događaja
+OAuth protokol (nefunkcionalni)
+parametrizacija (nefunkcionalni)
+postavljanje oglasa u “koš za smeće” i automatsko brisanje nakon parametriziranog roka
+prioritetizirat funkcionalnosti
+
+
+3. sastanak grupe (27.10.)
+Prisutni svi članovi grupe
+
