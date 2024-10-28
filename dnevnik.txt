@@ -27,4 +27,13 @@ Prisutni svi članovi grupe osim Ivana S
 3. sastanak grupe (27.10.)
 Prisutni svi članovi grupe
 
+- predstavljena i dogovorena prioritizacija funkcijskih i nefunkcijskih zahtjeva. Dodavanje ispitnih slučajeva za svaki zahtjev.
+- predstavljen prototip autentikacije korisnika
+- predstavljena osnovna shema baze podataka
+- odabrano ime aplikacije
+- dogovorena podijela zadataća za idući tjedan
+
+2. konzultacije (29.10.)
+Prisutni svi članovi grupe osim
+
 - 
