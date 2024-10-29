@@ -31,9 +31,14 @@ Prisutni svi članovi grupe
 - predstavljen prototip autentikacije korisnika
 - predstavljena osnovna shema baze podataka
 - odabrano ime aplikacije
-- dogovorena podijela zadataća za idući tjedan
+- dogovorena podjela zadaća za idući tjedan
 
 2. konzultacije (29.10.)
-Prisutni svi članovi grupe osim
+Prisutni svi članovi grupe osim Dine
 
-- 
+- pratiti što se predaje za 1., a što za 2. reviziju
+- problem s private repozitorijem, ne vidi se wiki
+- jezik UML dijagrama: hrvatski (ne miješati s engleskim)
+- u 7. tjednu prezentacija odrađenog (ne prezentiramo dokumentaciju), bilo bi dobro da bude deployano na nekom javnom servisu (neki sitni bodovi idu i za to)
+- use case dijagrami, preko njih specificiramo funkcionalnost
+- sequence dijagrami, 2-3 kompleksnija procesa
