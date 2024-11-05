@@ -1,10 +1,10 @@
-package hr.unizg.fer.razmjenaUlaznica;
+package com.ticket4ticket.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RazmjenaUlaznicaApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
