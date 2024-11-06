@@ -37,7 +37,7 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
     @Query("SELECT DISTINCT o FROM Oglas o " +
             "JOIN o.koncert k " +
             "JOIN k.izvodaci i " +
-            "JOIN i.zanrIzvodaca z " + // Make sure 'zanrIzvodaca' is the correct field
+            "JOIN i.zanrIzvodaca z " +
             "JOIN z.korisnici korisnik " +
             "WHERE korisnik.idKorisnika = :idKorisnika")
     List<Oglas> findOglasiByKorisnikPreference(@Param("idKorisnika") Long idKorisnika);

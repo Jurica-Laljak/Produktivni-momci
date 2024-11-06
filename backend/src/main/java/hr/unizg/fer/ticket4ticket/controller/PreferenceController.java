@@ -55,6 +55,8 @@ public class PreferenceController {
     }
 
 
+
+
     @PostMapping("/zanrovi")
     public ResponseEntity<String> updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
         // Extract Google ID from OAuth2 token
@@ -76,6 +78,21 @@ public class PreferenceController {
         return ResponseEntity.ok("User genre preferences updated successfully");
     }
 
+
+    // New endpoint for getting "Oglasi" by Google ID from OAuth token
+    @GetMapping("/oglasi")
+    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(OAuth2AuthenticationToken token) {
+        // Extract the Google ID from the OAuth2 token
+        String googleId = token.getPrincipal().getAttribute("sub");
+
+        // Use the method you provided to find or create the user based on Google ID
+        KorisnikDto korisnikDto = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto());
+
+        // Fetch the 'Oglas' listings based on the user's preferences
+        List<OglasDto> oglasi = oglasService.getOglasiByKorisnikPreference(korisnikDto.getIdKorisnika());
+
+        return ResponseEntity.ok(oglasi);
+    }
 
 
 
