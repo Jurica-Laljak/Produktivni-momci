@@ -34,9 +34,5 @@ public class IzvodacController {
         return new ResponseEntity<>(izvodaci, HttpStatus.OK);
     }
 
-    @GetMapping("/zanr/{zanr}")
-    public ResponseEntity<List<IzvodacDto>> getIzvodaciByZanr(@PathVariable String zanr) {
-        List<IzvodacDto> izvodaci = izvodacService.getIzvodaciByZanr(zanr);
-        return new ResponseEntity<>(izvodaci, HttpStatus.OK);
-    }
+
 }

@@ -46,14 +46,7 @@ public class IzvodacServiceImpl implements IzvodacService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IzvodacDto> getIzvodaciByZanr(String zanrIzvodaca) {
-        List<Izvodac> izvodaci = izvodacRepository.findByZanrIzvodaca(zanrIzvodaca);
 
-
-        return izvodaci.stream().map((izvodac) -> IzvodacMapper.mapToIzvodacDto(izvodac))
-                .collect(Collectors.toList());
-    }
 
     public Set<IzvodacDto> getIzvodaciByIds(Set<Long> ids) {
         return izvodacRepository.findAllById(ids).stream()

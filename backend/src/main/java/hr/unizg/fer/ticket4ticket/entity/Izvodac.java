@@ -1,6 +1,6 @@
 package hr.unizg.fer.ticket4ticket.entity;
 
-import jakarta.persistence.*; // Change this import
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,34 +17,29 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "IZVODAC") // This maps the class to the "IZVODAC" table
+@Table(name = "IZVODAC")
 public class Izvodac {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment for ID
-    @Column(name = "IDIzvodaca") // This maps to the "IDIzvodaca" column
-    private Long idIzvodaca; // Use Integer to match INT type in SQL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idIzvodaca")
+    private Long idIzvodaca;
 
     @NotBlank
-    @Column(name = "imeIzvodaca", nullable = false, length = 50) // Maps to "imeIzvodaca"
+    @Column(name = "imeIzvodaca", nullable = false, length = 50)
     private String imeIzvodaca;
 
     @NotBlank
-    @Column(name = "prezimeIzvodaca", nullable = false, length = 50) // Maps to "prezimeIzvodaca"
+    @Column(name = "prezimeIzvodaca", nullable = false, length = 50)
     private String prezimeIzvodaca;
 
     @NotNull
-    @Column(name = "starostIzvodaca", nullable = false) // Maps to "starostIzvodaca"
+    @Column(name = "starostIzvodaca", nullable = false)
     private Integer starostIzvodaca;
 
     @NotBlank
-    @Column(name = "zanrIzvodaca", nullable = false, length = 50) // Maps to "zanrIzvodaca"
-    private String zanrIzvodaca;
-
-    @NotBlank
-    @Column(name = "fotoIzvodaca", nullable = false, length = 2048) // Maps to "fotoIzvodaca"
+    @Column(name = "fotoIzvodaca", nullable = false, length = 2048)
     private String fotoIzvodaca;
-
 
     @ManyToMany(mappedBy = "omiljeniIzvodaci")
     private Set<Korisnik> korisniciKojiSlusaju = new HashSet<>();
@@ -52,17 +47,39 @@ public class Izvodac {
     // Many-to-Many relationship with Koncert
     @ManyToMany
     @JoinTable(
-            name = "odrzavaKoncert", // Join table name
-            joinColumns = @JoinColumn(name = "IDIzvodaca"), // Column in join table that references Izvodac
-            inverseJoinColumns = @JoinColumn(name = "IDKoncerta") // Column in join table that references Koncert
+            name = "odrzavaKoncert",
+            joinColumns = @JoinColumn(name = "IDIzvodaca"),
+            inverseJoinColumns = @JoinColumn(name = "IDKoncerta")
     )
     private Set<Koncert> koncerti = new HashSet<>();
+
+    // Many-to-One relationship with Zanr
+    @ManyToOne
+    @JoinColumn(name = "zanr_id") // Foreign key column in Izvodac table
+    private Zanr zanrIzvodaca; // Reference to the Zanr entity
 
     // Method to get IDs of omiljeniIzvodaci
     public Set<Long> getKoncertiIds() {
         return koncerti.stream()
-                .map(Koncert::getIdKoncerta) // Assuming Izvodac has a getIdIzvodaca() method
+                .map(Koncert::getIdKoncerta)
                 .collect(Collectors.toSet());
     }
 
+    // Getter for zanr ID
+    public Long getZanrId() {
+        return this.zanrIzvodaca != null ? this.zanrIzvodaca.getIdZanra() : null;
+    }
+
+    // Setter for zanr based on ID
+    public void setZanrId(Long zanrId) {
+        if (zanrId != null) {
+            // Here you would typically look up the Zanr entity from the database
+            // For example, you might call a service to fetch the Zanr by ID
+            Zanr zanr = new Zanr(); // Create a new instance for now
+            zanr.setIdZanra(zanrId); // Set the ID
+            this.zanrIzvodaca = zanr; // Assign it to this instance
+        } else {
+            this.zanrIzvodaca = null; // If ID is null, clear the reference
+        }
+    }
 }

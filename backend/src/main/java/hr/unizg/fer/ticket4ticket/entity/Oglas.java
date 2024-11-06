@@ -18,7 +18,7 @@ public class Oglas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment for ID
-    @Column(name = "IDOglasa", nullable = false)
+    @Column(name = "idOglasa", nullable = false)
     private Long idOglasa; // Use Long to match the SQL INT type
 
     @NotBlank

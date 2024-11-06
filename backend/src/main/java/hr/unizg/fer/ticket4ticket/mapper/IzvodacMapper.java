@@ -17,13 +17,13 @@ public class IzvodacMapper {
         dto.setImeIzvodaca(izvodac.getImeIzvodaca());
         dto.setPrezimeIzvodaca(izvodac.getPrezimeIzvodaca());
         dto.setStarostIzvodaca(izvodac.getStarostIzvodaca());
-        dto.setZanrIzvodaca(izvodac.getZanrIzvodaca());
+        dto.setZanrId(izvodac.getZanrId()); // Set the new zanrId instead of zanrIzvodaca
         dto.setFotoIzvodaca(izvodac.getFotoIzvodaca());
 
         // Convert the Set<Korisnik> to Set<Long> (IDs)
-        Set<Long> korisniciKojiSlusajuIds = izvodac.getKorisniciKojiSlusaju() // Assuming this is the set of Korisnik entities
+        Set<Long> korisniciKojiSlusajuIds = izvodac.getKorisniciKojiSlusaju()
                 .stream()
-                .map(korisnik -> korisnik.getIdKorisnika()) // Assuming Korisnik has a method getIdKorisnika()
+                .map(Korisnik::getIdKorisnika) // Use method reference for clarity
                 .collect(Collectors.toSet());
 
         dto.setKorisniciKojiSlusajuIds(korisniciKojiSlusajuIds);
@@ -37,7 +37,9 @@ public class IzvodacMapper {
         izvodac.setImeIzvodaca(izvodacDto.getImeIzvodaca());
         izvodac.setPrezimeIzvodaca(izvodacDto.getPrezimeIzvodaca());
         izvodac.setStarostIzvodaca(izvodacDto.getStarostIzvodaca());
-        izvodac.setZanrIzvodaca(izvodacDto.getZanrIzvodaca());
+        // Remove the previous zanrIzvodaca and set the new zanrId instead
+        // Assuming you need to set a reference to the associated Zanr entity
+        izvodac.setZanrId(izvodacDto.getZanrId()); // Set the new zanrId
         izvodac.setFotoIzvodaca(izvodacDto.getFotoIzvodaca());
 
         // Initialize korisniciKojiSlusaju to an empty Set

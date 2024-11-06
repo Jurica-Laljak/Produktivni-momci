@@ -1,9 +1,14 @@
 package hr.unizg.fer.ticket4ticket.mapper;
 
+
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
+
+
+import  hr.unizg.fer.ticket4ticket.entity.Zanr;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +24,6 @@ public class KorisnikMapper {
         dto.setPrezimeKorisnika(korisnik.getPrezimeKorisnika());
         dto.setEmailKorisnika(korisnik.getEmailKorisnika());
         dto.setBrMobKorisnika(korisnik.getBrMobKorisnika());
-        dto.setOibKorisnika(korisnik.getOibKorisnika());
         dto.setFotoKorisnika(korisnik.getFotoKorisnika());
         dto.setGoogleId(korisnik.getGoogleId());
 
@@ -39,6 +43,14 @@ public class KorisnikMapper {
 
         dto.setOglasiIds(oglasiIds);
 
+        // Convert the Set<Zanr> to Set<Long> (IDs)
+        Set<Long> omiljeniZanroviIds = korisnik.getOmiljeniZanrovi() // Assuming this is the set of Zanr entities
+                .stream()
+                .map(Zanr::getIdZanra) // Assuming Zanr has a method getIdZanra()
+                .collect(Collectors.toSet());
+
+        dto.setOmiljeniZanroviIds(omiljeniZanroviIds);
+
         return dto;
     }
 
@@ -50,7 +62,6 @@ public class KorisnikMapper {
         korisnik.setPrezimeKorisnika(korisnikDto.getPrezimeKorisnika());
         korisnik.setEmailKorisnika(korisnikDto.getEmailKorisnika());
         korisnik.setBrMobKorisnika(korisnikDto.getBrMobKorisnika());
-        korisnik.setOibKorisnika(korisnikDto.getOibKorisnika());
         korisnik.setFotoKorisnika(korisnikDto.getFotoKorisnika());
         korisnik.setGoogleId(korisnikDto.getGoogleId());
 
@@ -81,6 +92,21 @@ public class KorisnikMapper {
         }
 
         korisnik.setOglasi(oglasi);
+
+
+        // Initialize omiljeniZanrovi to an empty Set
+        Set<Zanr> omiljeniZanrovi = new HashSet<>();
+
+        if (korisnikDto.getOmiljeniZanroviIds() != null) {
+            // Create Zanr entities based on the IDs in the DTO
+            for (Long id : korisnikDto.getOmiljeniZanroviIds()) {
+                Zanr zanr = new Zanr(); // Assuming Zanr has a default constructor
+                zanr.setIdZanra(id); // Set the ID
+                omiljeniZanrovi.add(zanr);
+            }
+        }
+
+        korisnik.setOmiljeniZanrovi(omiljeniZanrovi);
 
         return korisnik;
 

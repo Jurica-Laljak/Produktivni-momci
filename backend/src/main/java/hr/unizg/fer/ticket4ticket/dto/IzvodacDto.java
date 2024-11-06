@@ -17,7 +17,7 @@ public class IzvodacDto {
     private String imeIzvodaca;
     private String prezimeIzvodaca;
     private Integer starostIzvodaca;
-    private String zanrIzvodaca;
+    private Long zanrId;
     private String fotoIzvodaca;
     private Set<Long> korisniciKojiSlusajuIds;
 }

@@ -22,7 +22,7 @@ public class Koncert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDKoncerta", nullable = false)
+    @Column(name = "idKoncerta", nullable = false)
     private Long idKoncerta;
 
     @NotNull

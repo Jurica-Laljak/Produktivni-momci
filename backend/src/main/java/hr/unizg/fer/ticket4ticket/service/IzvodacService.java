@@ -12,7 +12,6 @@ public interface IzvodacService {
 
     List<IzvodacDto> getAllIzvodaci();
 
-    List<IzvodacDto> getIzvodaciByZanr(String zanrIzvodaca);
 
     Set<IzvodacDto> getIzvodaciByIds(Set<Long> izvodacIds);
 }

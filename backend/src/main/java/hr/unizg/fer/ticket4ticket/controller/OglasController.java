@@ -1,12 +1,17 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
+
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
+
+import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
+
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -32,6 +37,24 @@ public class OglasController {
     public ResponseEntity<List<OglasDto>> getAllOglasi() {
         List<OglasDto> oglasi = oglasService.getAllOglasi();
         return new ResponseEntity<>(oglasi, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/list/{broj_random_oglasa}")
+    public ResponseEntity<List<OglasDto>> getRandomOglasi(@PathVariable int broj_random_oglasa) {
+        List<OglasDto> randomOglasi = oglasService.getRandomOglasi(broj_random_oglasa);
+        return new ResponseEntity<>(randomOglasi, HttpStatus.OK);
+    }
+
+    @GetMapping("/{oglas_id}/izvodaci")
+    public ResponseEntity<List<IzvodacDto>> getIzvodaciForOglas(@PathVariable("oglas_id") Long oglasId) {
+        List<IzvodacDto> izvodaci = oglasService.getIzvodaciForOglas(oglasId);
+
+        if (izvodaci.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+
+        return ResponseEntity.ok(izvodaci);
     }
 
 }

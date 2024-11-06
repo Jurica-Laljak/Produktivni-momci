@@ -23,7 +23,7 @@ public class Korisnik {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDKorisnika", nullable = false)
+    @Column(name = "idKorisnika", nullable = false)
     private Long idKorisnika;
 
     @NotBlank
@@ -44,9 +44,6 @@ public class Korisnik {
     @Column(name = "brMobKorisnika", nullable = true, unique = true)
     private String brMobKorisnika;
 
-    //nullable should be false
-    @Column(name = "OIBKorisnika", nullable = true, unique = true)
-    private String oibKorisnika;
 
     @NotBlank
     @Size(max = 2048)
@@ -56,6 +53,15 @@ public class Korisnik {
 
     @Column(name = "googleId", unique = true)
     private String googleId;
+
+    // Many-to-Many relationship with Zanr
+    @ManyToMany
+    @JoinTable(
+            name = "korisnik_zanr", // The join table name
+            joinColumns = @JoinColumn(name = "IDKorisnika"), // The column for Korisnik
+            inverseJoinColumns = @JoinColumn(name = "IDZanra") // The column for Zanr
+    )
+    private Set<Zanr> omiljeniZanrovi = new HashSet<>(); // Changed name to reflect the relationship
 
     // Many-to-Many relationship with Izvodac
     @ManyToMany
@@ -82,6 +88,13 @@ public class Korisnik {
     public Set<Long> getOglasiIds() {
         return oglasi.stream()
                 .map(Oglas::getIdOglasa) //Oglas has a getIdOglasa() method
+                .collect(Collectors.toSet());
+    }
+
+    // Method to get IDs of omiljeniZanrovi
+    public Set<Long> getOmiljeniZanroviIds() {
+        return omiljeniZanrovi.stream()
+                .map(Zanr::getIdZanra) // Zanr has a getIdZanra() method
                 .collect(Collectors.toSet());
     }
 

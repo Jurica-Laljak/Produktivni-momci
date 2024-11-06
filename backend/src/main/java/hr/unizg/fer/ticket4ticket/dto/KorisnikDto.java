@@ -18,9 +18,9 @@ public class KorisnikDto {
     private String prezimeKorisnika;
     private String emailKorisnika;
     private String brMobKorisnika;
-    private String oibKorisnika;
     private String fotoKorisnika;
     private String googleId;
     private Set<Long> omiljeniIzvodaciIds;
     private Set<Long> oglasiIds;
+    private Set<Long> omiljeniZanroviIds;
 }
