@@ -1,0 +1,67 @@
+[
+    {
+        "firstName": "Eminem",
+        "lastName": "Mathers",
+        "city": "Detroit"
+    },
+    {
+        "firstName": "Kendrick",
+        "lastName": "Lamar",
+        "city": "Los Angeles"
+    },
+    {
+        "firstName": "Drake",
+        "lastName": "Graham",
+        "city": "Toronto"
+    },
+    {
+        "firstName": "Nicki",
+        "lastName": "Minaj",
+        "city": "New York"
+    },
+    {
+        "firstName": "J. Cole",
+        "lastName": "Cole",
+        "city": "Fayetteville"
+    },
+    {
+        "firstName": "Lil Wayne",
+        "lastName": "Carter",
+        "city": "New Orleans"
+    },
+    {
+        "firstName": "Cardi",
+        "lastName": "B",
+        "city": "New York"
+    },
+    {
+        "firstName": "Post",
+        "lastName": "Malone",
+        "city": "Los Angeles"
+    },
+    {
+        "firstName": "Snoop",
+        "lastName": "Dogg",
+        "city": "Long Beach"
+    },
+    {
+        "firstName": "Travis",
+        "lastName": "Scott",
+        "city": "Houston"
+    },
+    {
+        "firstName": "Post",
+        "lastName": "Lamar",
+        "city": "Los Angeles"
+    },
+    {
+        "firstName": "Post",
+        "lastName": "Lamar",
+        "city": "Los Angeles"
+    },
+    {
+        "firstName": "Post",
+        "lastName": "Lamar",
+        "city": "Los Angeles"
+    }
+]

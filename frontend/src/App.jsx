@@ -4,31 +4,31 @@ import './App.css'
 import AppNavbar  from './AppNavbar'
 import Button from 'react-bootstrap/Button';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import Login from './Login'
+import LoginGoogle from './LoginGoogle';
 import Home from './Home'
-import SignUp from './SignUp'
-import SignUp2 from './SignUp2'
+import ChooseGenres from './ChooseGenres';
 import "@fortawesome/fontawesome-free/css/all.min.css"
-import SearchResults from './SearchResults';
+import SearchResultsList from './SearchResultsList';
 
 function App() {
 
   const location = useLocation();
-  const noNavbarRoutes = ['/login', '/signup'];
-
+  const noNavbarRoutes = ['/login', '/signup', '/ChooseGenres'];
   const [results, setResults] = useState([]);
+  
 
  return (
   <>
  
- {!noNavbarRoutes.includes(location.pathname) && <AppNavbar setResults={setResults} />}
-  <SearchResults results={results}/>
+ {!noNavbarRoutes.includes(location.pathname) && <AppNavbar  setResults={setResults}/>}
+  
 
   <div className='container'>
     <Routes>
     <Route path='/' element={<Home />}/>
-    <Route path='/signup' element={<SignUp2 />}/>
-    <Route path='/login' element={<Login />}/>
+    <Route path='/login' element={<LoginGoogle />}/>
+    <Route path='/search' element={<SearchResultsList results={results}/>}/>
+    <Route path='/ChooseGenres' element={<ChooseGenres />}></Route>
     </Routes>
   </div>
   </>
