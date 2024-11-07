@@ -21,13 +21,6 @@ public class Oglas {
     @Column(name = "idOglasa", nullable = false)
     private Long idOglasa; // Use Long to match the SQL INT type
 
-    @NotBlank
-    @Column(name = "odabranaZona", nullable = false, length = 50)
-    private String odabranaZona;
-
-    @NotBlank
-    @Column(name = "vrstaUlaznice", nullable = false, length = 50)
-    private String vrstaUlaznice;
 
     @NotBlank
     @Column(name = "status", nullable = false, length = 50)
@@ -35,8 +28,8 @@ public class Oglas {
 
     // Many-to-One relationship with Koncert
     @ManyToOne // Specifies that this is a many-to-one relationship
-    @JoinColumn(name = "IDKoncerta", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_koncert")) // Foreign key column
-    private Koncert koncert;
+    @JoinColumn(name = "IDUlaznice", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica")) // Foreign key column
+    private Ulaznica ulaznica;
 
     // Many-to-One relationship with Korisnik
     @ManyToOne // Specifies that this is a many-to-one relationship

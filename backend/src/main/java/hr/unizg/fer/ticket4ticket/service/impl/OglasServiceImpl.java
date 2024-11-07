@@ -4,7 +4,7 @@ package hr.unizg.fer.ticket4ticket.service.impl;
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
-import hr.unizg.fer.ticket4ticket.repository.KoncertRepository;
+import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 
@@ -31,7 +31,7 @@ public class OglasServiceImpl implements OglasService {
     private OglasRepository oglasRepository;
 
 
-    private final KoncertRepository koncertRepository; // Dependency injection of Koncert repository
+    private final UlaznicaRepository koncertRepository; // Dependency injection of Koncert repository
 
 
     @Override
@@ -129,11 +129,11 @@ public class OglasServiceImpl implements OglasService {
         Oglas oglas = oglasRepository.findById(oglasId)
                 .orElseThrow(() -> new ResourceNotFoundException("Oglas with ID " + oglasId + " not found"));
 
-        // Get the koncert ID associated with the Oglas
-        Long koncertId = oglas.getKoncert().getIdKoncerta();
+        // Get the ulaznica ID associated with the Oglas
+        Long ulaznicaId = oglas.getUlaznica().getIdUlaznice();
 
-        // Retrieve the Izvodaci associated with the koncert ID
-        List<Izvodac> izvodaci = oglasRepository.findIzvodaciByKoncertId(koncertId);
+        // Retrieve the Izvodaci associated with the ulaznica ID
+        List<Izvodac> izvodaci = oglasRepository.findIzvodaciByUlaznicaId(ulaznicaId);
 
         // Map the Izvodac entities to Izvodac DTOs (you need to implement this mapping method)
         return izvodaci.stream()

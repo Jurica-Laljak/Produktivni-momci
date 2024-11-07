@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +18,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "KONCERT")
-public class Koncert {
+@Table(name = "ULAZNICA")
+public class Ulaznica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idKoncerta", nullable = false)
-    private Long idKoncerta;
+    @Column(name = "idUlaznice", nullable = false)
+    private Long idUlaznice;
 
     @NotNull
     @Column(name = "datumKoncerta", nullable = false)
@@ -33,12 +34,20 @@ public class Koncert {
     @Column(name = "lokacijaKoncerta", nullable = false, length = 50)
     private String lokacijaKoncerta;
 
+    @NotBlank
+    @Column(name = "odabranaZona", nullable = false, length = 50)
+    private String odabranaZona;
+
+    @NotBlank
+    @Column(name = "vrstaUlaznice", nullable = false, length = 50)
+    private String vrstaUlaznice;
+
     // Many-to-Many relationship with Izvodac
-    @ManyToMany(mappedBy = "koncerti") // This side will not own the relationship
+    @ManyToMany(mappedBy = "ulaznice") // This side will not own the relationship
     private Set<Izvodac> izvodaci = new HashSet<>();
 
     // One-to-Many relationship with Oglas
-    @OneToMany(mappedBy = "koncert", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ulaznica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Oglas> oglasi = new HashSet<>();
 
     // Method to get IDs of Izvodac

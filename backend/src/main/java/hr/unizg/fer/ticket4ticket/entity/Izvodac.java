@@ -44,24 +44,24 @@ public class Izvodac {
     @ManyToMany(mappedBy = "omiljeniIzvodaci")
     private Set<Korisnik> korisniciKojiSlusaju = new HashSet<>();
 
-    // Many-to-Many relationship with Koncert
-    @ManyToMany
-    @JoinTable(
-            name = "odrzavaKoncert",
-            joinColumns = @JoinColumn(name = "IDIzvodaca"),
-            inverseJoinColumns = @JoinColumn(name = "IDKoncerta")
-    )
-    private Set<Koncert> koncerti = new HashSet<>();
 
     // Many-to-One relationship with Zanr
     @ManyToOne
     @JoinColumn(name = "zanr_id") // Foreign key column in Izvodac table
     private Zanr zanrIzvodaca; // Reference to the Zanr entity
 
-    // Method to get IDs of omiljeniIzvodaci
-    public Set<Long> getKoncertiIds() {
-        return koncerti.stream()
-                .map(Koncert::getIdKoncerta)
+    @ManyToMany
+    @JoinTable(
+            name = "izvodac_ulaznica", // Update join table name
+            joinColumns = @JoinColumn(name = "IDIzvodaca"),
+            inverseJoinColumns = @JoinColumn(name = "IDUlaznice") // Update foreign key column name
+    )
+    private Set<Ulaznica> ulaznice = new HashSet<>(); // Rename from koncerti to ulaznice
+
+    // Update the method to get IDs of Ulaznica instead of Koncert
+    public Set<Long> getUlazniceIds() {
+        return ulaznice.stream()
+                .map(Ulaznica::getIdUlaznice) // Update to new method name in Ulaznica
                 .collect(Collectors.toSet());
     }
 

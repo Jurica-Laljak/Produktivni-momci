@@ -13,9 +13,7 @@ import lombok.Setter;
 public class OglasDto {
 
     private Long idOglasa; // Use Long to match the SQL INT type
-    private String odabranaZona;
-    private String vrstaUlaznice;
     private String status;
     private Long korisnikId;
-    private Long koncertId;
+    private Long ulaznicaId;
 }
