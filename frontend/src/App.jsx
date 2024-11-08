@@ -15,41 +15,8 @@ import axios from 'axios';
 
 function App() {
 
-  useEffect(() => {
-    const brojRandomOglasa = 5; // Zamijeni s stvarnim brojem oglasa kojeg želiš
-  
-    /* 
-    axios.get("api/oglasi/list/3")
-      .then(response => {
-        console.log( response.data);
-      })
-      .catch(error => {
-        console.error("error", error);
-      }); */
-
-      axios.post("api/preference/oglasi/filter", {
-        imeIzvođača: "Taylor",
-        prezimeIzvođača: "Swift"
-       
-      })
-      .then(response => {
-       // console.log('Rezultati pretrage:', response.data);
-       // dodati onda logiku za prikaz oglasa koji su vraceni
-                console.log(response)
-       // napraviti novi get(ustvari post vjerojatno a ne get) gdje cemo sa idOglasa ili cime vec dobit izvodaca
-       // i sa idKoncerta mjesto odrzavanja koncerta -> novi post a ne get, isto tako i za prvi
-        // trebo bi radit map kroz vracene oglase i unutar tog mapa radit te getove
-
-      })
-      .catch(error => {
-        console.error('Greška prilikom pretrage:', error);
-      });
-
-  }, []);
-
-
   const location = useLocation();
-  const noNavbarRoutes = ['/login', '/signup', '/ChooseGenres'];
+  const noNavbarRoutes = ['/login', '/ChooseGenres'];
   const [results, setResults] = useState([]);
   
 
@@ -65,6 +32,7 @@ function App() {
     <Route path='/login' element={<LoginGoogle />}/>
     <Route path='/search' element={<SearchResultsList results={results}/>}/>
     <Route path='/ChooseGenres' element={<ChooseGenres />}></Route>
+    <Route path='/UserHome' element={<Home />}/>
     </Routes>
   </div>
   </>
