@@ -31,7 +31,8 @@ export default function SearchBar({setResults}){
     function handleSearch(){
         const artistName = searchInput.split(" ")[0]
         const artistSurname = searchInput.split(" ")[1]
-        axios.post('http://localhost:8080/api/preference/oglasi/filter', {
+        
+        axios.post("api/preference/oglasi/filter", {
             imeIzvođača: artistName,
             prezimeIzvođača: artistSurname
            
@@ -39,7 +40,7 @@ export default function SearchBar({setResults}){
           .then(response => {
            // console.log('Rezultati pretrage:', response.data);
            // dodati onda logiku za prikaz oglasa koji su vraceni
-
+                    console.log(response)
            // napraviti novi get(ustvari post vjerojatno a ne get) gdje cemo sa idOglasa ili cime vec dobit izvodaca
            // i sa idKoncerta mjesto odrzavanja koncerta -> novi post a ne get, isto tako i za prvi
             // trebo bi radit map kroz vracene oglase i unutar tog mapa radit te getove
@@ -48,11 +49,12 @@ export default function SearchBar({setResults}){
           .catch(error => {
             console.error('Greška prilikom pretrage:', error);
           });
+         
     }
 
     function handleKeyDown(event){
-        if (e.key === 'Enter') {
-            e.preventDefault(); // ovo mozda nije potrebno
+        if (event.key === 'Enter') {
+            event.preventDefault(); // ovo mozda nije potrebno
             handleSearch();
           }
     }

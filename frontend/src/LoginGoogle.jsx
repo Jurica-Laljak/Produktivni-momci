@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import './LoginGoogle.css'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginGoogle(){
 
+   
+
         function ContinueGoogle(){
-                axios.get("http://localhost:8080/oauth2/authorization/google")
-                // tu mozda dodat sa then da dohvatimo jel korisnik novi ili stari
+        window.location.href =  "http://localhost:8080/oauth2/authorization/google"           
         }
 
     return (
