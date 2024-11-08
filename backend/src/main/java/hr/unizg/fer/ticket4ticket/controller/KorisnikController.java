@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -43,8 +44,10 @@ public class KorisnikController {
         return ResponseEntity.ok(korisnici);
     }
 
-    @GetMapping("/profile")
-    public String profile(OAuth2AuthenticationToken token, Model model) {
+    @GetMapping("/profileSetupCheck")
+    public RedirectView profile(OAuth2AuthenticationToken token, Model model) {
+
+
         // Retrieve user details from OAuth token
         String googleId = token.getPrincipal().getAttribute("sub");
         String name = token.getPrincipal().getAttribute("given_name");
@@ -52,26 +55,31 @@ public class KorisnikController {
         String email = token.getPrincipal().getAttribute("email");
         String photo = token.getPrincipal().getAttribute("picture");
 
-
         // Create KorisnikDto with user details
         KorisnikDto korisnikDto = new KorisnikDto();
-        korisnikDto.setImeKorisnika(name);
-        korisnikDto.setPrezimeKorisnika(surname);
-        korisnikDto.setEmailKorisnika(email);
-        korisnikDto.setFotoKorisnika(photo);
-        korisnikDto.setGoogleId(googleId);
-
         // Call the service method to check or create user
-        korisnikService.findOrCreateKorisnikByGoogleId(googleId, korisnikDto);
+        KorisnikDto result = korisnikService.findOrCreateKorisnikByGoogleId(googleId, korisnikDto);
 
-        // Add user details to the model for the view
-        model.addAttribute("name", name);
-        model.addAttribute("email", email);
-        model.addAttribute("photo", photo);
-
-        // Return the view name
-        return "userProfile";
+        // Redirect based on whether the user is new or existing
+        if (result.getIdKorisnika() == null) {
+            // Fill in the new korisnik information
+            korisnikDto.setImeKorisnika(name);
+            korisnikDto.setPrezimeKorisnika(surname);
+            korisnikDto.setEmailKorisnika(email);
+            korisnikDto.setFotoKorisnika(photo);
+            korisnikDto.setGoogleId(googleId);
+            // Redirect to setup if this is a newly created user
+            return new RedirectView("http://localhost:5173/ChooseGenres");
+        } else {
+            // Redirect to search if the user already exists
+            return new RedirectView("http://localhost:5173/UserHome");
+        }
     }
+
+
+
+
+
 
     @GetMapping("/login")
     public String login() {
