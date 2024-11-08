@@ -97,8 +97,8 @@ public class OglasServiceImpl implements OglasService {
     @Override
     public List<OglasDto> getOglasiByFilter(OglasFilterDto filterDto) {
         List<Oglas> oglasi = oglasRepository.findOglasiByFilter(
-                filterDto.getIzvodacIme(),
-                filterDto.getIzvodacPrezime()
+                filterDto.getImeIzvodaca(),
+                filterDto.getPrezimeIzvodaca()
         );
 
         // Handle potential null return from the repository

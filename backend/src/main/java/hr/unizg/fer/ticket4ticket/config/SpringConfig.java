@@ -16,7 +16,7 @@ public class SpringConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-            //.csrf(csrf -> csrf.disable()) // Disable CSRF protection for testing 1) POSTMAN
+            .csrf(csrf -> csrf.disable()) // Disable CSRF protection for testing 1) POSTMAN
             .authorizeHttpRequests(registry -> {
             registry.requestMatchers("/login", "/oauth2/**").permitAll().//the home path is accessible without any authentification 2) NORMAL
             requestMatchers("/api/oglasi/list/**").permitAll(); // Permit access to /list/{broj_random_oglasa} for all users
