@@ -1,8 +1,6 @@
 package  hr.unizg.fer.ticket4ticket.controller;
 
-
 import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
-
 import hr.unizg.fer.ticket4ticket.service.ZanrService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,9 @@ public class ZanrController {
 
     private final ZanrService zanrService;
 
+    // Returns all Zanrovi resources in the database
     @GetMapping
-    public ResponseEntity<List<ZanrDto>> getAllKoncerti() {
+    public ResponseEntity<List<ZanrDto>> getAllZanrovi() {
         List<ZanrDto> zanrovi = zanrService.getAllZanrovi();
         return new ResponseEntity<>(zanrovi, HttpStatus.OK);
     }

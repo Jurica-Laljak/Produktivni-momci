@@ -1,6 +1,5 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
-
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
@@ -8,6 +7,7 @@ import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
 import hr.unizg.fer.ticket4ticket.repository.IzvodacRepository;
 import hr.unizg.fer.ticket4ticket.service.IzvodacService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class IzvodacServiceImpl implements IzvodacService {
 
+    @Autowired
     private IzvodacRepository izvodacRepository;
 
     @Override

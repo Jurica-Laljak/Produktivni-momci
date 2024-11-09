@@ -23,27 +23,29 @@ public class KorisnikController {
 
 
 
-    //Add korisnik REST API
+    // Creates a new Korisnik resource with provided data in KorisnikDto
     @PostMapping
     public ResponseEntity<KorisnikDto> createKorisnik(@RequestBody KorisnikDto korisnikDto){
         KorisnikDto savedKorisnik = korisnikService.createKorisnik(korisnikDto);
         return new ResponseEntity<>(savedKorisnik, HttpStatus.CREATED);
     }
 
-    //Get korisnik REST API
+    // Returns the Korisnik by specified ID
     @GetMapping("{id}")
     public ResponseEntity<KorisnikDto> getKorisnikById(@PathVariable("id") Long korisnikId){
         KorisnikDto korisnikDto= korisnikService.getKorisnikById(korisnikId);
         return ResponseEntity.ok(korisnikDto);
     }
 
-    //Get all korisnik REST API
+    // Returns all Korisnik resources in the database
     @GetMapping
     public ResponseEntity<List<KorisnikDto>> getAllKorisnici(){
         List<KorisnikDto> korisnici = korisnikService.getAllKorisnici();
         return ResponseEntity.ok(korisnici);
     }
 
+
+    // User is redirected to /profileSetupCheck after a successful Google oauth login
     @GetMapping("/profileSetupCheck")
     public RedirectView profile(OAuth2AuthenticationToken token, Model model) {
 
@@ -57,6 +59,7 @@ public class KorisnikController {
 
         // Create KorisnikDto with user details
         KorisnikDto korisnikDto = new KorisnikDto();
+
         // Call the service method to check or create user
         KorisnikDto result = korisnikService.findOrCreateKorisnikByGoogleId(googleId, korisnikDto);
 
@@ -68,23 +71,16 @@ public class KorisnikController {
             korisnikDto.setEmailKorisnika(email);
             korisnikDto.setFotoKorisnika(photo);
             korisnikDto.setGoogleId(googleId);
-            // Redirect to setup if this is a newly created user
+
+            // Redirect to ChooseGenres if this is a newly created user
             return new RedirectView("http://localhost:5173/ChooseGenres");
+
         } else {
-            // Redirect to search if the user already exists
+            // Redirect to UserHome page if the user already exists
             return new RedirectView("http://localhost:5173/UserHome");
         }
     }
 
-
-
-
-
-
-    @GetMapping("/login")
-    public String login() {
-        return "loginPage";
-    }
 
 
 

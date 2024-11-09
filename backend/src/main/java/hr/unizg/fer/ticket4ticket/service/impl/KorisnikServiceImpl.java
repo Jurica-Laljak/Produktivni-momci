@@ -7,6 +7,7 @@ import hr.unizg.fer.ticket4ticket.mapper.KorisnikMapper;
 import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class KorisnikServiceImpl implements KorisnikService {
 
+    @Autowired
     private KorisnikRepository korisnikRepository;
 
     @Override

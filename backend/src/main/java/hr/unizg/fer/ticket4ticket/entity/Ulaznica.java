@@ -43,7 +43,7 @@ public class Ulaznica {
     private String vrstaUlaznice;
 
     // Many-to-Many relationship with Izvodac
-    @ManyToMany(mappedBy = "ulaznice") // This side will not own the relationship
+    @ManyToMany(mappedBy = "ulaznice")
     private Set<Izvodac> izvodaci = new HashSet<>();
 
     // One-to-Many relationship with Oglas

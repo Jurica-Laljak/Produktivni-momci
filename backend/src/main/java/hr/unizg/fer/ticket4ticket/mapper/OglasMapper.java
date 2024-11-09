@@ -15,10 +15,10 @@ public class OglasMapper {
 
         // Map the IDs of related entities
         if (oglas.getKorisnik() != null) {
-            dto.setKorisnikId(oglas.getKorisnik().getIdKorisnika()); // Get the ID of the user
+            dto.setKorisnikId(oglas.getKorisnik().getIdKorisnika());
         }
         if (oglas.getUlaznica() != null) {
-            dto.setUlaznicaId(oglas.getUlaznica().getIdUlaznice()); // Get the ID of the concert
+            dto.setUlaznicaId(oglas.getUlaznica().getIdUlaznice());
         }
 
         return dto;
@@ -32,14 +32,14 @@ public class OglasMapper {
 
         // Set the related entities based on their IDs
         if (oglasDto.getKorisnikId() != null) {
-            Korisnik korisnik = new Korisnik(); // Create a new instance of Korisnik
-            korisnik.setIdKorisnika(oglasDto.getKorisnikId()); // Set the ID
-            oglas.setKorisnik(korisnik); // Assign to Oglas
+            Korisnik korisnik = new Korisnik();
+            korisnik.setIdKorisnika(oglasDto.getKorisnikId());
+            oglas.setKorisnik(korisnik);
         }
         if (oglasDto.getUlaznicaId() != null) {
-            Ulaznica koncert = new Ulaznica(); // Create a new instance of Koncert
-            koncert.setIdUlaznice(oglasDto.getUlaznicaId()); // Set the ID
-            oglas.setUlaznica(koncert); // Assign to Oglas
+            Ulaznica ulaznica = new Ulaznica();
+            ulaznica.setIdUlaznice(oglasDto.getUlaznicaId());
+            oglas.setUlaznica(ulaznica);
         }
 
         return oglas;

@@ -1,6 +1,5 @@
 package hr.unizg.fer.ticket4ticket.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

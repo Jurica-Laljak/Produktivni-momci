@@ -20,10 +20,9 @@ public class IzvodacMapper {
         dto.setZanrId(izvodac.getZanrId()); // Set the new zanrId instead of zanrIzvodaca
         dto.setFotoIzvodaca(izvodac.getFotoIzvodaca());
 
-        // Convert the Set<Korisnik> to Set<Long> (IDs)
         Set<Long> korisniciKojiSlusajuIds = izvodac.getKorisniciKojiSlusaju()
                 .stream()
-                .map(Korisnik::getIdKorisnika) // Use method reference for clarity
+                .map(Korisnik::getIdKorisnika)
                 .collect(Collectors.toSet());
 
         dto.setKorisniciKojiSlusajuIds(korisniciKojiSlusajuIds);
@@ -37,9 +36,7 @@ public class IzvodacMapper {
         izvodac.setImeIzvodaca(izvodacDto.getImeIzvodaca());
         izvodac.setPrezimeIzvodaca(izvodacDto.getPrezimeIzvodaca());
         izvodac.setStarostIzvodaca(izvodacDto.getStarostIzvodaca());
-        // Remove the previous zanrIzvodaca and set the new zanrId instead
-        // Assuming you need to set a reference to the associated Zanr entity
-        izvodac.setZanrId(izvodacDto.getZanrId()); // Set the new zanrId
+        izvodac.setZanrId(izvodacDto.getZanrId());
         izvodac.setFotoIzvodaca(izvodacDto.getFotoIzvodaca());
 
         // Initialize korisniciKojiSlusaju to an empty Set
@@ -48,8 +45,8 @@ public class IzvodacMapper {
         if (izvodacDto.getKorisniciKojiSlusajuIds() != null) {
             // Create Korisnik entities based on the IDs in the DTO
             for (Long id : izvodacDto.getKorisniciKojiSlusajuIds()) {
-                Korisnik korisnik = new Korisnik(); // Assuming Korisnik has a default constructor
-                korisnik.setIdKorisnika(id); // Set the ID
+                Korisnik korisnik = new Korisnik();
+                korisnik.setIdKorisnika(id);
                 korisniciKojiSlusaju.add(korisnik);
             }
         }

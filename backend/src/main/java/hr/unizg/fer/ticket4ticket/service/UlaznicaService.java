@@ -5,6 +5,7 @@ import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
 import java.util.List;
 
 public interface UlaznicaService {
+
     UlaznicaDto createUlaznica(UlaznicaDto ulaznicaDto);
 
     UlaznicaDto getUlaznicaById(Long ulaznicaId);

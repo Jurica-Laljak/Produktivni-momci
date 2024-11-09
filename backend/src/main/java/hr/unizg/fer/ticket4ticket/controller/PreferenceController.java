@@ -1,24 +1,16 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
-
-import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.service.PreferenceService;
-
-
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
-
 import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
-
-
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Set;
 
@@ -29,34 +21,19 @@ public class PreferenceController {
 
     @Autowired
     private PreferenceService preferenceService;
-
     @Autowired
     private OglasService oglasService;
-
     @Autowired
     private KorisnikService korisnikService;
 
-    @GetMapping("/{korisnikId}/voliSlusati")
-    public ResponseEntity<Set<IzvodacDto>> getIzvodaciForKorisnik(@PathVariable Long korisnikId) {
-        Set<IzvodacDto> izvodaci = preferenceService.getIzvodaciForKorisnik(korisnikId);
-        return ResponseEntity.ok(izvodaci);
-    }
-
-    @GetMapping("/{korisnikId}/oglasi")
-    public ResponseEntity<List<OglasDto>> getOglasiForKorisnik(@PathVariable Long korisnikId) {
-        List<OglasDto> oglasi = preferenceService.getOglasiForKorisnik(korisnikId);
-        return ResponseEntity.ok(oglasi);
-    }
-
+    //Returns all Oglas resources that match up with the provided users search filter (currently by Name and Surname of Izvodac)
     @PostMapping("/oglasi/filter")
     public ResponseEntity<List<OglasDto>> getOglasiByFilter(@RequestBody OglasFilterDto filterDto) {
         List<OglasDto> filteredOglasi = preferenceService.getOglasiByFilter(filterDto);
         return ResponseEntity.ok(filteredOglasi);
     }
 
-
-
-
+    //Update list of genres the authenticated user likes to listen to
     @PostMapping("/zanrovi")
     public ResponseEntity<String> updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
         // Extract Google ID from OAuth2 token
@@ -64,8 +41,6 @@ public class PreferenceController {
 
         // Use an existing method to find or create the user based on the Google ID
         KorisnikDto korisnik = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto()); //SA OAUTH
-
-
 
         // Update the user's genres with the provided list of Zanr IDs
         boolean isUpdated = preferenceService.updateUserGenrePreferences(korisnik, zanrIds);
@@ -79,7 +54,7 @@ public class PreferenceController {
     }
 
 
-    // New endpoint for getting "Oglasi" by Google ID from OAuth token
+    // Returns the list of oglasi by authenticated user's preference (by genres he likes)
     @GetMapping("/oglasi")
     public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(OAuth2AuthenticationToken token) {
         // Extract the Google ID from the OAuth2 token
@@ -93,8 +68,5 @@ public class PreferenceController {
 
         return ResponseEntity.ok(oglasi);
     }
-
-
-
 
 }
