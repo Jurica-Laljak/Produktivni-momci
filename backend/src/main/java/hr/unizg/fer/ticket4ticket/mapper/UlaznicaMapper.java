@@ -17,12 +17,9 @@ public class UlaznicaMapper {
         dto.setIdKoncerta(ulaznica.getIdUlaznice());
         dto.setDatumKoncerta(ulaznica.getDatumKoncerta());
         dto.setLokacijaKoncerta(ulaznica.getLokacijaKoncerta());
-
-        // Mapping new fields
         dto.setOdabranaZona(ulaznica.getOdabranaZona());
         dto.setVrstaUlaznice(ulaznica.getVrstaUlaznice());
 
-        // Convert the Set<Izvodac> to Set<Long> (IDs)
         Set<Long> izvodaciIds = ulaznica.getIzvodaci()
                 .stream()
                 .map(Izvodac::getIdIzvodaca) // Assuming Izvodac has a method getIdIzvodaca()
@@ -47,29 +44,25 @@ public class UlaznicaMapper {
         ulaznica.setIdUlaznice(ulaznicaDto.getIdKoncerta());
         ulaznica.setDatumKoncerta(ulaznicaDto.getDatumKoncerta());
         ulaznica.setLokacijaKoncerta(ulaznicaDto.getLokacijaKoncerta());
-
-        // Mapping new fields
         ulaznica.setOdabranaZona(ulaznicaDto.getOdabranaZona());
         ulaznica.setVrstaUlaznice(ulaznicaDto.getVrstaUlaznice());
 
-        // Initialize izvodaci to an empty Set
         Set<Izvodac> izvodaci = new HashSet<>();
         if (ulaznicaDto.getIzvodaciIds() != null) {
             // Create Izvodac entities based on the IDs in the DTO
             for (Long id : ulaznicaDto.getIzvodaciIds()) {
-                Izvodac izvodac = new Izvodac(); // Assuming Izvodac has a default constructor
-                izvodac.setIdIzvodaca(id); // Set the ID
+                Izvodac izvodac = new Izvodac();
+                izvodac.setIdIzvodaca(id);
                 izvodaci.add(izvodac);
             }
         }
         ulaznica.setIzvodaci(izvodaci);
 
-        // Initialize oglasi to an empty Set
         Set<Oglas> oglasi = new HashSet<>();
         if (ulaznicaDto.getOglasiIds() != null) {
             for (Long id : ulaznicaDto.getOglasiIds()) {
-                Oglas oglas = new Oglas(); // Assuming Oglas has a default constructor
-                oglas.setIdOglasa(id); // Set the ID
+                Oglas oglas = new Oglas();
+                oglas.setIdOglasa(id);
                 oglasi.add(oglas);
             }
         }

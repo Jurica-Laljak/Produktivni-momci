@@ -40,7 +40,7 @@ public class Korisnik {
     @Column(name = "emailKorisnika", nullable = false, unique = true, length = 50)
     private String emailKorisnika;
 
-    //nullable should be false
+
     @Column(name = "brMobKorisnika", nullable = true, unique = true)
     private String brMobKorisnika;
 

@@ -16,18 +16,21 @@ public class UlaznicaController {
 
     private final UlaznicaService koncertService;
 
+    // Creates a new Ulaznica resource with provided data in UlaznicaDto
     @PostMapping
     public ResponseEntity<UlaznicaDto> createUlaznica(@RequestBody UlaznicaDto ulaznicaDto) {
         UlaznicaDto createdUlaznica = koncertService.createUlaznica(ulaznicaDto);
         return new ResponseEntity<>(createdUlaznica, HttpStatus.CREATED);
     }
 
+    // Returns the Ulaznica by specified ID
     @GetMapping("/{id}")
     public ResponseEntity<UlaznicaDto> getUlaznicaById(@PathVariable Long id) {
         UlaznicaDto ulaznicaDto = koncertService.getUlaznicaById(id);
         return new ResponseEntity<>(ulaznicaDto, HttpStatus.OK);
     }
 
+    // Returns all Ulaznica resources in the database
     @GetMapping
     public ResponseEntity<List<UlaznicaDto>> getAllUlaznice() {
         List<UlaznicaDto> ulaznice = koncertService.getAllUlaznice();

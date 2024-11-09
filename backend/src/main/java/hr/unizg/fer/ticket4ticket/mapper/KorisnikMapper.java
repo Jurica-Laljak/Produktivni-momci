@@ -1,15 +1,10 @@
 package hr.unizg.fer.ticket4ticket.mapper;
 
-
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
-
-
 import  hr.unizg.fer.ticket4ticket.entity.Zanr;
-
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +30,7 @@ public class KorisnikMapper {
 
         dto.setOmiljeniIzvodaciIds(omiljeniIzvodaciIds);
 
-        // Convert the Set<Oglas> to Set<Long> (IDs)
+
         Set<Long> oglasiIds = korisnik.getOglasi() // Assuming this is the set of Oglas entities
                 .stream()
                 .map(Oglas::getIdOglasa) // Assuming Oglas has a method getIdOglasa()

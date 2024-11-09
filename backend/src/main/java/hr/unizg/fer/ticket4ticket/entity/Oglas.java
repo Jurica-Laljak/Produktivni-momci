@@ -1,6 +1,5 @@
 package hr.unizg.fer.ticket4ticket.entity;
 
-
 import jakarta.persistence.*; // Import for JPA annotations
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class Oglas {
     @Column(name = "status", nullable = false, length = 50)
     private String status;
 
-    // Many-to-One relationship with Koncert
+    // Many-to-One relationship with Ulaznica
     @ManyToOne // Specifies that this is a many-to-one relationship
     @JoinColumn(name = "IDUlaznice", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica")) // Foreign key column
     private Ulaznica ulaznica;

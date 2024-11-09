@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,13 +51,13 @@ public class Izvodac {
 
     @ManyToMany
     @JoinTable(
-            name = "izvodac_ulaznica", // Update join table name
+            name = "izvodac_ulaznica",
             joinColumns = @JoinColumn(name = "IDIzvodaca"),
-            inverseJoinColumns = @JoinColumn(name = "IDUlaznice") // Update foreign key column name
+            inverseJoinColumns = @JoinColumn(name = "IDUlaznice")
     )
     private Set<Ulaznica> ulaznice = new HashSet<>(); // Rename from koncerti to ulaznice
 
-    // Update the method to get IDs of Ulaznica instead of Koncert
+
     public Set<Long> getUlazniceIds() {
         return ulaznice.stream()
                 .map(Ulaznica::getIdUlaznice) // Update to new method name in Ulaznica

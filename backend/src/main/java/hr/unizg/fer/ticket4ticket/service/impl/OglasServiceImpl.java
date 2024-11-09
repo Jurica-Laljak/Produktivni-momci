@@ -1,37 +1,28 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
-
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
-import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
-
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
-
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
-
-
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class OglasServiceImpl implements OglasService {
 
+    @Autowired
     private OglasRepository oglasRepository;
-
-
-    private final UlaznicaRepository koncertRepository; // Dependency injection of Koncert repository
 
 
     @Override
@@ -64,17 +55,6 @@ public class OglasServiceImpl implements OglasService {
         // Convert list of entities to list of DTOs
         return oglasi.stream()
                 .map(OglasMapper::mapToOglasDto)
-                .collect(Collectors.toList());
-    }
-
-
-    public List<OglasDto> getOglasiByIzvodacId(Long izvodacId) {
-        // Find all oglasi associated with the specified izvodacId
-        Set<Oglas> oglasi = oglasRepository.findByIzvodacId(izvodacId);
-
-        // Map Oglas entities to OglasDto using the mapper
-        return oglasi.stream()
-                .map(OglasMapper::mapToOglasDto) // Use the mapper to convert entities to DTOs
                 .collect(Collectors.toList());
     }
 

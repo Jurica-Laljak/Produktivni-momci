@@ -4,7 +4,6 @@ import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,21 +17,19 @@ public class ZanrMapper {
         dto.setImeZanra(zanr.getImeZanra());
         dto.setSlikaZanra(zanr.getSlikaZanra());
 
-        // Convert the Set<Korisnik> to Set<Long> (IDs)
         Set<Long> korisniciKojiSlusajuIds = zanr.getKorisnici()
                 .stream()
-                .map(Korisnik::getIdKorisnika) // Assuming Korisnik has a method getIdKorisnika()
+                .map(Korisnik::getIdKorisnika)
                 .collect(Collectors.toSet());
 
         dto.setKorisniciKojiSlusajuIds(korisniciKojiSlusajuIds);
 
-        // Convert the Set<Izvodac> to Set<Long> (IDs)
-        Set<Long> izvodaciIds = zanr.getIzvodaci() // Assuming this is the set of Izvodac entities
+        Set<Long> izvodaciIds = zanr.getIzvodaci()
                 .stream()
-                .map(Izvodac::getIdIzvodaca) // Assuming Izvodac has a method getIdIzvodaca()
+                .map(Izvodac::getIdIzvodaca)
                 .collect(Collectors.toSet());
 
-        dto.setIzvodaciIds(izvodaciIds); // Set the Izvodac IDs in the DTO
+        dto.setIzvodaciIds(izvodaciIds);
         return dto;
     }
 
@@ -43,29 +40,28 @@ public class ZanrMapper {
         zanr.setImeZanra(zanrDto.getImeZanra());
         zanr.setSlikaZanra(zanrDto.getSlikaZanra());
 
-        // Initialize korisnici to an empty Set
+
         Set<Korisnik> korisnici = new HashSet<>();
         if (zanrDto.getKorisniciKojiSlusajuIds() != null) {
             // Create Korisnik entities based on the IDs in the DTO
             for (Long id : zanrDto.getKorisniciKojiSlusajuIds()) {
-                Korisnik korisnik = new Korisnik(); // Assuming Korisnik has a default constructor
-                korisnik.setIdKorisnika(id); // Set the ID
+                Korisnik korisnik = new Korisnik();
+                korisnik.setIdKorisnika(id);
                 korisnici.add(korisnik);
             }
         }
         zanr.setKorisnici(korisnici);
 
-        // Initialize izvodaci to an empty Set
         Set<Izvodac> izvodaci = new HashSet<>();
         if (zanrDto.getIzvodaciIds() != null) {
             // Create Izvodac entities based on the IDs in the DTO
             for (Long id : zanrDto.getIzvodaciIds()) {
-                Izvodac izvodac = new Izvodac(); // Assuming Izvodac has a default constructor
-                izvodac.setIdIzvodaca(id); // Set the ID
+                Izvodac izvodac = new Izvodac();
+                izvodac.setIdIzvodaca(id);
                 izvodaci.add(izvodac);
             }
         }
-        zanr.setIzvodaci(izvodaci); // Assuming the Zanr class has a setIzvodaci method
+        zanr.setIzvodaci(izvodaci);
         return zanr;
     }
 }

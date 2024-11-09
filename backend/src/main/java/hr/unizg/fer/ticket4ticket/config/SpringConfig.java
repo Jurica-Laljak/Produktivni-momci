@@ -1,11 +1,9 @@
 package hr.unizg.fer.ticket4ticket.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
 
 @Configuration
 public class SpringConfig {
@@ -23,6 +21,7 @@ public class SpringConfig {
                 registry.requestMatchers("/api/oglasi/list/**").permitAll(); // the list of oglasi is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
                 registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)
+                registry.requestMatchers("/api/zanrovi").permitAll(); // the list of all Zanr-s is accessible without any authentication
                 registry.anyRequest().authenticated(); //any other path requires authentication
                 //registry.anyRequest().permitAll(); // Allow all requests without authentication for testing COMMENT OUT!
 
