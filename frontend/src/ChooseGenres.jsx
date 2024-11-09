@@ -22,7 +22,7 @@ const genres = [
   { name: 'Alternative', bgColor: '#8e44ad', image: 'path_to_alternative_image.jpg' }
 ];
 
-export default function ChooseGenres() {
+export default function ChooseGenres({zanrovi} ) {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const handleGenreSelect = (genre) => {
@@ -36,7 +36,9 @@ export default function ChooseGenres() {
   const handleSubmit = () => {
     if (selectedGenres.length >= 3) {
       console.log('Selected genres:', selectedGenres);
-      // Nastavi s procesom registracije ili preusmjeri korisnika
+      // posalji podatke na back i preusmjeri korisnika na Home ili UserHome
+
+
     } else {
       alert('Please select at least 3 genres.');
     }

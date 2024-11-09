@@ -25,5 +25,74 @@
     color: #888;
   }*/
 
+  h2 {
+    font-size: 2rem;
+    color: #333;
+  }
   
+  /* Card Design */
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    background-color: #f0f4f8;
+  }
   
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Header Text */
+  .card-title {
+    font-size: 1.5rem;
+    color: #007bff; /* Blue */
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Performer Section */
+  .izvodaci h6 {
+    font-size: 1.1rem;
+    color: #6c757d; /* Grey */
+  }
+  
+  .izvodaci p {
+    font-size: 0.95rem;
+    color: #777;
+  }
+  
+  /* Button Styling */
+  .card-footer .btn {
+    background-color: #28a745; /* Green */
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .card-footer .btn:hover {
+    background-color: #218838; /* Darker Green */
+  }
+  
+  /* Responsive Layout */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Ensure proper alignment */
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-primary {
+    color: #007bff;
+  }
+  
+  .text-secondary {
+    color: #6c757d;
+  }

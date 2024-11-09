@@ -8,21 +8,11 @@ import axios from 'axios';
 
 export default function AppNavbar({setResults}){
 
-function Testget(){
-axios.get('/api/zanrovi')
-.then(res => {
-  console.log(res.data)
-}).catch(err => {
-  console.log(err)
-})
-
-}
-
 
 return(
   <Navbar className="custom-navbar" expand="lg">
   <Container>
-    <Navbar.Brand as={Link} to="/" onClick={Testget} >Ticket4Ticket</Navbar.Brand>
+    <Navbar.Brand as={Link} to="/" >Ticket4Ticket</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     
     <Navbar.Collapse id="basic-navbar-nav">

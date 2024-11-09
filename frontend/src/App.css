@@ -1,13 +1,23 @@
 
-/*
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-} */
+  height: 100vh;
+} 
 
 body {
   font-family: 'Roboto', sans-serif;
   
+}
+
+.app-container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.container.main-content {
+  flex: 1;
+  padding: 20px 0;
+ 
 }

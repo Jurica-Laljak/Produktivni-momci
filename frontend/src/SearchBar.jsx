@@ -3,36 +3,25 @@ import {FaSearch} from "react-icons/fa"
 import "./SearchBar.css"
 import axios from 'axios';
 import SearchResultsList from './SearchResultsList';
+import { useNavigate } from 'react-router-dom';
 
-export default function SearchBar({setResults}){
+export default function SearchBar({setResults,zanrovi}){
 
    
     const[searchInput, setSearchInput] = useState("");
    
-/*
-    function fetchData(searchInput){
-        //get zahtjev na backend
-        axios.get('/data/data.json')
-        .then(response => {
-            const rezultati = response.data.filter(oglas =>{
-                return(
-                    oglas.firstName.toLowerCase().includes(searchInput)
-                    ||
-                    oglas.lastName.toLowerCase().includes(searchInput)
-                    ||
-                    oglas.city.toLowerCase.includes(searchInput)
-                )
-            })
-            setResults(rezultati)
-        })
+    const navigate = useNavigate();
 
-    } */
+    
+      
+      
+      
 
     function handleSearch(){
         const artistName = searchInput.split(" ")[0]
         const artistSurname = searchInput.split(" ")[1]
         
-      /*  axios.post("api/preference/oglasi/filter", {
+        axios.post("api/preference/oglasi/filter", {
             "imeIzvodaca": artistName,
             "prezimeIzvodaca": artistSurname
            
@@ -42,42 +31,60 @@ export default function SearchBar({setResults}){
               'Content-Type': 'application/json'
             }
           })
-          .then(response => {
-           // console.log('Rezultati pretrage:', response.data);
-           // dodati onda logiku za prikaz oglasa koji su vraceni
-                   // console.log(response)
-           // napraviti novi get(ustvari post vjerojatno a ne get) gdje cemo sa idOglasa ili cime vec dobit izvodaca
-           // i sa idKoncerta mjesto odrzavanja koncerta -> novi post a ne get, isto tako i za prvi
-            // trebo bi radit map kroz vracene oglase i unutar tog mapa radit te getove
-
+          .then( async (response) => {
+           
+             
             //prvo cemo filter tako da ostanu samo oglasi koji nisu prodani ili istekli
-            //const  filteredResults = response.data.filter(element => element.status === "Available")
-            //console.log(filteredResults)
-            console.log(response.data)
+            const  filteredResults = response.data.filter(element => element.status === "Available")
+            
+            //dohvacamo sve potrebne podatke za svaki oglas
+            const oglasiData = await Promise.all(
+                filteredResults.map(async (oglas) => {
+                  // Dohvati podatke o ulaznici
+                  const ulaznicaData = await axios.get(
+                    `api/ulaznice/${oglas.ulaznicaId}`
+                  );
+          
+                  // Dohvati podatke o izvođačima
+                  const izvodaciData = await axios.get(
+                    `api/oglasi/${oglas.idOglasa}/izvodaci`
+                  );
+          
+                 // Dohvati sve žanrove
+                /* const zanroviData = await axios.get("api/zanrovi");
+                 const zanroviMap = zanroviData.data.reduce((map, zanr) => {
+                   map[zanr.idZanra] = zanr.imeZanra;
+                   return map;
+                 }, {});*/
+          
+                  // Mapiraj izvođače u odgovarajući format
+                  const izvodaci = izvodaciData.data.map((izvodac) => ({
+                    imeIzvodaca: izvodac.imeIzvodaca,
+                    prezimeIzvodaca: izvodac.prezimeIzvodaca,
+                    žanr: zanrovi[izvodac.zanrId] || "Unknown",
+                    foto: izvodac.fotoIzvodaca,
+                  }));
+          
+                  // Kreiraj konačni format za oglas
+                  return {
+                    datum: ulaznicaData.data.datumKoncerta,
+                    lokacija: ulaznicaData.data.lokacijaKoncerta,
+                    zona: ulaznicaData.data.odabranaZona,
+                    vrstaUlaznice: ulaznicaData.data.vrstaUlaznice,
+                    izvodaci: izvodaci,
+                  };
+                })
+              );
+          
+                setResults(oglasiData)
+                navigate("/search");
+
           })
           .catch(error => {
             console.error('Greška prilikom pretrage:', error);
           }); 
-                  */
-          fetch('api/preference/oglasi/filter', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "imeIzvodaca": artistName,
-                "prezimeIzvodaca": artistSurname
-            })
-        })
-        .then(response => response.json())  // Pretvaranje odgovora u JSON
-        .then(data => {
-            console.log(data);
-            // Logika za prikaz oglasa koji su vraćeni
-            // Možeš filtrirati oglase ili raditi dodatne zahtjeve prema id-u oglasa ili izvođača
-        })
-        .catch(error => {
-            console.error('Greška prilikom pretrage:', error);
-        });
+                  
+
           
          
     }
