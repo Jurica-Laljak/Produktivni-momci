@@ -16,22 +16,23 @@ public class SpringConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection for testing 1) POSTMAN
+            .csrf(csrf -> csrf.disable()) // Disable CSRF protection for development
             .authorizeHttpRequests(registry -> {
-            registry.requestMatchers("/login", "/oauth2/**").permitAll().//the home path is accessible without any authentification 2) NORMAL
-            requestMatchers("/api/oglasi/list/**").permitAll(); // Permit access to /list/{broj_random_oglasa} for all users
-            registry.anyRequest().authenticated(); //any other path requires authentication 2) NORMAL
 
-            //registry.anyRequest().permitAll(); // Allow all requests without authentication for testing 1) POSTMAN
-
+                registry.requestMatchers("/login", "/oauth2/**").permitAll();//the login path is accessible without any authentication
+                registry.requestMatchers("/api/oglasi/list/**").permitAll(); // the list of oglasi is accessible without any authentication
+                registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
+                registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)
+                registry.anyRequest().authenticated(); //any other path requires authentication
+                //registry.anyRequest().permitAll(); // Allow all requests without authentication for testing COMMENT OUT!
 
             })
             .oauth2Login(oauth2login-> {
                 oauth2login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/api/korisnici/profileSetupCheck", true); // Redirect to /api/korisnici/profile after successful login
+                        .defaultSuccessUrl("/api/korisnici/profileSetupCheck", true); // Redirect to /api/korisnici/profileSetupCheck after successful login
             })
-                //this part redirects the user to the login page if they dont have acess to the other url
+                //this part redirects the user to the login page if they don't have access to the other url
                 .exceptionHandling(exceptionHandling -> {
                     exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                         response.sendRedirect("/login");

@@ -16,6 +16,7 @@ public class IzvodacController {
 
     private final IzvodacService izvodacService;
 
+    //
     @PostMapping
     public ResponseEntity<IzvodacDto> createIzvodac(@RequestBody IzvodacDto izvodacDto) {
         IzvodacDto createdIzvodac = izvodacService.createIzvodac(izvodacDto);
