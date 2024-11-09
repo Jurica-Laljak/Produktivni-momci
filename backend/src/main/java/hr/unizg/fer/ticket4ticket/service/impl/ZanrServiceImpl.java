@@ -1,6 +1,8 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
+import hr.unizg.fer.ticket4ticket.entity.Zanr;
+import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.ZanrMapper;
 import hr.unizg.fer.ticket4ticket.repository.ZanrRepository;
 import hr.unizg.fer.ticket4ticket.service.ZanrService;
@@ -33,5 +35,13 @@ public class ZanrServiceImpl implements ZanrService {
                 .stream()
                 .map(ZanrMapper::mapToZanrDto)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ZanrDto getZanrById(Long zanrId) {
+        Zanr zanr = zanrRepository.findById(zanrId)
+                .orElseThrow(() -> new ResourceNotFoundException("Zanr with ID " + zanrId + " not found."));
+
+        return ZanrMapper.mapToZanrDto(zanr);
     }
 }

@@ -22,6 +22,7 @@ public class SpringConfig {
                 registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
                 registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)
                 registry.requestMatchers("/api/zanrovi").permitAll(); // the list of all Zanr-s is accessible without any authentication
+                registry.requestMatchers("/api/zanrovi/*").permitAll(); // getting Zanr by Id is accessible without any authentication
                 registry.anyRequest().authenticated(); //any other path requires authentication
                 //registry.anyRequest().permitAll(); // Allow all requests without authentication for testing COMMENT OUT!
 
