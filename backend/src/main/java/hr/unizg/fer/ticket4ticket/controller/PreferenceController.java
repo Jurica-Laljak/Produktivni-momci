@@ -8,6 +8,7 @@ import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -35,25 +36,24 @@ public class PreferenceController {
         return ResponseEntity.ok(filteredOglasi);
     }
 
-    //Update list of genres the authenticated user likes to listen to
     @PostMapping("/zanrovi")
-    public RedirectView updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
+    public ResponseEntity<Void> updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
         // Extract Google ID from OAuth2 token
-        String googleId = token.getPrincipal().getAttribute("sub"); // "sub" is typically used as a unique ID in OAuth2 //SA OAUTH
+        String googleId = token.getPrincipal().getAttribute("sub");
 
-        // Use an existing method to find or create the user based on the Google ID
-        KorisnikDto korisnik = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto()); //SA OAUTH
+        // Get authenticated user's information
+        KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
 
         // Update the user's genres with the provided list of Zanr IDs
         boolean isUpdated = preferenceService.updateUserGenrePreferences(korisnik, zanrIds);
 
         if (!isUpdated) {
-            // If there was an error go to ErrorPage (not implemented yet on frontend)
-            return new RedirectView("http://localhost:5173/ErrorPage");
+            // Return error HTTP status
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Redirect to the UserHome page
-        return new RedirectView("http://localhost:5173/UserHome");
+        // Return success HTTP status
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -63,8 +63,8 @@ public class PreferenceController {
         // Extract the Google ID from the OAuth2 token
         String googleId = token.getPrincipal().getAttribute("sub");
 
-        // Use the method you provided to find or create the user based on Google ID
-        KorisnikDto korisnikDto = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto());
+        // Returns Korisnik By GoogleId
+        KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
 
         // Fetch the 'Oglas' listings based on the user's preferences
         List<OglasDto> oglasi = oglasService.getOglasiByKorisnikPreference(korisnikDto.getIdKorisnika());

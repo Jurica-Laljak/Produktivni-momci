@@ -47,10 +47,10 @@ public class KorisnikServiceImpl implements KorisnikService {
                 .collect(Collectors.toList());
     }
 
-    // New method for Google OAuth
+    //Returns the
     @Override
     @Transactional
-    public KorisnikDto findOrCreateKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto) {
+    public KorisnikDto findKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto) {
         // Check if user with the Google ID already exists
         Korisnik existingKorisnik = korisnikRepository.findByGoogleId(googleId);
 
@@ -59,10 +59,7 @@ public class KorisnikServiceImpl implements KorisnikService {
             return KorisnikMapper.mapToKorisnikDto(existingKorisnik);
         }
 
-        // User does not exist, create a new one
-        Korisnik newKorisnik = KorisnikMapper.mapToKorisnik(korisnikDto);
-        newKorisnik.setGoogleId(googleId);  // Set the Google ID
-
+        // User does not exist, return an empty KorisnikDTO
         return new KorisnikDto();
     }
 

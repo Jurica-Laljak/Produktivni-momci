@@ -58,8 +58,8 @@ public class KorisnikController {
         String photo = token.getPrincipal().getAttribute("picture");
 
 
-        // Call the service method to check or create user
-        KorisnikDto existingUser = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto());
+        // Check if the Korisnik exists, and if not returns an empty KorisnikDto
+        KorisnikDto existingUser = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
 
         if (existingUser.getIdKorisnika() != null) {
             // User exists, redirect to UserHome

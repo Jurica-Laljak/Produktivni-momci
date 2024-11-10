@@ -12,7 +12,7 @@ public interface KorisnikService {
 
     List<KorisnikDto> getAllKorisnici();
 
-    KorisnikDto findOrCreateKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto);
+    KorisnikDto findKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto);
 
 
 }
