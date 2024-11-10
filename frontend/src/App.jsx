@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
 import "./../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import './App.css'
-import AppNavbar  from './AppNavbar'
 import AppNavbar2 from './AppNavbar2'
 import Button from 'react-bootstrap/Button';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import LoginGoogle from './LoginGoogle';
 import Home from './Home'
-import ChooseGenres from './ChooseGenres';
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import SearchResultsList from './SearchResultsList';
 import axios from 'axios';
 import AppFooter from './AppFooter'
 import ChooseGenres2 from './ChooseGenres2'
+import UserHome from './UserHome'
+
+
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
         map[zanr.idZanra] = zanr.imeZanra;
         return map;
       }, {}))
-      setIsLoaded(true);
+      
 
      }).finally(console.log(zanrovi))
      .catch(err => console.log(err))
@@ -54,7 +55,9 @@ function App() {
     <Route path='/login' element={<LoginGoogle />}/>
     <Route path='/search' element={<SearchResultsList results={results}/>}/>
     <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi}/>}></Route>
-    <Route path='/UserHome' element={<Home />}/>
+    <Route path='/UserHome' element={<UserHome />}/>
+    <Route path='/Home' element={<Home />}/>
+
     </Routes>
     </div>
     <AppFooter />

@@ -8,7 +8,7 @@ export default function AppFooter() {
       <div className="container py-3">
         <div className="row">
           <div className="col-md-4">
-            <h5>Ticket4Ticket</h5>
+            <p><img src='src\assets\t4tedit.png' alt='t4t' style={{ height: '20px' }}></img></p>
             <p>Razmjena i prodaja ulaznica za koncerte.</p>
           </div>
           <div className="col-md-4">

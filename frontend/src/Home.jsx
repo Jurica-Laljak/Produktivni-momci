@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import ListingList from './ListingList'
 
 
 export default function Home(){
     return(
-     <p>home</p>
+        <ListingList></ListingList>
     )
 }

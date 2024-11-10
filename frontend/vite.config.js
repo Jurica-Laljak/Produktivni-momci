@@ -10,3 +10,4 @@ proxy:{
   },
   plugins: [react()],
 }) 
+ 
