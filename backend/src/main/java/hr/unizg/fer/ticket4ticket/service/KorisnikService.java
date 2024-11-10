@@ -14,5 +14,6 @@ public interface KorisnikService {
 
     KorisnikDto findOrCreateKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto);
 
+
 }
 

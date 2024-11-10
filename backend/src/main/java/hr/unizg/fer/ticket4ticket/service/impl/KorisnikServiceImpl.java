@@ -63,11 +63,10 @@ public class KorisnikServiceImpl implements KorisnikService {
         Korisnik newKorisnik = KorisnikMapper.mapToKorisnik(korisnikDto);
         newKorisnik.setGoogleId(googleId);  // Set the Google ID
 
-
-        Korisnik savedKorisnik = korisnikRepository.save(newKorisnik);
-
-        return KorisnikMapper.mapToKorisnikDto(savedKorisnik);
+        return new KorisnikDto();
     }
+
+
 
 
 

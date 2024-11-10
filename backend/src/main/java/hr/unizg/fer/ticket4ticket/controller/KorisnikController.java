@@ -57,28 +57,28 @@ public class KorisnikController {
         String email = token.getPrincipal().getAttribute("email");
         String photo = token.getPrincipal().getAttribute("picture");
 
-        // Create KorisnikDto with user details
-        KorisnikDto korisnikDto = new KorisnikDto();
 
         // Call the service method to check or create user
-        KorisnikDto result = korisnikService.findOrCreateKorisnikByGoogleId(googleId, korisnikDto);
+        KorisnikDto existingUser = korisnikService.findOrCreateKorisnikByGoogleId(googleId, new KorisnikDto());
 
-        // Redirect based on whether the user is new or existing
-        if (result.getIdKorisnika() == null) {
-            // Fill in the new korisnik information
-            korisnikDto.setImeKorisnika(name);
-            korisnikDto.setPrezimeKorisnika(surname);
-            korisnikDto.setEmailKorisnika(email);
-            korisnikDto.setFotoKorisnika(photo);
-            korisnikDto.setGoogleId(googleId);
-
-            // Redirect to ChooseGenres if this is a newly created user
-            return new RedirectView("http://localhost:5173/ChooseGenres");
-
-        } else {
-            // Redirect to UserHome page if the user already exists
+        if (existingUser.getIdKorisnika() != null) {
+            // User exists, redirect to UserHome
             return new RedirectView("http://localhost:5173/UserHome");
         }
+
+        // User does not exist, populate KorisnikDto with user information
+        KorisnikDto newUserDto = new KorisnikDto();
+        newUserDto.setImeKorisnika(name);
+        newUserDto.setPrezimeKorisnika(surname);
+        newUserDto.setEmailKorisnika(email);
+        newUserDto.setFotoKorisnika(photo);
+        newUserDto.setGoogleId(googleId);
+
+        // Create a new user using createKorisnik method
+        korisnikService.createKorisnik(newUserDto);
+
+        // Redirect to ChooseGenres after successful creation of the new user
+        return new RedirectView("http://localhost:5173/ChooseGenres");
     }
 
 

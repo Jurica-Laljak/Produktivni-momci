@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +37,7 @@ public class PreferenceController {
 
     //Update list of genres the authenticated user likes to listen to
     @PostMapping("/zanrovi")
-    public ResponseEntity<String> updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
+    public RedirectView updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
         // Extract Google ID from OAuth2 token
         String googleId = token.getPrincipal().getAttribute("sub"); // "sub" is typically used as a unique ID in OAuth2 //SA OAUTH
 
@@ -46,11 +48,12 @@ public class PreferenceController {
         boolean isUpdated = preferenceService.updateUserGenrePreferences(korisnik, zanrIds);
 
         if (!isUpdated) {
-            return ResponseEntity.status(400).body("Failed to update genres"); // Failed to update genres
+            // If there was an error go to ErrorPage (not implemented yet on frontend)
+            return new RedirectView("http://localhost:5173/ErrorPage");
         }
 
-        // Return success response
-        return ResponseEntity.ok("User genre preferences updated successfully");
+        // Redirect to the UserHome page
+        return new RedirectView("http://localhost:5173/UserHome");
     }
 
 
