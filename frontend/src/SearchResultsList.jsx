@@ -13,7 +13,7 @@ export default function SearchResultsList({results}){
             <div key={index} className="col-md-4 mb-4">
               <div className="card shadow-sm h-100 bg-light">
                 <div className="card-body">
-                  <h5 className="card-title text-primary">{oglas.datum}</h5>
+                  <h5 className="card-title text-primary" style={{ color: '#455dfb !important' }}><strong>{oglas.datum}</strong> </h5>
                   <p className="card-text"><strong>Lokacija:</strong> {oglas.lokacija}</p>
                   <p className="card-text"><strong>Zona:</strong> {oglas.zona}</p>
                   <p className="card-text"><strong>Vrsta Ulaznice:</strong> {oglas.vrstaUlaznice}</p>

@@ -12,6 +12,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 import SearchResultsList from './SearchResultsList';
 import axios from 'axios';
 import AppFooter from './AppFooter'
+import UserHome from './UserHome'
 
 
 function App() {
@@ -46,7 +47,8 @@ function App() {
     <Route path='/login' element={<LoginGoogle />}/>
     <Route path='/search' element={<SearchResultsList results={results}/>}/>
     <Route path='/ChooseGenres' element={<ChooseGenres zanrovi={zanrovi}/>}></Route>
-    <Route path='/UserHome' element={<Home />}/>
+    <Route path='/UserHome' element={<UserHome />}/>
+    <Route path='/Home' element={<Home />}/>
     </Routes>
     </div>
     <AppFooter />
