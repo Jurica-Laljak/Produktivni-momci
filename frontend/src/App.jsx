@@ -12,7 +12,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 import SearchResultsList from './SearchResultsList';
 import axios from 'axios';
 import AppFooter from './AppFooter'
-
+import ChooseGenres2 from './ChooseGenres2'
 
 function App() {
 
@@ -20,9 +20,15 @@ function App() {
   const noNavbarRoutes = ['/login', '/ChooseGenres'];
   const [results, setResults] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
+  
 
+
+ 
 
   useEffect(() => {
+
+    
+
      axios.get("api/zanrovi")
      .then(res => {
       console.log(res.data)
@@ -30,7 +36,9 @@ function App() {
         map[zanr.idZanra] = zanr.imeZanra;
         return map;
       }, {}))
-     })
+      setIsLoaded(true);
+
+     }).finally(console.log(zanrovi))
      .catch(err => console.log(err))
   }, [])
 
@@ -45,7 +53,7 @@ function App() {
     <Route path='/' element={<Home />}/>
     <Route path='/login' element={<LoginGoogle />}/>
     <Route path='/search' element={<SearchResultsList results={results}/>}/>
-    <Route path='/ChooseGenres' element={<ChooseGenres zanrovi={zanrovi}/>}></Route>
+    <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi}/>}></Route>
     <Route path='/UserHome' element={<Home />}/>
     </Routes>
     </div>
