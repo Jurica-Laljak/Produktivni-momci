@@ -1,0 +1,21 @@
+.custom-footer {
+    background-color:#455dfb;
+    color: #fbfbe4 ;
+    font-size: 14px;
+  }
+  
+  .custom-footer h5 {
+    color:#fbfbe4 ;
+  }
+  
+  .custom-footer a {
+    color: #fbfbe4 ;
+    text-decoration: none;
+  }
+  
+  .custom-footer a:hover {
+    color: #fcb405 ;
+    text-decoration: underline;
+  }
+  
+ 

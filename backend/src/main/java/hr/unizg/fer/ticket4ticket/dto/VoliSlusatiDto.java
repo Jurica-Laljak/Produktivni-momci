@@ -1,0 +1,13 @@
+package hr.unizg.fer.ticket4ticket.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class VoliSlusatiDto {
+    private Long korisnikId;
+    private Long izvodacId;
+}

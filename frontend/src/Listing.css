@@ -1,0 +1,41 @@
+
+
+
+.card.custom-card {
+  background-color: #fbfbe4; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card.custom-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Text */
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.izvodaci h6 {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.izvodaci p {
+  font-size: 0.95rem;
+  color: #777;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+

@@ -1,0 +1,40 @@
+.input-wrapper{
+    background-color: white;
+    width: 30vw;
+    border-radius: 10px;
+    height: 2.5rem;
+    padding: 0 15px;
+    box-shadow: 0px 0px 8px #ddd;
+    display: flex;
+    align-items: center; 
+    margin-left: 12em;
+    position: relative;
+}
+
+input{
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    font-size: 1.25rem;
+    max-width: 100%;
+    margin-left: 5px;
+    color:hsl(0, 0%, 20%);
+}
+
+input:focus{
+    outline: none;
+}
+
+#search-icon{
+    color: royalblue;
+}
+
+.search-results-container {
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    width: 60vw;
+    background-color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+}
