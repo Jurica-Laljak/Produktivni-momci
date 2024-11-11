@@ -30,11 +30,11 @@ input:focus{
 }
 
 .search-results-container {
-    position: absolute; /* Ovdje koristimo apsolutno pozicioniranje */
-    top: 100%; /* Pozicioniramo ispod input polja */
+    position: absolute; 
+    top: 100%; 
     left: 0;
     width: 60vw;
-    background-color: white; /* Postavi pozadinsku boju */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Mogućnost dodavanja sjene */
-    z-index: 1000; /* Da bude iznad ostalih elemenata */
+    background-color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
 }

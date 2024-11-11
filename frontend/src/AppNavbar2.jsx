@@ -10,7 +10,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
       <div className="container">
-        <Link className="navbar-brand" to="/ChooseGenres"><img src='src\assets\Ticket4Ticket_transparent.png' alt='t4t' style={{ height: '40px' }}></img></Link>
+        <Link className="navbar-brand" to="/"><img src='src\assets\Ticket4Ticket_transparent.png' alt='t4t' style={{ height: '40px' }}></img></Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

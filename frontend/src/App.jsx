@@ -25,7 +25,7 @@ function App() {
 
 
  
-
+  //dohvacanje svih zanrova
   useEffect(() => {
 
     
@@ -46,7 +46,8 @@ function App() {
  return (
  
   <div className='app-container'>
- {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi} />}
+    {/*navbar se prikazuje samo na odredenim putanjama*/ }
+ {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi} />} 
  
 
   <div className='container main-content'>

@@ -1,16 +1,18 @@
 import React, { useState,useEffect } from 'react';
 import './ChooseGenres2.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-// Komponenta sada prima zanrovi kao prop
+
 export default function ChooseGenres({ zanrovi }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
-
+  const navigate = useNavigate();
 
   
 
   // Funkcija za selektiranje/odabiranje žanrova
+
   const handleGenreSelect = (genreId) => {
     if (selectedGenres.includes(genreId)) {
       setSelectedGenres(selectedGenres.filter(item => item !== genreId));
@@ -21,8 +23,8 @@ export default function ChooseGenres({ zanrovi }) {
 
   // Funkcija za potvrdu selekcije
   const handleSubmit = () => {
-    if (selectedGenres.length >= 3) {
-      console.log('Selected genres:', selectedGenres);
+    if (selectedGenres.length >= 1) {
+      //console.log('Selected genres:', selectedGenres);
       // saljemo podatke o odabranim zanrovima na backend
       
       axios.post('api/preference/zanrovi', selectedGenres, {
@@ -32,24 +34,27 @@ export default function ChooseGenres({ zanrovi }) {
       })
       .then(response => {
         console.log('Data successfully sent:', response.data);
-        // Ovdje možete dodati preusmjeravanje korisnika na Home ili UserHome
+        navigate('/UserHome')
       })
       .catch(error => {
         console.error('There was an error sending the data:', error);
       });
 
-      // redirect na homePage(userHome)
+     
+      
       
     } else {
-      alert('Please select at least 3 genres.');
+      navigate('/UserHome')
     }
+
+
   };
 
   return (
     <div className="genre-selection-page">
-      <h2>Select at least 3 music genres</h2>
+      <h2>Odaberite od 0 do 15 žanrova glazbe</h2>
       <div className="genres-grid">
-        {/* Generiraj žanrove iz props zanrovi */}
+       
         {Object.entries(zanrovi).map(([idZanra, imeZanra]) => (
           <div
             key={idZanra}
@@ -62,7 +67,7 @@ export default function ChooseGenres({ zanrovi }) {
         ))}
       </div>
       <button onClick={handleSubmit} className="submit-button">
-        Confirm Selection
+        Next
       </button>
     </div>
   );

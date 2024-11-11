@@ -2,11 +2,15 @@ import React from 'react';
 import './Listing.css';
 
 export default function Listing({ idOglasa, status, ulaznica, izvodaci }) {
+  
+  // Formatiramo datum u dd.mm.yyyy
+  const formattedDate = new Date(ulaznica.datumKoncerta).toLocaleDateString("hr-HR");
+
   return (
     <div className="card shadow-sm h-100 bg-light custom-card">
       <div className="card-body">
-        <h5 className="card-title" style={{ color: '#455dfb' }}><strong>{ulaznica.datumKoncerta}</strong> </h5>
-        <p className="card-text"><strong>Lokacija:</strong> {ulaznica.lokacijaKoncerta}</p>
+        <h5 className="card-title" style={{ color: '#455dfb' }}><strong>{ulaznica.lokacijaKoncerta}</strong></h5>
+        <p className="card-text"><strong>Datum:</strong> {formattedDate}</p>
         <p className="card-text"><strong>Zona:</strong> {ulaznica.odabranaZona}</p>
         <p className="card-text"><strong>Vrsta Ulaznice:</strong> {ulaznica.vrstaUlaznice}</p>
         
@@ -24,7 +28,6 @@ export default function Listing({ idOglasa, status, ulaznica, izvodaci }) {
     </div>
   );
 }
-
 
 
 

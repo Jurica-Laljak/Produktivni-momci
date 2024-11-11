@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function LoginGoogle(){
 
    
-
+      //redirect na stranicu za prijavu s gmailom 
         function ContinueGoogle(){
         window.location.href =  "http://localhost:8080/oauth2/authorization/google"           
         }
