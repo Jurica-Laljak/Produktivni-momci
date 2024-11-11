@@ -63,7 +63,7 @@ public class KorisnikController {
 
         if (existingUser.getIdKorisnika() != null) {
             // User exists, redirect to UserHome
-            return new RedirectView("http://localhost:5173/UserHome");
+            return new RedirectView("${FRONTEND_URL}/UserHome");
         }
 
         // User does not exist, populate KorisnikDto with user information
@@ -78,7 +78,7 @@ public class KorisnikController {
         korisnikService.createKorisnik(newUserDto);
 
         // Redirect to ChooseGenres after successful creation of the new user
-        return new RedirectView("http://localhost:5173/ChooseGenres");
+        return new RedirectView("${FRONTEND_URL}/ChooseGenres");
     }
 
 

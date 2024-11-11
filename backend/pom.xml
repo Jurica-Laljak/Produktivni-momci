@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>hr.unizg.fer.ticket4ticket</groupId>
 	<artifactId>Ticket4Ticket</artifactId>
-	<version>0.0.1</version>
+	<version>1</version>
 	<name>Ticket4Ticket</name>
 	<description>Aplikacija za razmjenu ulaznica</description>
 	<properties>
@@ -41,6 +41,10 @@
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<!-- Database dependency -->
