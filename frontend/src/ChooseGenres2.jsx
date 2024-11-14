@@ -8,7 +8,6 @@ export default function ChooseGenres({ zanrovi }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const navigate = useNavigate();
-
   
 
   // Funkcija za selektiranje/odabiranje žanrova
@@ -27,7 +26,7 @@ export default function ChooseGenres({ zanrovi }) {
       //console.log('Selected genres:', selectedGenres);
       // saljemo podatke o odabranim zanrovima na backend
       
-      axios.post('api/preference/zanrovi', selectedGenres, {
+      axios.post(`api/preference/zanrovi`, selectedGenres, {
         headers: {
           'Content-Type': 'application/json',
         },

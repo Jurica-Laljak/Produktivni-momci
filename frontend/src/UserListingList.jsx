@@ -8,11 +8,12 @@ import './ListingList.css';
 export default function UserListingList() {
   const [listings, setListings] = useState([]);
 
-  // Dohvati oglase po preferencama prilikom inicijalnog rendera
+
+//   // Dohvati oglase po preferencama prilikom inicijalnog rendera
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        let response = await axios.get('api/preference/oglasi'); // Dohvaćanje oglasa po preferencama
+        let response = await axios.get('/api/preference/oglasi'); // Dohvaćanje oglasa po preferencama
         let listingsData = response.data;
 
         // Provjeravamo je li listingsData prazan niz

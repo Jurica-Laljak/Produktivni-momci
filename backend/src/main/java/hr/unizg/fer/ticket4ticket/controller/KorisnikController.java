@@ -2,8 +2,8 @@ package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -13,15 +13,15 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api/korisnici")
 public class KorisnikController {
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Autowired
     private KorisnikService korisnikService;
-
-
 
     // Creates a new Korisnik resource with provided data in KorisnikDto
     @PostMapping
@@ -63,7 +63,7 @@ public class KorisnikController {
 
         if (existingUser.getIdKorisnika() != null) {
             // User exists, redirect to UserHome
-            return new RedirectView("${FRONTEND_URL}/UserHome");
+            return new RedirectView(frontendUrl + "/UserHome");
         }
 
         // User does not exist, populate KorisnikDto with user information
@@ -78,10 +78,7 @@ public class KorisnikController {
         korisnikService.createKorisnik(newUserDto);
 
         // Redirect to ChooseGenres after successful creation of the new user
-        return new RedirectView("${FRONTEND_URL}/ChooseGenres");
+        return new RedirectView(frontendUrl + "/ChooseGenres");
     }
-
-
-
 
 }

@@ -30,7 +30,7 @@ function App() {
 
     
 
-     axios.get("api/zanrovi")
+     axios.get(`api/zanrovi`)
      .then(res => {
       console.log(res.data)
       setZanrovi(res.data.reduce((map, zanr) => {

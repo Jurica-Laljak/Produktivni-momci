@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/ulaznice")
+@CrossOrigin
 public class UlaznicaController {
 
     private final UlaznicaService koncertService;
