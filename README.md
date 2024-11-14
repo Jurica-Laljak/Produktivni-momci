@@ -1,6 +1,8 @@
-# Programsko inženjerstvo
+# Ticket4Ticket
 
-Projekt je napravljen u sklopu predmeta Programsko inženjerstvo [Fakulteta elektrotehnike i računarstva](https://www.fer.unizg.hr/). 
+**https://ticket4ticket.onrender.com/**
+
+Projekt je napravljen u sklopu predmeta Programsko inženjerstvo [Fakulteta elektrotehnike i računarstva](https://www.fer.unizg.hr/)
 
 # Opis projekta
 
@@ -43,20 +45,22 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 
 # Projektni tim
 
-Projektni tim TG06.2 ("Produktivni momci") sastoji se od:
-* [Roko Barišić](roko.barisic@fer.unizg.hr)
-* [Dino Hodžić Tumpić](dino.hodzic-tumpic@fer.unizg.hr)
-* [Jurica Laljak](jurica.laljak@fer.unizg.hr)
-* [Ivan Kanjuh](ivan.kanjuh@fer.unizg.hr)
-* [Andrija Maček](andrija.macek@fer.unizg.hr)
-* [Filip Pogač](filip.pogac@fer.unizg.hr)
-* [Ivan Stipic](ivan.stipic@fer.unizg.hr)
-  
+| **Član tima** | **Uloge** | **Poveznica na GitHub** | **Službena mail adresa** |
+|---|---|---|---|
+| Roko Barišić | Razvoj baze podataka | https://github.com/rokobarisic | roko.barisic@fer.unizg.hr |
+| Dino Hodžić Tumpić | Razvoj klijentske strane | https://github.com/Dino-HodzicTumpic | dino.hodzic-tumpic@fer.unizg.hr |
+| Jurica Laljak | Voditelj tima, modeliranje klijentske strane | https://github.com/Jurica-Laljak | jurica.laljak@fer.unizg.hr |
+| Ivan Kanjuh | Razvoj poslužiteljske strane | https://github.com/IvanKanjuh | ivan.kanjuh@fer.unizg.hr |
+| Andrija Maček | Modeliranje poslužiteljske strane, puštanje u pogon | https://github.com/Andrija44 | andrija.macek@fer.unizg.hr |
+| Filip Pogač | Razvoj klijentske strane | https://github.com/Filip-Pogac | filip.pogac@fer.unizg.hr |
+| Ivan Stipic | Razvoj poslužiteljske strane | https://github.com/Ivan-Stipic | ivan.stipic@fer.unizg.hr |
+
 # Licenca
 
 > Repozitorij je licenciran prema [MIT licenci](https://opensource.org/license/mit). Licenca dozvoljava neograničeno korištenje, preuzimanje, uređivanje, publiciranje i
 prodaju bilo koje datoteke koja se nalazi u repozitoriju.
-> 
+
+
 # Kodeks ponašanja
 
 
