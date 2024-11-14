@@ -40,12 +40,8 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 * U sustavu postoji uloga administratora, koja se ne može postići registriranjem i koja ima više dopuštenja.
 * Administrator temeljem prikupljenih podataka mora moći upravljati korisničkim računima, te generirati izvještaje o aktivnostima korisnika.
 
-<br/>
-
 # Tehnologije
 
-
-<br/>
 
 # Projektni tim
 
@@ -59,22 +55,18 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 | Filip Pogač | Razvoj klijentske strane | https://github.com/Filip-Pogac | filip.pogac@fer.unizg.hr |
 | Ivan Stipic | Razvoj poslužiteljske strane | https://github.com/Ivan-Stipic | ivan.stipic@fer.unizg.hr |
 
-<br/>
 
 # Licenca
 
 > Repozitorij je licenciran prema [MIT licenci](https://opensource.org/license/mit). Licenca dozvoljava neograničeno korištenje, preuzimanje, uređivanje, publiciranje i
 prodaju bilo koje datoteke koja se nalazi u repozitoriju.
 
-<br/>
 
 # Kodeks ponašanja
 
-<br/>
 
 
 # Kontribucije
 
-<br/>
 
 
