@@ -1,6 +1,4 @@
-# Ticket4Ticket
-
-### https://ticket4ticket.onrender.com/
+# Ticket4Ticket - https://ticket4ticket.onrender.com/
 
 # Opis projekta
 
