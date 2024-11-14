@@ -4,8 +4,6 @@
 
 Projekt je napravljen u sklopu predmeta Programsko inženjerstvo [Fakulteta elektrotehnike i računarstva](https://www.fer.unizg.hr/)
 
-<br/>
-
 # Opis projekta
 
 U današnje doba, velika količina ljudi pohađa koncerte. Na primjer, Ultra Europe festival elektroničke glazbe 2024. godine posjetilo je [preko 140,000 posjetitelja](https://www.festground.com/events/ultra-europe-2024/312). I mnogi manji događaji mogu privući velike publike, kao na primjer [“Balkan festival”](https://www.vecernji.hr/showbiz/balkanske-trap-zvijezde-odrzale-koncert-u-areni-zagreb-desingerica-se-polugol-bacio-u-publiku-1768616). 
@@ -15,8 +13,6 @@ Gledano iz druge perspektive, naši životi su svake godine sve kaotičniji. U [
 U ovakvom okruženju, smisleno bi bilo implementirati sustav koji velikom broju posjetitelja glazbenih festivala smanjuje rizik od kupnje ulaznica za festival. Predstavljamo Ticket4Ticket, aplikaciju koja nastoji smanjiti rizik kod kupnje ulaznicama, te koja svojim korisnicima daje veću fleksibilnost u odabiru točno one ulaznice koju žele. Aplikacija omogućuje korisnicima da jednostavno kreiraju svoje i pregledavaju tuđe oglase za prodaju ili zamjenu karata. Osim funkcionalnosti prodaje i zamjene, aplikacija nudi i ograničeno omrežavanje korisnika, kreiranje grupa korisnika, te praćenje omiljenih žanrova i izvođača. Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna računala.
 
 U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup problemu, te kontinuirana komunikacija ne samo unutar projektnog tima, nego i sa svim dionicima projekta.
-
-<br/>
 
 # Funkcijski zahtjevi
 
