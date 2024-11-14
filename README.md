@@ -16,6 +16,26 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 
 # Funkcijski zahtjevi
 
+* Sustav mora neregistriranim korisnicima omogućiti pregled oglasa.
+* Sustav mora omogućiti korisnicima da se registriraju.
+* Registrirani korisnici moraju moći objavljivati oglase, te odgovarati na tuđe.
+* Registrirani korisnik svoje oglase može proizvoljan broj puta ažurirati, te ih po volji izbrisati.
+* Svi oglasi moraju imati datum isteka nakon kojeg se automatski uklanjaju iz sustava, koji odgovara datumu održavanja događaja.
+* Korisnik mora moći pregledati svoj korisnički profil, te na njemu podesiti svoje podatke.
+* Korisnik mora moći kroz svoj profil definirati žanrove glazbe koji su mu zanimljivi.
+* Sustav mora omogućiti korisniku da "prati" bilo kojeg drugog korisnika.
+* Ako novokreirani oglas pripada žanru glazbe koji je korisniku zanimljiv, korisnik mora moći dobiti obavijest o tom oglasu putem e-pošte ili unutar aplikacije
+* Korisnici mogu stvoriti grupe, koje mogu sadržavati samo one korisničke račune koje korisnik prati.
+* U procesu traženja ulaznice, korisnici mogu koristiti filtere kako bi lakše pronašli željenu ulaznicu
+* Korisnici mogu označiti da im se oglas sviđa. U bilo kojem trenutku, korisnik mora moći ukloniti oglas sa popisa oglasa koji im se sviđaju.
+* Korisnici mogu zanemariti oglase. U tom slučaju, taj oglas im se više neće prikazivati.
+* Proces zamjene ulaznica može se obavljati između dva korisnika, između više od dva korisnika (“lanac razmjene”), te između dvije grupe korisnika.
+* Sustav mora omogućiti korisniku pregled lanaca razmjene za danu ulaznicu.
+* Zamjena ulaznica između grupa korisnika može se obaviti samo u slučaju kada su obje grupe korisnika jednake veličine.
+* Nakon što su zadovoljeni uvijeti za transakciju ulaznica, sustav mora svim relevantnim korisnicima poslati poruku potvrde transakcije na adresu e-pošte.
+* U sustavu postoji uloga administratora, koja se ne može postići registriranjem i koja ima više dopuštenja.
+* Administrator temeljem prikupljenih podataka mora moći upravljati korisničkim računima, te generirati izvještaje o aktivnostima korisnika.
+
 * Sustav mora neregistriranim korisnicima omogućiti pregled popisa događaja i oglasa za ulaznice.
 * Sustav mora omogućiti korisnicima da se registriraju.
 * Registrirani korisnici moraju moći objavljivati oglase, odgovarati na svoje i tuđe oglase.
