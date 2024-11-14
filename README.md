@@ -76,6 +76,7 @@ prodaju bilo koje datoteke koja se nalazi u repozitoriju.
 
 
 # Kontribucije
-[CONTRIBUTING.md](Dokumentacija/CONTRIBUTING.md)
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
 
