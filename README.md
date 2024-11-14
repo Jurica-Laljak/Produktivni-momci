@@ -1,4 +1,6 @@
-### Ticket4Ticket - https://ticket4ticket.onrender.com/
+# Ticket4Ticket 
+
+Trenutnoj inačici aplikacije može se pristupiti preko https://ticket4ticket.onrender.com/.
 
 # Opis projekta
 
