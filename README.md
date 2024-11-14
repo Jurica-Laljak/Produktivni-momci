@@ -51,6 +51,12 @@ Napomena: Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna r
 
 # Tehnologije
 
+* [Astah UML](https://astah.net/products/astah-uml/) - crtanje UML dijagrama
+* [React](https://react.dev/learn) - klijentska tehnologija
+* [Spring Boot](https://spring.io/projects/spring-boot#learn) - poslužiteljska tehnologija
+* [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
+* [Render](https://render.com/) - puštanje u pogon
+* 
 
 # Projektni tim
 
