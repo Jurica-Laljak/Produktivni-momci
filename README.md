@@ -73,7 +73,7 @@ prodaju bilo koje datoteke koja se nalazi u repozitoriju.
 
 # Kodeks ponašanja
 
-
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 # Kontribucije
 
