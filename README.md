@@ -56,7 +56,7 @@ Napomena: Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna r
 * [Spring Boot](https://spring.io/projects/spring-boot#learn) - poslužiteljska tehnologija
 * [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
 * [Render](https://render.com/) - puštanje u pogon
-* 
+* [Google Cloud Console](https://console.cloud.google.com) - implementacija OAuth
 
 # Projektni tim
 
