@@ -24,9 +24,9 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 * Korisnik mora moći pregledati svoj korisnički profil, te na njemu podesiti svoje podatke.
 * Korisnik mora moći kroz svoj profil definirati žanrove glazbe koji su mu zanimljivi.
 * Sustav mora omogućiti korisniku da "prati" bilo kojeg drugog korisnika.
-* Ako novokreirani oglas pripada žanru glazbe koji je korisniku zanimljiv, korisnik mora moći dobiti obavijest o tom oglasu putem e-pošte ili unutar aplikacije
+* Ako novokreirani oglas pripada žanru glazbe koji je korisniku zanimljiv, korisnik mora moći dobiti obavijest o tom oglasu putem e-pošte ili unutar aplikacije.
 * Korisnici mogu stvoriti grupe, koje mogu sadržavati samo one korisničke račune koje korisnik prati.
-* U procesu traženja ulaznice, korisnici mogu koristiti filtere kako bi lakše pronašli željenu ulaznicu
+* U procesu traženja ulaznice, korisnici mogu koristiti filtere kako bi lakše pronašli željenu ulaznicu.
 * Korisnici mogu označiti da im se oglas sviđa. U bilo kojem trenutku, korisnik mora moći ukloniti oglas sa popisa oglasa koji im se sviđaju.
 * Korisnici mogu zanemariti oglase. U tom slučaju, taj oglas im se više neće prikazivati.
 * Proces zamjene ulaznica može se obavljati između dva korisnika, između više od dva korisnika (“lanac razmjene”), te između dvije grupe korisnika.
@@ -35,6 +35,19 @@ U procesu izrade aplikacije glavni prioriteti bili su strukturiran pristup probl
 * Nakon što su zadovoljeni uvijeti za transakciju ulaznica, sustav mora svim relevantnim korisnicima poslati poruku potvrde transakcije na adresu e-pošte.
 * U sustavu postoji uloga administratora, koja se ne može postići registriranjem i koja ima više dopuštenja.
 * Administrator temeljem prikupljenih podataka mora moći upravljati korisničkim računima, te generirati izvještaje o aktivnostima korisnika.
+
+# Nefunkcijski zahtjevi
+
+* Sustav mora koristiti OAuth 2.0 protokol za autentikaciju korisnika.
+* Sustav mora biti parametriziran.
+* Aplikacija se mora automatski povezati na javnu uslugu s katalogom izvođača kako bi se podaci o izvođaču mogli automatski izvući.
+* Sustav se mora automatski povezati na uslugu za vremensku prognozu. Podaci o vremenskoj prognozi prezentirat će se korisniku samo ako je događaj unutar 15 dana od trenutnog datuma.
+* Korisnička stranica mora biti prilagođena za razne veličine ekrana (responzivna).
+* Sustav mora prikupljati podatke o ponašanjima i transakcijama korisnika.
+* Registracija korisnika mora se ostvariti nakon prve autentikacije korisnika putem OAuth 2.0 protokola.
+* Sustav mora biti ostvaren koristeći tehnologije Spring i JPA za poslužiteljsku stranu, te React za korisničku stranu.
+* Sustav mora biti otporan na interne pogreške, te vanjske smetnje i napade.
+* Učitavanje bilo koje stranice ne smije trajati više od 7 sekundi.
 
 # Tehnologije
 
