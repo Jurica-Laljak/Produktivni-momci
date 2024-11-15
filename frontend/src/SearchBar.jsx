@@ -18,8 +18,8 @@ export default function SearchBar({setResults,zanrovi}){
       
 
     function handleSearch(){
-        const artistName = searchInput.split(" ")[0]
-        const artistSurname = searchInput.split(" ")[1]
+        const artistName = (searchInput.split(" ")[0] === undefined) ? "" : searchInput.split(" ")[0]
+        const artistSurname = (searchInput.split(" ")[1] === undefined) ? "" : searchInput.split(" ")[1]
         
         axios.post("api/preference/oglasi/filter", {
             "imeIzvodaca": artistName,
@@ -35,7 +35,7 @@ export default function SearchBar({setResults,zanrovi}){
            
              
             //prvo cemo filter tako da ostanu samo oglasi koji nisu prodani ili istekli
-            const  filteredResults = response.data.filter(element => element.status === "Available")
+            const filteredResults = response.data.filter(element => element.status === "Available")
             
             //dohvacamo sve potrebne podatke za svaki oglas
             const oglasiData = await Promise.all(
