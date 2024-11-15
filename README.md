@@ -54,7 +54,7 @@ Napomena: Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna r
 * [Astah UML](https://astah.net/products/astah-uml/) - crtanje UML dijagrama
 * [React](https://react.dev/learn) - tehnologija za razvoj klijentske strane
 * [Spring Boot](https://spring.io/projects/spring-boot#learn) - tehnologija za razvoj poslužiteljske strane
- [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
+* [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
 * [Render](https://render.com/) - puštanje u pogon
 * [Google Cloud Console](https://console.cloud.google.com) - implementacija OAuth protokola
 
