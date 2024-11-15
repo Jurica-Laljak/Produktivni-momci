@@ -52,11 +52,11 @@ Napomena: Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna r
 # Tehnologije
 
 * [Astah UML](https://astah.net/products/astah-uml/) - crtanje UML dijagrama
-* [React](https://react.dev/learn) - klijentska tehnologija
-* [Spring Boot](https://spring.io/projects/spring-boot#learn) - poslužiteljska tehnologija
-* [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
+* [React](https://react.dev/learn) - tehnologija za razvoj klijentske strane
+* [Spring Boot](https://spring.io/projects/spring-boot#learn) - tehnologija za razvoj poslužiteljske strane
+ [Spring JPA](https://spring.io/projects/spring-data-jpa#learn) - baze podataka
 * [Render](https://render.com/) - puštanje u pogon
-* [Google Cloud Console](https://console.cloud.google.com) - implementacija OAuth
+* [Google Cloud Console](https://console.cloud.google.com) - implementacija OAuth protokola
 
 # Projektni tim
 
@@ -68,7 +68,7 @@ Napomena: Aplikacija je u trenutnoj inačici namijenjena isključivo za stolna r
 | Ivan Kanjuh | Razvoj poslužiteljske strane | https://github.com/IvanKanjuh | ivan.kanjuh@fer.unizg.hr |
 | Andrija Maček | Modeliranje poslužiteljske strane, puštanje u pogon | https://github.com/Andrija44 | andrija.macek@fer.unizg.hr |
 | Filip Pogač | Razvoj klijentske strane | https://github.com/Filip-Pogac | filip.pogac@fer.unizg.hr |
-| Ivan Stipic | Razvoj poslužiteljske strane | https://github.com/Ivan-Stipic | ivan.stipic@fer.unizg.hr |
+| Ivan Stipić | Razvoj poslužiteljske strane | https://github.com/Ivan-Stipic | ivan.stipic@fer.unizg.hr |
 
 
 # Licenca
