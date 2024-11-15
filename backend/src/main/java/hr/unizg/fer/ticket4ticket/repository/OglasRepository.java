@@ -23,8 +23,8 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
     @Query("SELECT o FROM Oglas o " +
             "JOIN o.ulaznica u " +
             "JOIN u.izvodaci i " +
-            "WHERE ((:izvodacIme IS NULL OR TRIM(:izvodacIme) = '') OR i.imeIzvodaca = :izvodacIme) AND " +
-            "((:izvodacPrezime IS NULL OR TRIM(:izvodacPrezime) = '') OR i.prezimeIzvodaca = :izvodacPrezime)")
+            "WHERE ((:izvodacIme IS NULL OR TRIM(:izvodacIme) = '') OR LOWER(i.imeIzvodaca) = LOWER(:izvodacIme)) AND " +
+            "((:izvodacPrezime IS NULL OR TRIM(:izvodacPrezime) = '') OR LOWER(i.prezimeIzvodaca) = LOWER(:izvodacPrezime))")
     List<Oglas> findOglasiByFilter(@Param("izvodacIme") String izvodacIme,
                                    @Param("izvodacPrezime") String izvodacPrezime);
 
