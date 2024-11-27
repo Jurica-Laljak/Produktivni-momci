@@ -1,7 +1,7 @@
 FROM alpine/java:21-jdk
 
 # Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
-COPY target/*.jar /app.jar
+COPY target/*.jar /Ticket4Ticket.jar
 
 # Izlaganje porta
 EXPOSE 8080

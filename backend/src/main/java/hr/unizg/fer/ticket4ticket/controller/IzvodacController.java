@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/izvodaci")
+@CrossOrigin
 public class IzvodacController {
 
     private final IzvodacService izvodacService;

@@ -5,11 +5,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginGoogle(){
-
    
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+  const frontednUrl = import.meta.env.VITE_FRONTEND_URL
+
       //redirect na stranicu za prijavu s gmailom 
         function ContinueGoogle(){
-        window.location.href =  "http://localhost:8080/oauth2/authorization/google"           
+        window.location.href = `${backendUrl}/oauth2/authorization/google`
+        // window.location.href = `${backendUrl}/oauth2/authorization/google?redirect_uri=${frontednUrl}`
         }
 
     return (
