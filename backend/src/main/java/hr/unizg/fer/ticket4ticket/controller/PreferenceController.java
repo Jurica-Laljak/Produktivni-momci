@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -45,9 +46,9 @@ public class PreferenceController {
     }
 
     @PostMapping("/zanrovi")
-    public ResponseEntity<Void> updateUserGenrePreferences(OAuth2AuthenticationToken token, @RequestBody Set<Long> zanrIds) {
+    public ResponseEntity<Void> updateUserGenrePreferences(UsernamePasswordAuthenticationToken token, @RequestBody Set<Long> zanrIds) {
         // Extract Google ID from OAuth2 token
-        String googleId = token.getPrincipal().getAttribute("sub");
+        String googleId = token.getName();
 
         // Get authenticated user's information
         KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
@@ -67,9 +68,9 @@ public class PreferenceController {
 
     // Returns the list of oglasi by authenticated user's preference (by genres he likes)
     @GetMapping("/oglasi")
-    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(OAuth2LoginAuthenticationToken token, Model model) {
+    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(UsernamePasswordAuthenticationToken token, Model model) {
         // Extract the Google ID from the OAuth2 token
-        String googleId = token.getPrincipal().getAttribute("sub");
+        String googleId = token.getName();
 
         // Returns Korisnik By GoogleId
         KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());

@@ -11,8 +11,8 @@ export default function LoginGoogle(){
 
       //redirect na stranicu za prijavu s gmailom 
         function ContinueGoogle(){
-        window.location.href = `${backendUrl}/oauth2/authorization/google`
-        // window.location.href = `${backendUrl}/oauth2/authorization/google?redirect_uri=${frontednUrl}`
+        // window.location.href = `${backendUrl}/oauth2/authorization/google`
+        window.location.href = `${backendUrl}/oauth2/authorization/google?redirect_uri=${frontednUrl}`
         }
 
     return (
