@@ -8,6 +8,19 @@ export default function ChooseGenres({ zanrovi }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+
+      urlParams.delete("token");
+      const newUrl = `${window.location.pathname}`;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
   
 
   // Funkcija za selektiranje/odabiranje žanrova
