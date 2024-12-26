@@ -1,6 +1,6 @@
 package hr.unizg.fer.ticket4ticket.security.filtter;
 
-import hr.unizg.fer.ticket4ticket.service.JwtTokenService;
+import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,9 +17,9 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenServiceImpl jwtTokenService;
 
-    public JwtAuthenticationFilter(JwtTokenService jwtTokenService) {
+    public JwtAuthenticationFilter(JwtTokenServiceImpl jwtTokenService) {
         this.jwtTokenService = jwtTokenService;
     }
 
@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = jwtTokenService.resolveToken(request);
             if (StringUtils.hasText(jwt)) {
                 if (jwtTokenService.validateToken(jwt)) {
-                    Authentication authentication = jwtTokenService.getAuthentication(jwt);
+                    Authentication authentication = jwtTokenService.getAuthenticationFromToken(jwt);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }

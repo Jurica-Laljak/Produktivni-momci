@@ -1,104 +1,21 @@
 package hr.unizg.fer.ticket4ticket.service;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
-import java.util.*;
-import java.util.stream.Collectors;
 
-@Component
-public class JwtTokenService {
+public interface JwtTokenService {
 
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey;
+    public String createTokenFromUsername(String username);
 
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds;
+    public String resolveToken(HttpServletRequest req);
 
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
+    public boolean validateToken(String token);
 
-    public String createToken(String username) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+    public String getUsernameFromToken(String token);
 
-        Map<String,Object> claims = new HashMap<>();
-        claims.put("sub", username);
+    public Authentication getAuthenticationFromToken(String token);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token);
-            return true;
-        } catch (io.jsonwebtoken.security.SignatureException ex) {
-            throw new SignatureException("Invalid JWT signature");
-        } catch (MalformedJwtException ex) {
-            throw new MalformedJwtException("Invalid JWT token");
-        } catch (UnsupportedJwtException ex) {
-            throw new UnsupportedJwtException("Unsupported JWT token");
-        } catch(ExpiredJwtException ex){
-            throw new ExpiredJwtException(ex.getHeader(), ex.getClaims(), "The Token Provided is Expired");
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("JWT claims string is empty");
-        }
-    }
-
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public Authentication getAuthentication(String token) {
-
-        Claims claims = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
-
-        Collection<? extends GrantedAuthority> authorities = Arrays.asList(claims.get("sub").toString().split(",")).stream()
-                .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
-
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-    }
-
-    public SecretKey getSecretKey() {
-        byte[] decodedKey = Base64.getDecoder().decode(secretKey);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
-    }
-
+    public SecretKey getSecretKey();
 }

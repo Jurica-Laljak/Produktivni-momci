@@ -3,20 +3,18 @@ package hr.unizg.fer.ticket4ticket.security.handler;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
-import hr.unizg.fer.ticket4ticket.service.JwtTokenService;
-import hr.unizg.fer.ticket4ticket.service.KorisnikService;
+import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import hr.unizg.fer.ticket4ticket.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,14 +24,13 @@ import java.util.Optional;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private static final String REDIRECT_PARAM_COOKIE_NAME = "redirect_uri";
-    private static final String TOKEN_COOKIE_NAME = "token";
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenServiceImpl jwtTokenService;
 
     private final KorisnikRepository userInfoRepository;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
 
-    public OAuth2LoginSuccessHandler(JwtTokenService jwtTokenService, KorisnikRepository userInfoRepository, HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository) {
+    public OAuth2LoginSuccessHandler(JwtTokenServiceImpl jwtTokenService, KorisnikRepository userInfoRepository, HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository) {
         this.jwtTokenService = jwtTokenService;
         this.userInfoRepository = userInfoRepository;
         this.httpCookieOAuth2AutherizationRequestRepository = httpCookieOAuth2AutherizationRequestRepository;
@@ -44,17 +41,16 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
         String googleId = user.getAttribute("sub");
 
-        String token = jwtTokenService.createToken(googleId);
+        String token = jwtTokenService.createTokenFromUsername(googleId);
 
-        String targetUrl = determineTargetUrl(request, response, authentication) + determineProfileStateAndReturnAddress(user);
+        String targetUrl = UriComponentsBuilder.fromUriString(determineTargetUrl(request, response, authentication) + determineProfileStateAndReturnAddress(user))
+                .queryParam("token", token).build().toUriString();
 
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-
-        CookieUtils.setCookie(response, TOKEN_COOKIE_NAME, token, 60*60*24);
-
+        
         this.setDefaultTargetUrl(targetUrl);
         this.setAlwaysUseDefaultTargetUrl(true);
 
