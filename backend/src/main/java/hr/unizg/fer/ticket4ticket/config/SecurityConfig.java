@@ -6,8 +6,7 @@ import hr.unizg.fer.ticket4ticket.security.filtter.JwtAuthenticationFilter;
 import hr.unizg.fer.ticket4ticket.security.handler.CustomAccessDeniedHandler;
 import hr.unizg.fer.ticket4ticket.security.handler.OAuth2LoginSuccessHandler;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
-import hr.unizg.fer.ticket4ticket.service.JwtTokenService;
-import org.springframework.beans.factory.annotation.Value;
+import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,13 +29,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenServiceImpl jwtTokenService;
     private final KorisnikRepository userInfoRepository;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfig(JwtTokenService jwtTokenService, KorisnikRepository userInfoRepository, HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository, RestAuthenticationEntryPoint restAuthenticationEntryPoint, CustomAccessDeniedHandler customAccessDeniedHandler) {
+    public SecurityConfig(JwtTokenServiceImpl jwtTokenService, KorisnikRepository userInfoRepository, HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository, RestAuthenticationEntryPoint restAuthenticationEntryPoint, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.jwtTokenService = jwtTokenService;
         this.userInfoRepository = userInfoRepository;
         this.httpCookieOAuth2AutherizationRequestRepository = httpCookieOAuth2AutherizationRequestRepository;
@@ -57,7 +56,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(registry -> {
 
-                registry.requestMatchers("/", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
+                registry.requestMatchers("/**", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/list/**").permitAll(); // the list of oglasi is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
                 registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)

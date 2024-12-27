@@ -6,6 +6,19 @@ import './ListingList.css';
 export default function UserListingList() {
   const [listings, setListings] = useState([]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+
+      urlParams.delete("token");
+      const newUrl = `${window.location.pathname}`;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
+
 
 //   // Dohvati oglase po preferencama prilikom inicijalnog rendera
   useEffect(() => {
