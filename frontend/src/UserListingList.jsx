@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Listing from './Listing';
 import './ListingList.css';
-
-
+import axiosPrivate from './api/axiosPrivate';
+import { getTokenFromCookie } from './utils/cookieUtils';
 
 export default function UserListingList() {
   const [listings, setListings] = useState([]);
@@ -11,9 +11,18 @@ export default function UserListingList() {
 
 //   // Dohvati oglase po preferencama prilikom inicijalnog rendera
   useEffect(() => {
+    const token = getTokenFromCookie();
+    console.log(token);
+      if(token){
+       
+        console.log("prijavljen");
+      } else {
+       
+        console.log("nije prijavljen")
+      }
     const fetchListings = async () => {
       try {
-        let response = await axios.get('/api/preference/oglasi'); // Dohvaćanje oglasa po preferencama
+        let response = await axiosPrivate.get('preference/oglasi'); // Dohvaćanje oglasa po preferencama
         let listingsData = response.data;
 
         // Provjeravamo je li listingsData prazan niz

@@ -8,6 +8,7 @@ export default function LoginGoogle(){
    
   const backendUrl = import.meta.env.VITE_BACKEND_URL
   const frontednUrl = import.meta.env.VITE_FRONTEND_URL
+  //console.log(backendUrl);
 
       //redirect na stranicu za prijavu s gmailom 
         function ContinueGoogle(){
