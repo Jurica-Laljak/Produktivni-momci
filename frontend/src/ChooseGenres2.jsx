@@ -2,7 +2,6 @@ import React, { useState,useEffect } from 'react';
 import './ChooseGenres2.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import axiosPrivate from './api/axiosPrivate';
 
 export default function ChooseGenres({ zanrovi }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -26,7 +25,7 @@ export default function ChooseGenres({ zanrovi }) {
       //console.log('Selected genres:', selectedGenres);
       // saljemo podatke o odabranim zanrovima na backend
       
-      axiosPrivate.post(`preference/zanrovi`, selectedGenres, {
+      axios.post(`api/preference/zanrovi`, selectedGenres, {
         headers: {
           'Content-Type': 'application/json',
         },

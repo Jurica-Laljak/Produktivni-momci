@@ -12,7 +12,6 @@ import axios from 'axios';
 import AppFooter from './AppFooter'
 import ChooseGenres2 from './ChooseGenres2'
 import UserHome from './UserHome'
-import { getTokenFromCookie } from './utils/cookieUtils';
 
 
 
@@ -28,16 +27,7 @@ function App() {
  
   //dohvacanje svih zanrova
   useEffect(() => {
-    console.log("bok");
-    const token = getTokenFromCookie();
-    console.log(token);
-      if(token){
-        setIsAuthenticated(true);
-       // console.log("prijavljen");
-      } else {
-        setIsAuthenticated(false);
-       // console.log("nije prijavljen")
-      }
+    
 
      axios.get(`api/zanrovi`)
      .then(res => {
