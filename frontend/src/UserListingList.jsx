@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Listing from './Listing';
 import './ListingList.css';
+import axiosPrivate from "./api/axiosPrivate";
+
 
 export default function UserListingList() {
   const [listings, setListings] = useState([]);
@@ -25,7 +27,8 @@ export default function UserListingList() {
     
     const fetchListings = async () => {
       try {
-        let response = await axios.get('api/preference/oglasi'); // Dohvaćanje oglasa po preferencama
+      
+        let response = await axiosPrivate.get('preference/oglasi'); // Dohvaćanje oglasa po preferencama
         let listingsData = response.data;
 
         // Provjeravamo je li listingsData prazan niz

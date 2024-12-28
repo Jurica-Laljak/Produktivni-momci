@@ -7,3 +7,36 @@
   justify-content: space-between;  
 }
 
+
+.navbar-brand img {
+  max-height: 40px;
+}
+
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-collapse .d-flex {
+  align-items: center;
+}
+
+.btn-primary {
+  margin-left: 10px; /* Dodaje razmak između "Kreiraj oglas" i Search bara */
+}
+
+.welcome-text {
+  flex-grow: 1;
+  text-align: center; /* Centriraj tekst */
+  font-size: 1.2rem;
+  margin-right: auto; /* Gura ikone i gumbe desno */
+  margin-left: auto; /* Centriranje između elemenata */
+}
+
+
+
+.nav-link svg {
+  margin-left: 5px;
+  
+}
+

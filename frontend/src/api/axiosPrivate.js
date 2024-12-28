@@ -1,21 +1,21 @@
-import axios from 'axios';
-import { getTokenFromCookie } from '../utils/cookieUtils';
+import axios from "axios";
 
-// Instanca za autorizirane zahtjeve
-const axiosPrivate = axios.create({
-    baseURL: '/api', //  osnovni URL za backend
+const axiosInstance = axios.create({
+  baseURL: "/api", 
 });
 
-
-axiosPrivate.interceptors.request.use(
-    (config) => {
-        const token = getTokenFromCookie();
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token"); 
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`; 
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error); 
+  }
 );
 
-export default axiosPrivate;
+export default axiosInstance;
+
