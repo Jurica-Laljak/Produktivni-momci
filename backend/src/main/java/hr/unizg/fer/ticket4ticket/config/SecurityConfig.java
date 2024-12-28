@@ -56,7 +56,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(registry -> {
 
-                registry.requestMatchers("/**", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
+                registry.requestMatchers("/", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/list/**").permitAll(); // the list of oglasi is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
                 registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)
