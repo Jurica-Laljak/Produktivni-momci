@@ -11,16 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Set;
@@ -51,7 +43,7 @@ public class PreferenceController {
         String googleId = token.getName();
 
         // Get authenticated user's information
-        KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
+        KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId);
 
         // Update the user's genres with the provided list of Zanr IDs
         boolean isUpdated = preferenceService.updateUserGenrePreferences(korisnik, zanrIds);
@@ -73,7 +65,7 @@ public class PreferenceController {
         String googleId = token.getName();
 
         // Returns Korisnik By GoogleId
-        KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
+        KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId);
 
         // Fetch the 'Oglas' listings based on the user's preferences
         List<OglasDto> oglasi = oglasService.getOglasiByKorisnikPreference(korisnikDto.getIdKorisnika());

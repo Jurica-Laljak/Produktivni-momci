@@ -50,7 +50,7 @@ public class KorisnikServiceImpl implements KorisnikService {
     //Returns the
     @Override
     @Transactional
-    public KorisnikDto findKorisnikByGoogleId(String googleId, KorisnikDto korisnikDto) {
+    public KorisnikDto findKorisnikByGoogleId(String googleId) {
         // Check if user with the Google ID already exists
         Korisnik existingKorisnik = korisnikRepository.findByGoogleId(googleId);
 

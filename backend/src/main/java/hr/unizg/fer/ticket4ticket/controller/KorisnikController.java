@@ -32,7 +32,7 @@ public class KorisnikController {
 
     @GetMapping("/g/{googleId}")
     public ResponseEntity<KorisnikDto> getKorisnikByGoogleId(@PathVariable("googleId") String googleId){
-        KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId, new KorisnikDto());
+        KorisnikDto korisnikDto = korisnikService.findKorisnikByGoogleId(googleId);
         return ResponseEntity.ok(korisnikDto);
     }
 
