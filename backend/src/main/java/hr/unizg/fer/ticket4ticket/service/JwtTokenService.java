@@ -2,20 +2,22 @@ package hr.unizg.fer.ticket4ticket.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.crypto.SecretKey;
+import java.util.Collection;
 
 public interface JwtTokenService {
 
-    public String createTokenFromUsername(String username);
+    String createToken(String username);
 
-    public String resolveToken(HttpServletRequest req);
+    String resolveToken(HttpServletRequest req);
 
-    public boolean validateToken(String token);
+    boolean validateToken(String token);
 
-    public String getUsernameFromToken(String token);
+    String getUsernameFromToken(String token);
 
-    public Authentication getAuthenticationFromToken(String token);
+    Authentication getAuthenticationFromToken(String token);
 
-    public SecretKey getSecretKey();
+    SecretKey getSecretKey();
 }

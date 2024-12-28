@@ -60,7 +60,7 @@ public class PreferenceController {
 
     // Returns the list of oglasi by authenticated user's preference (by genres he likes)
     @GetMapping("/oglasi")
-    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(UsernamePasswordAuthenticationToken token, Model model) {
+    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(UsernamePasswordAuthenticationToken token) {
         // Extract the Google ID from the OAuth2 token
         String googleId = token.getName();
 

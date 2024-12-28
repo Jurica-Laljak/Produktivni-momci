@@ -1,14 +1,15 @@
 package hr.unizg.fer.ticket4ticket.security.handler;
 
-import hr.unizg.fer.ticket4ticket.entity.Korisnik;
-import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
+import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
+import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import hr.unizg.fer.ticket4ticket.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,27 +22,24 @@ import java.net.URI;
 import java.util.Optional;
 
 @Component
+@AllArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private static final String REDIRECT_PARAM_COOKIE_NAME = "redirect_uri";
 
     private final JwtTokenServiceImpl jwtTokenService;
 
-    private final KorisnikRepository userInfoRepository;
+    private final KorisnikService korisnikService;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
-
-    public OAuth2LoginSuccessHandler(JwtTokenServiceImpl jwtTokenService, KorisnikRepository userInfoRepository, HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository) {
-        this.jwtTokenService = jwtTokenService;
-        this.userInfoRepository = userInfoRepository;
-        this.httpCookieOAuth2AutherizationRequestRepository = httpCookieOAuth2AutherizationRequestRepository;
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
         String googleId = user.getAttribute("sub");
 
-        String token = jwtTokenService.createTokenFromUsername(googleId);
+        KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId);
+
+        String token = jwtTokenService.createToken(googleId);
 
         String targetUrl = UriComponentsBuilder.fromUriString(determineTargetUrl(request, response, authentication) + determineProfileStateAndReturnAddress(user))
                 .queryParam("token", token).build().toUriString();
@@ -73,22 +71,23 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String photo = user.getAttribute("picture");
 
         // Check if the Korisnik exists, and if not returns an empty KorisnikDto
-        Korisnik existingUser = userInfoRepository.findByGoogleId(googleId);
+        KorisnikDto existingUser = korisnikService.findKorisnikByGoogleId(googleId);
 
         if (existingUser != null) {
             return "/UserHome";
         }
 
         // User does not exist, populate KorisnikDto with user information
-        Korisnik noviKorisnik = new Korisnik();
-        noviKorisnik.setImeKorisnika(name);
-        noviKorisnik.setPrezimeKorisnika(surname);
-        noviKorisnik.setEmailKorisnika(email);
-        noviKorisnik.setFotoKorisnika(photo);
-        noviKorisnik.setGoogleId(googleId);
+        KorisnikDto noviKorisnik = KorisnikDto.builder()
+                .imeKorisnika(name)
+                .prezimeKorisnika(surname)
+                .emailKorisnika(email)
+                .fotoKorisnika(photo)
+                .googleId(googleId)
+                .build();
 
         // Create a new user using createKorisnik method
-        userInfoRepository.save(noviKorisnik);
+        korisnikService.createKorisnik(noviKorisnik);
 
         // Redirect to ChooseGenres after successful creation of the new user
         return "/ChooseGenres";

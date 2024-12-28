@@ -13,7 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,7 +24,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class JwtTokenServiceImpl implements JwtTokenService {
 
     @Value("${security.jwt.token.secret-key:secret}")
@@ -36,7 +39,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public String createTokenFromUsername(String username) {
+    public String createToken(String username) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -69,7 +72,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     @Override
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SignatureException ex) {
             throw new SignatureException("Invalid JWT signature");
@@ -86,16 +89,16 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     @Override
     public String getUsernameFromToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     @Override
     public Authentication getAuthenticationFromToken(String token) {
 
-        Claims claims = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.asList(claims.get("sub").toString().split(",")).stream()
-                .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("sub").toString().split(","))
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
 

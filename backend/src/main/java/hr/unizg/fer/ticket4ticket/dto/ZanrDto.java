@@ -1,15 +1,14 @@
 package  hr.unizg.fer.ticket4ticket.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ZanrDto {
     private Long idZanra;
     private String imeZanra;
