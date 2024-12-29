@@ -12,6 +12,9 @@ import java.util.Set;
 @Repository
 public interface OglasRepository extends JpaRepository<Oglas,Long> {
 
+
+    public List<Oglas> findByKorisnik_IdKorisnikaAndStatus(Long korisnikId, Oglas.Status status);
+
     @Query("SELECT o FROM Oglas o " +
             "JOIN o.korisnik u " +
             "WHERE u.idKorisnika = :korisnikId")
@@ -28,8 +31,8 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
     @Query("SELECT o FROM Oglas o " +
             "JOIN o.ulaznica u " +
             "JOIN u.izvodaci i " +
-            "WHERE LOWER(i.imeIzvodaca) LIKE CONCAT('%', LOWER(:izvodacIme), '%') OR " +
-            "LOWER(i.prezimeIzvodaca) LIKE CONCAT('%', LOWER(:izvodacPrezime), '%')")
+            "WHERE ((:izvodacIme IS NULL OR TRIM(:izvodacIme) = '') OR LOWER(i.imeIzvodaca) = LOWER(:izvodacIme)) AND " +
+            "((:izvodacPrezime IS NULL OR TRIM(:izvodacPrezime) = '') OR LOWER(i.prezimeIzvodaca) = LOWER(:izvodacPrezime))")
     List<Oglas> findOglasiByFilter(@Param("izvodacIme") String izvodacIme,
                                    @Param("izvodacPrezime") String izvodacPrezime);
 

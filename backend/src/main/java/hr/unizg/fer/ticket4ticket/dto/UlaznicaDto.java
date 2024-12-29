@@ -13,11 +13,17 @@ import java.util.Set;
 @AllArgsConstructor
 public class UlaznicaDto {
 
-    private Long idKoncerta;
+    private Long idUlaznice;
     private LocalDate datumKoncerta;
     private String lokacijaKoncerta;
     private String odabranaZona;
     private String vrstaUlaznice;
+    private String urlSlika;
+    private String urlInfo;
+    private String status; // Status as a String (NEPREUZETA, PREUZETA)
+    private Long idKorisnika; // ID of the associated user (if claimed)
+    private String sifraUlaznice;
     private Set<Long> izvodaciIds;
     private Set<Long> oglasiIds;
 }
+

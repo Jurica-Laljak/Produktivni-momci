@@ -11,7 +11,11 @@ public class OglasMapper {
     public static OglasDto mapToOglasDto(Oglas oglas) {
         OglasDto dto = new OglasDto();
         dto.setIdOglasa(oglas.getIdOglasa());
-        dto.setStatus(oglas.getStatus());
+
+        // Convert Oglas.Status to String
+        if (oglas.getStatus() != null) {
+            dto.setStatus(oglas.getStatus().name());
+        }
 
         // Map the IDs of related entities
         if (oglas.getKorisnik() != null) {
@@ -28,7 +32,11 @@ public class OglasMapper {
     public static Oglas mapToOglas(OglasDto oglasDto) {
         Oglas oglas = new Oglas();
         oglas.setIdOglasa(oglasDto.getIdOglasa());
-        oglas.setStatus(oglasDto.getStatus());
+
+        // Convert String back to Oglas.Status (only if it is a valid status string)
+        if (oglasDto.getStatus() != null) {
+            oglas.setStatus(Oglas.Status.valueOf(oglasDto.getStatus()));
+        }
 
         // Set the related entities based on their IDs
         if (oglasDto.getKorisnikId() != null) {

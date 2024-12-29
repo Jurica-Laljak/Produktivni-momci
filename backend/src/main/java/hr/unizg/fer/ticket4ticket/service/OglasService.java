@@ -19,7 +19,9 @@ public interface OglasService {
 
     List<OglasDto> getOglasiByKorisnikPreference(Long idKorisnika);
 
+    List<OglasDto> findActiveOglasesByKorisnikId(Long korisnikId);
+
     List<IzvodacDto> getIzvodaciForOglas(Long oglasId);
 
-    List<OglasDto> getOglasiByKorisnik(Long idKorisnik);
+
 }

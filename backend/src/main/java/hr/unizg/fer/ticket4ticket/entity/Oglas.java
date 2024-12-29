@@ -1,15 +1,17 @@
 package hr.unizg.fer.ticket4ticket.entity;
 
 import jakarta.persistence.*; // Import for JPA annotations
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
 @Table(name = "OGLAS") // Maps this class to the "OGLAS" table
 public class Oglas {
 
@@ -18,19 +20,23 @@ public class Oglas {
     @Column(name = "idOglasa", nullable = false)
     private Long idOglasa; // Use Long to match the SQL INT type
 
-
-    @NotBlank
+    @Enumerated(EnumType.STRING) // Map enum to its string representation in the database
     @Column(name = "status", nullable = false, length = 50)
-    private String status;
+    private Status status = Status.AKTIVAN; // Default to AKTIVAN
 
     // Many-to-One relationship with Ulaznica
-    @ManyToOne // Specifies that this is a many-to-one relationship
-    @JoinColumn(name = "IDUlaznice", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica")) // Foreign key column
+    @ManyToOne
+    @JoinColumn(name = "IDUlaznice", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica"))
     private Ulaznica ulaznica;
 
     // Many-to-One relationship with Korisnik
-    @ManyToOne // Specifies that this is a many-to-one relationship
-    @JoinColumn(name = "IDKorisnika", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_korisnik")) // Foreign key column
+    @ManyToOne
+    @JoinColumn(name = "IDKorisnika", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_korisnik"))
     private Korisnik korisnik;
 
+    // Enum for status
+    public enum Status {
+        AKTIVAN,
+        NEAKTIVAN
+    }
 }

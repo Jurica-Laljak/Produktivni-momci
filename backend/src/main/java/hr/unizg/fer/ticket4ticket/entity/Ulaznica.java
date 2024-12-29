@@ -32,13 +32,29 @@ public class Ulaznica {
     @Column(name = "lokacijaKoncerta", nullable = false, length = 50)
     private String lokacijaKoncerta;
 
-    @NotBlank
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "odabranaZona", nullable = false, length = 50)
-    private String odabranaZona;
+    private OdabranaZona odabranaZona;
 
-    @NotBlank
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "vrstaUlaznice", nullable = false, length = 50)
-    private String vrstaUlaznice;
+    private VrstaUlaznice vrstaUlaznice;
+
+    @Column(name = "urlSlika", length = 255)
+    private String urlSlika;
+
+    @Column(name = "urlInfo", length = 255)
+    private String urlInfo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status = Status.NEPREUZETA;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idKorisnika", nullable = true)
+    private Korisnik korisnik;
 
     // Many-to-Many relationship with Izvodac
     @ManyToMany(mappedBy = "ulaznice")
@@ -48,17 +64,54 @@ public class Ulaznica {
     @OneToMany(mappedBy = "ulaznica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Oglas> oglasi = new HashSet<>();
 
+    // Add a field for sifraUlaznice
+    @Column(name = "sifraUlaznice", nullable = false, unique = true)
+    private String sifraUlaznice;
+
+    // Enum for status
+    public enum Status {
+        NEPREUZETA,
+        PREUZETA
+    }
+
     // Method to get IDs of Izvodac
     public Set<Long> getIzvodaciIds() {
         return izvodaci.stream()
-                .map(Izvodac::getIdIzvodaca) // Assuming Izvodac has a getIdIzvodaca() method
+                .map(Izvodac::getIdIzvodaca)
                 .collect(Collectors.toSet());
     }
 
     // Method to get IDs of Oglas
     public Set<Long> getOglasiIds() {
         return oglasi.stream()
-                .map(Oglas::getIdOglasa) // Assuming Oglas has a getIdOglasa() method
+                .map(Oglas::getIdOglasa)
                 .collect(Collectors.toSet());
     }
+
+    // Ensure status is not null before persisting
+    @PrePersist
+    private void ensureStatusIsNotNull() {
+        if (this.status == null) {
+            this.status = Status.NEPREUZETA;
+        }
+    }
+
+    // Enumeration for VrstaUlaznice
+    public enum VrstaUlaznice {
+        VIP,
+        PREMIUM,
+        STANDARD,
+        FAMILY,
+        STUDENT
+    }
+
+    // Enumeration for OdabranaZona
+    public enum OdabranaZona {
+        VIP_LOZA,
+        TRIBINA_A,
+        TRIBINA_B,
+        PARTER,
+        GALERIJA
+    }
 }
+

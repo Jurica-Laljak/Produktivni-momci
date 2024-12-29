@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UlaznicaRepository extends JpaRepository<Ulaznica,Long> {
+    // Add this method to find the Ulaznica by its sifraUlaznice
+    Ulaznica findBySifraUlaznice(String sifraUlaznice);
 }

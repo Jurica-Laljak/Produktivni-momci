@@ -2,6 +2,7 @@ package hr.unizg.fer.ticket4ticket.mapper;
 
 import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
+import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
 
@@ -14,26 +15,22 @@ public class UlaznicaMapper {
     // Map from Ulaznica entity to UlaznicaDto
     public static UlaznicaDto mapToUlaznicaDto(Ulaznica ulaznica) {
         UlaznicaDto dto = new UlaznicaDto();
-        dto.setIdKoncerta(ulaznica.getIdUlaznice());
+        dto.setIdUlaznice(ulaznica.getIdUlaznice());
         dto.setDatumKoncerta(ulaznica.getDatumKoncerta());
         dto.setLokacijaKoncerta(ulaznica.getLokacijaKoncerta());
-        dto.setOdabranaZona(ulaznica.getOdabranaZona());
-        dto.setVrstaUlaznice(ulaznica.getVrstaUlaznice());
+        dto.setOdabranaZona(ulaznica.getOdabranaZona().name());  // Convert Enum to String
+        dto.setVrstaUlaznice(ulaznica.getVrstaUlaznice().name()); // Convert Enum to String
+        dto.setUrlSlika(ulaznica.getUrlSlika());
+        dto.setUrlInfo(ulaznica.getUrlInfo());
+        dto.setStatus(ulaznica.getStatus().name()); // Convert Enum to String
+        dto.setIdKorisnika(ulaznica.getKorisnik() != null ? ulaznica.getKorisnik().getIdKorisnika() : null);
 
-        Set<Long> izvodaciIds = ulaznica.getIzvodaci()
-                .stream()
-                .map(Izvodac::getIdIzvodaca) // Assuming Izvodac has a method getIdIzvodaca()
-                .collect(Collectors.toSet());
+        // Map sifraUlaznice
+        dto.setSifraUlaznice(ulaznica.getSifraUlaznice());
 
-        dto.setIzvodaciIds(izvodaciIds); // Assuming this setter exists in the DTO
-
-        // Convert the Set<Oglas> to Set<Long> (IDs)
-        Set<Long> oglasiIds = ulaznica.getOglasi()
-                .stream()
-                .map(Oglas::getIdOglasa) // Assuming Oglas has a method getIdOglasa()
-                .collect(Collectors.toSet());
-
-        dto.setOglasiIds(oglasiIds); // Assuming this setter exists in the DTO
+        // Map related Izvodaci and Oglasi
+        dto.setIzvodaciIds(ulaznica.getIzvodaciIds());
+        dto.setOglasiIds(ulaznica.getOglasiIds());
 
         return dto;
     }
@@ -41,15 +38,33 @@ public class UlaznicaMapper {
     // Map from UlaznicaDto to Ulaznica entity
     public static Ulaznica mapToUlaznica(UlaznicaDto ulaznicaDto) {
         Ulaznica ulaznica = new Ulaznica();
-        ulaznica.setIdUlaznice(ulaznicaDto.getIdKoncerta());
+        ulaznica.setIdUlaznice(ulaznicaDto.getIdUlaznice());
         ulaznica.setDatumKoncerta(ulaznicaDto.getDatumKoncerta());
         ulaznica.setLokacijaKoncerta(ulaznicaDto.getLokacijaKoncerta());
-        ulaznica.setOdabranaZona(ulaznicaDto.getOdabranaZona());
-        ulaznica.setVrstaUlaznice(ulaznicaDto.getVrstaUlaznice());
 
+        // Map OdabranaZona and VrstaUlaznice from String to Enum
+        ulaznica.setOdabranaZona(Ulaznica.OdabranaZona.valueOf(ulaznicaDto.getOdabranaZona()));
+        ulaznica.setVrstaUlaznice(Ulaznica.VrstaUlaznice.valueOf(ulaznicaDto.getVrstaUlaznice()));
+
+        ulaznica.setUrlSlika(ulaznicaDto.getUrlSlika());
+        ulaznica.setUrlInfo(ulaznicaDto.getUrlInfo());
+
+        // Map status from String to Enum
+        ulaznica.setStatus(Ulaznica.Status.valueOf(ulaznicaDto.getStatus()));
+
+        // Map sifraUlaznice
+        ulaznica.setSifraUlaznice(ulaznicaDto.getSifraUlaznice());
+
+        // Map korisnik if idKorisnika is provided
+        if (ulaznicaDto.getIdKorisnika() != null) {
+            Korisnik korisnik = new Korisnik();
+            korisnik.setIdKorisnika(ulaznicaDto.getIdKorisnika());
+            ulaznica.setKorisnik(korisnik);
+        }
+
+        // Map Izvodaci
         Set<Izvodac> izvodaci = new HashSet<>();
         if (ulaznicaDto.getIzvodaciIds() != null) {
-            // Create Izvodac entities based on the IDs in the DTO
             for (Long id : ulaznicaDto.getIzvodaciIds()) {
                 Izvodac izvodac = new Izvodac();
                 izvodac.setIdIzvodaca(id);
@@ -58,6 +73,7 @@ public class UlaznicaMapper {
         }
         ulaznica.setIzvodaci(izvodaci);
 
+        // Map Oglasi
         Set<Oglas> oglasi = new HashSet<>();
         if (ulaznicaDto.getOglasiIds() != null) {
             for (Long id : ulaznicaDto.getOglasiIds()) {
