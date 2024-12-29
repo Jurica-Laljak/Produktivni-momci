@@ -13,9 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -39,16 +36,16 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public String createToken(String username) {
+    public String createToken(String googleId) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         Map<String,Object> claims = new HashMap<>();
-        claims.put("sub", username);
+        claims.put("roles", "ROLE_USER");
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(username)
+                .setSubject(googleId)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
@@ -97,7 +94,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
         Claims claims = Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("sub").toString().split(","))
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().replace("[", "").replace("]", "").split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);

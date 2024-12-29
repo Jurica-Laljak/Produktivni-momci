@@ -1,10 +1,8 @@
 package hr.unizg.fer.ticket4ticket.mapper;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
-import hr.unizg.fer.ticket4ticket.entity.Izvodac;
-import hr.unizg.fer.ticket4ticket.entity.Oglas;
-import hr.unizg.fer.ticket4ticket.entity.Korisnik;
-import  hr.unizg.fer.ticket4ticket.entity.Zanr;
+import hr.unizg.fer.ticket4ticket.entity.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +43,13 @@ public class KorisnikMapper {
                 .collect(Collectors.toSet());
 
         dto.setOmiljeniZanroviIds(omiljeniZanroviIds);
+
+        Set<Long> roleIds = korisnik.getRoles() // Assuming this is the set of Zanr entities
+                .stream()
+                .map(Role::getIdRole) // Assuming Zanr has a method getIdZanra()
+                .collect(Collectors.toSet());
+
+        dto.setRoleIds(roleIds);
 
         return dto;
     }
@@ -102,6 +107,18 @@ public class KorisnikMapper {
         }
 
         korisnik.setOmiljeniZanrovi(omiljeniZanrovi);
+
+        Set<Role> roles = new HashSet<>();
+
+        if (korisnikDto.getRoleIds() != null) {
+            for (Long id : korisnikDto.getRoleIds()) {
+                Role role = new Role();
+                role.setIdRole(id);
+                roles.add(role);
+            }
+        }
+
+        korisnik.setRoles(roles);
 
         return korisnik;
 

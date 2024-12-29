@@ -36,6 +36,7 @@ public class KorisnikServiceTests {
                 .omiljeniIzvodaci(new HashSet<>())
                 .omiljeniZanrovi(new HashSet<>())
                 .oglasi(new HashSet<>())
+                .roles(new HashSet<>())
                 .build();
 
         KorisnikDto korisnikDto = KorisnikDto.builder()
@@ -47,6 +48,7 @@ public class KorisnikServiceTests {
                 .omiljeniIzvodaciIds(new HashSet<>())
                 .omiljeniZanroviIds(new HashSet<>())
                 .oglasiIds(new HashSet<>())
+                .roleIds(new HashSet<>())
                 .build();
 
         when(korisnikRepository.save(Mockito.any(Korisnik.class))).thenReturn(korisnik);

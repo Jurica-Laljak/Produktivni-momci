@@ -3,6 +3,7 @@ package hr.unizg.fer.ticket4ticket.security.handler;
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
+import hr.unizg.fer.ticket4ticket.service.RoleService;
 import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import hr.unizg.fer.ticket4ticket.utils.CookieUtils;
 import jakarta.servlet.ServletException;
@@ -20,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -30,14 +32,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final JwtTokenServiceImpl jwtTokenService;
 
     private final KorisnikService korisnikService;
+    private final RoleService roleService;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
         String googleId = user.getAttribute("sub");
-
-        KorisnikDto korisnik = korisnikService.findKorisnikByGoogleId(googleId);
 
         String token = jwtTokenService.createToken(googleId);
 
@@ -84,6 +85,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .emailKorisnika(email)
                 .fotoKorisnika(photo)
                 .googleId(googleId)
+                .roleIds(Set.of(roleService.getRoleByName("ROLE_USER").getIdRole()))
                 .build();
 
         // Create a new user using createKorisnik method

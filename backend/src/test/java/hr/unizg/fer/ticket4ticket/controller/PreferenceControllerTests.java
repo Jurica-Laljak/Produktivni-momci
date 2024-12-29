@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 @AutoConfigureMockMvc

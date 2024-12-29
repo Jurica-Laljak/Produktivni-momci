@@ -1,12 +1,13 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
+import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
-import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 

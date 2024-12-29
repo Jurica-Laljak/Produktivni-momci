@@ -21,4 +21,5 @@ public class KorisnikDto {
     private Set<Long> omiljeniIzvodaciIds;
     private Set<Long> oglasiIds;
     private Set<Long> omiljeniZanroviIds;
+    private Set<Long> roleIds;
 }

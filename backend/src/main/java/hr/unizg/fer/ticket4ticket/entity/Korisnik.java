@@ -74,6 +74,13 @@ public class Korisnik {
     @OneToMany(mappedBy = "korisnik", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specifies that this is the inverse side of the relationship
     private Set<Oglas> oglasi = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "korisnikRoles",
+            joinColumns = @JoinColumn(name = "IDKorisnika"),
+            inverseJoinColumns = @JoinColumn(name = "IDRole")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     // Method to get IDs of omiljeniIzvodaci
     public Set<Long> getOmiljeniIzvodaciIds() {

@@ -59,8 +59,8 @@ public class KorisnikServiceImpl implements KorisnikService {
             return KorisnikMapper.mapToKorisnikDto(existingKorisnik);
         }
 
-        // User does not exist, return an empty KorisnikDTO
-        return new KorisnikDto();
+        // User does not exist, return null
+        return null;
     }
 
 
