@@ -18,8 +18,8 @@ export default function SearchBar({setResults,zanrovi}){
       
 
     function handleSearch(){
-        const artistName = (searchInput.split(" ")[0] === undefined) ? "" : searchInput.split(" ")[0]
-        const artistSurname = (searchInput.split(" ")[1] === undefined) ? "" : searchInput.split(" ")[1]
+        const artistName = searchInput.split(" ")[0]
+        const artistSurname = searchInput.split(" ")[1]
         
         axios.post("api/preference/oglasi/filter", {
             "imeIzvodaca": artistName,

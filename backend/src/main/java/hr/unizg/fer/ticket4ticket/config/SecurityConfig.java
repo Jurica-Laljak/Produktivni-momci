@@ -47,14 +47,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection for development
 
             .authorizeHttpRequests(registry -> {
 
-                registry.requestMatchers("/", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
+                registry.requestMatchers("/*", "/assets/*", "/data/*", "/login**", "/oauth2/**").permitAll();//the login path is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/list/**").permitAll(); // the list of oglasi is accessible without any authentication
                 registry.requestMatchers("/api/oglasi/*/izvodaci").permitAll(); // the list of Izvodac for an Oglas is accessible without any authentication
                 registry.requestMatchers("/api/ulaznice/*").permitAll(); // information on Ulaznica is accessible without any authentication (for example getting an Ulaznica by Id)
