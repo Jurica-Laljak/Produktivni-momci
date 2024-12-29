@@ -1,17 +1,16 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
-import hr.unizg.fer.ticket4ticket.service.PreferenceService;
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
+import hr.unizg.fer.ticket4ticket.service.PreferenceService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

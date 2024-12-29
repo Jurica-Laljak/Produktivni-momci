@@ -1,6 +1,5 @@
 package hr.unizg.fer.ticket4ticket.config;
 
-import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.security.RestAuthenticationEntryPoint;
 import hr.unizg.fer.ticket4ticket.security.filtter.JwtAuthenticationFilter;
 import hr.unizg.fer.ticket4ticket.security.handler.CustomAccessDeniedHandler;
