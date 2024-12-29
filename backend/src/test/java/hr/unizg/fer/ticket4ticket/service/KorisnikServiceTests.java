@@ -56,6 +56,27 @@ public class KorisnikServiceTests {
         KorisnikDto savedKorisnik = korisnikService.createKorisnik(korisnikDto);
 
         Assertions.assertNotNull(savedKorisnik);
+    }
 
+    @Test
+    public void korisnikService_findKorisnikByGoogleId_returnsKorisnikDto() {
+        Korisnik korisnik = Korisnik.builder()
+                .imeKorisnika("John")
+                .prezimeKorisnika("Doe")
+                .emailKorisnika("john.doe@gmail.com")
+                .fotoKorisnika("img.jpg")
+                .googleId("123456")
+                .omiljeniIzvodaci(new HashSet<>())
+                .omiljeniZanrovi(new HashSet<>())
+                .oglasi(new HashSet<>())
+                .roles(new HashSet<>())
+                .build();
+
+        when(korisnikRepository.findByGoogleId("123456")).thenReturn(korisnik);
+
+        KorisnikDto savedKorisnik = korisnikService.findKorisnikByGoogleId("123456");
+
+        Assertions.assertNotNull(savedKorisnik);
+        Assertions.assertEquals(korisnik.getGoogleId(), savedKorisnik.getGoogleId());
     }
 }

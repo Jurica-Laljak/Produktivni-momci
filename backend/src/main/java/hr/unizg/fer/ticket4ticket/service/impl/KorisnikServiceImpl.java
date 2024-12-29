@@ -50,7 +50,7 @@ public class KorisnikServiceImpl implements KorisnikService {
         List<Korisnik> korisnici = korisnikRepository.findAll();
 
 
-        return korisnici.stream().map((korisnik) -> KorisnikMapper.mapToKorisnikDto(korisnik))
+        return korisnici.stream().map(KorisnikMapper::mapToKorisnikDto)
                 .collect(Collectors.toList());
     }
 
@@ -80,8 +80,8 @@ public class KorisnikServiceImpl implements KorisnikService {
 
         korisnik.setRoles(roles);
 
-        korisnikRepository.save(korisnik);
+        Korisnik savedKorisnik = korisnikRepository.save(korisnik);
 
-        return KorisnikMapper.mapToKorisnikDto(korisnik);
+        return KorisnikMapper.mapToKorisnikDto(savedKorisnik);
     }
 }

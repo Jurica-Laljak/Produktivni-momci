@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 
@@ -28,6 +29,17 @@ public class OglasControllerTests {
 
     @MockBean
     private OglasService oglasService;
+
+    @Test
+    public void oglasController_getOglasById_returnsOglas() throws Exception {
+        when(oglasService.getOglasById(1L)).thenReturn(OglasDto.builder().idOglasa(1L).build());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/oglasi/{id}", 1).with(oauth2Login()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.idOglasa", is(1)))
+                .andDo(MockMvcResultHandlers.print());
+    }
 
     @Test
     public void oglasController_getAllOglasi_returnsAllOglasi() throws Exception {
