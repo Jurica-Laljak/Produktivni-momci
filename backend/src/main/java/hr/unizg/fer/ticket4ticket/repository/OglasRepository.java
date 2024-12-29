@@ -12,6 +12,11 @@ import java.util.Set;
 @Repository
 public interface OglasRepository extends JpaRepository<Oglas,Long> {
 
+    @Query("SELECT o FROM Oglas o " +
+            "JOIN o.korisnik u " +
+            "WHERE u.idKorisnika = :korisnikId")
+    List<Oglas> findByKorisnikId(Long korisnikId);
+
     // Finds all Oglas instances that have an associated Izvodac with the given ID
     @Query("SELECT o FROM Oglas o " +
             "JOIN o.ulaznica u " +

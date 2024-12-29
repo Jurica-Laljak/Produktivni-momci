@@ -1,18 +1,21 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
-import hr.unizg.fer.ticket4ticket.entity.Oglas;
-import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
-import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
-import hr.unizg.fer.ticket4ticket.service.OglasService;
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
+import hr.unizg.fer.ticket4ticket.dto.ObavijestDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
+import hr.unizg.fer.ticket4ticket.entity.Oglas;
+import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
+import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
+import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
+import hr.unizg.fer.ticket4ticket.service.ObavijestService;
+import hr.unizg.fer.ticket4ticket.service.OglasService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,14 +27,26 @@ public class OglasServiceImpl implements OglasService {
     @Autowired
     private OglasRepository oglasRepository;
 
+    @Autowired
+    private ObavijestService obavijestService;
+
 
     @Override
     public OglasDto createOglas(OglasDto oglasDto) {
         // Convert DTO to entity
         Oglas oglas = OglasMapper.mapToOglas(oglasDto);
 
+        ObavijestDto obavijestDto = ObavijestDto.builder()
+                .ttl(10080L)
+                .obavijest("Oglas created " + oglasDto.getIdOglasa())
+                .zanrId(oglas.getUlaznica().getIzvodaci().stream().toList().getFirst().getZanrId())
+                .oglasId(oglasDto.getIdOglasa())
+                .build();
+
         // Save entity to the repository
         Oglas savedOglas = oglasRepository.save(oglas);
+
+        obavijestService.createObavijest(obavijestDto);
 
         // Convert the saved entity back to DTO
         return OglasMapper.mapToOglasDto(savedOglas);
@@ -118,6 +133,15 @@ public class OglasServiceImpl implements OglasService {
         // Map the Izvodac entities to Izvodac DTOs (you need to implement this mapping method)
         return izvodaci.stream()
                 .map(IzvodacMapper::mapToIzvodacDto)  // Assuming you have a mapper to convert to DTO
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OglasDto> getOglasiByKorisnik(Long idKorisnik) {
+        List<Oglas> oglasi = oglasRepository.findByKorisnikId(idKorisnik);
+
+        return oglasi.stream()
+                .map(OglasMapper::mapToOglasDto)
                 .collect(Collectors.toList());
     }
 

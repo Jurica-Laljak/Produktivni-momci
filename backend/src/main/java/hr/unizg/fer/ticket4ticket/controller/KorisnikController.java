@@ -2,6 +2,7 @@ package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,12 @@ public class KorisnikController {
     public ResponseEntity<List<KorisnikDto>> getAllKorisnici(){
         List<KorisnikDto> korisnici = korisnikService.getAllKorisnici();
         return ResponseEntity.ok(korisnici);
+    }
+
+    @GetMapping("/grant/admin/{googleId}")
+    @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<KorisnikDto> grantAdmin(@PathVariable("googleId") String googleId){
+        KorisnikDto korisnikDto = korisnikService.assignAdminByGoogleId(googleId);
+        return ResponseEntity.ok(korisnikDto);
     }
 }

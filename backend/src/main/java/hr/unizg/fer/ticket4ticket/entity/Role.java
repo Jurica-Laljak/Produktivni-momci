@@ -17,6 +17,6 @@ public class Role {
     @Column(name = "idRole", nullable = false)
     private Long idRole;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(name = "role", nullable = false, unique = true)
+    private String role;
 }

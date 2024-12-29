@@ -14,6 +14,6 @@ public interface KorisnikService {
 
     KorisnikDto findKorisnikByGoogleId(String googleId);
 
-
+    KorisnikDto assignAdminByGoogleId(String googleId);
 }
 
