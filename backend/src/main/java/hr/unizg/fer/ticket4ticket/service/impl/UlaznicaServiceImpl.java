@@ -52,4 +52,15 @@ public class UlaznicaServiceImpl implements UlaznicaService {
                 .map(UlaznicaMapper::mapToUlaznicaDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<UlaznicaDto> getUlazniceByIdKorisnika(Long idKorisnika) {
+        // Fetch all Ulaznica by idKorisnika
+        List<Ulaznica> ulaznice = ulaznicaRepository.findAllByKorisnik_IdKorisnika(idKorisnika);
+
+        // Convert the list of entities to a list of DTOs
+        return ulaznice.stream()
+                .map(UlaznicaMapper::mapToUlaznicaDto)
+                .collect(Collectors.toList());
+    }
 }

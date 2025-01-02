@@ -11,4 +11,6 @@ public interface UlaznicaService {
     UlaznicaDto getUlaznicaById(Long ulaznicaId);
 
     List<UlaznicaDto> getAllUlaznice();
+
+    List<UlaznicaDto> getUlazniceByIdKorisnika(Long idKorisnika);
 }
