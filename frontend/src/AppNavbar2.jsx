@@ -37,6 +37,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import { FcGoogle } from 'react-icons/fc';
   import { FaUserCircle, FaHome } from 'react-icons/fa';
   import './AppNavbar.css';
+  import axiosPrivate from "./api/axiosPrivate";
   
   export default function AppNavbar2({ setResults, zanrovi }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,8 +51,24 @@ export default function AppNavbar2({ setResults,zanrovi }) {
       if (token) {
         setIsLoggedIn(true);
         try {
-          const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT token (ako koristiš JWT)
-          setUserName(decodedToken.sub); // Pretpostavljamo da 'sub' sadrži korisničko ime
+          const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
+        
+
+          const getUserData = async () => {
+            try{
+                const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
+                const userData = response.data;
+                setUserName(userData.imeKorisnika); 
+              }
+            catch(err){
+                console.log("Doslo je do greske", err);
+            }
+          } 
+           //request za dobit podatke o useru
+           getUserData();
+
+         
+          
         } catch (error) {
           console.error('Error decoding token:', error);
         }
@@ -66,6 +83,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
       navigate('/');
     };
   
+    const isUserRoute = location.pathname === '/user' || location.pathname === '/userUlaznice' || location.pathname === '/userOglasi';
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
         <div className="container">
@@ -86,8 +105,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
           <div className="collapse navbar-collapse" id="navbarNav" style={{ marginLeft: '-100px' }}>
             <div className="d-flex ms-auto w-100">
               {isLoggedIn ? (
-                location.pathname === '/user' ? (
-                  // Prilagođeni sadržaj za rutu /user
+                isUserRoute  ? (
+                  // Prilagođeni sadržaj za rutu /user 
                   <>
                     <span className="welcome-text">Dobrodošao {userName}</span>
                     <div className="ms-auto d-flex align-items-center">

@@ -12,8 +12,10 @@ import axios from 'axios';
 import AppFooter from './AppFooter'
 import ChooseGenres2 from './ChooseGenres2'
 import UserHome from './UserHome'
-
-
+import Ulaznice from './Ulaznice';
+import NavigationButtons from "./NavigationButtons";
+import User from './User';
+import UserOglasi from './UserOglasi';
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
   const [results, setResults] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const showNavButtons = ['/user', '/userUlaznice', '/userOglasi']; 
 
  
   //dohvacanje svih zanrova
@@ -48,6 +50,8 @@ function App() {
     {/*navbar se prikazuje samo na odredenim putanjama*/ }
  {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi} />} 
  
+ {/* prikazuje samo na odredenim putanjama*/ }
+  {showNavButtons.includes(location.pathname) && <NavigationButtons />}
 
   <div className='container main-content'>
     <Routes>
@@ -57,6 +61,9 @@ function App() {
     <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi}/>}></Route>
     <Route path='/UserHome' element={<UserHome />}/>
     <Route path='/Home' element={<Home />}/>
+    <Route path='/userUlaznice' element={<Ulaznice />}></Route>
+    <Route path='/user' element={<User />}></Route>
+    <Route path='/userOglasi' element={<UserOglasi />}></Route>
 
     </Routes>
     </div>
