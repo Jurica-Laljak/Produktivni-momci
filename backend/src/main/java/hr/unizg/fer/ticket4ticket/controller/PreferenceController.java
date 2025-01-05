@@ -177,6 +177,15 @@ public class PreferenceController {
         }
     }
 
+    @PatchMapping("/korisnici/update-info")
+    public ResponseEntity<KorisnikDto> updateKorisnik(
+            @RequestBody KorisnikUpdateDto updateDto,
+            UsernamePasswordAuthenticationToken authenticationToken) {
+        Long userId = getUserIdFromToken(authenticationToken); // Get the user ID from the token
+        KorisnikDto updatedKorisnik = korisnikService.updateKorisnikFields(userId, updateDto);
+        return ResponseEntity.ok(updatedKorisnik);
+    }
+
 
 
 

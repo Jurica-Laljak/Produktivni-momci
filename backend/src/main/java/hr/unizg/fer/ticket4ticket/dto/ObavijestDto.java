@@ -10,9 +10,11 @@ import lombok.*;
 public class ObavijestDto {
 
     private Long idObavijesti;
-    private Long ttl;
+    private Long ttl; //
     private Long zanrId;
     private Long oglasId;
-//    private Long transakcijaId;
+//  private Long transakcijaId;
+    private String oglas_url; //oglasi/id
+
     private String obavijest;
 }

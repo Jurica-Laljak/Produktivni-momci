@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
+import hr.unizg.fer.ticket4ticket.dto.KorisnikUpdateDto;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Role;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
@@ -8,6 +9,7 @@ import hr.unizg.fer.ticket4ticket.mapper.KorisnikMapper;
 import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.RoleService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,5 +85,28 @@ public class KorisnikServiceImpl implements KorisnikService {
         Korisnik savedKorisnik = korisnikRepository.save(korisnik);
 
         return KorisnikMapper.mapToKorisnikDto(savedKorisnik);
+    }
+
+
+    public KorisnikDto updateKorisnikFields(Long id, KorisnikUpdateDto updateDto) {
+        Korisnik korisnik = korisnikRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Korisnik with id " + id + " not found"));
+
+        // Update only non-null fields from the update DTO
+        if (updateDto.getImeKorisnika() != null) {
+            korisnik.setImeKorisnika(updateDto.getImeKorisnika());
+        }
+        if (updateDto.getPrezimeKorisnika() != null) {
+            korisnik.setPrezimeKorisnika(updateDto.getPrezimeKorisnika());
+        }
+        if (updateDto.getBrMobKorisnika() != null) {
+            korisnik.setBrMobKorisnika(updateDto.getBrMobKorisnika());
+        }
+
+        // Save updated entity
+        Korisnik updatedKorisnik = korisnikRepository.save(korisnik);
+
+        // Use the mapper to convert the entity to a DTO
+        return KorisnikMapper.mapToKorisnikDto(updatedKorisnik);
     }
 }

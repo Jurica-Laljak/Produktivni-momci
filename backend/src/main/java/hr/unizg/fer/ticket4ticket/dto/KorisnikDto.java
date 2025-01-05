@@ -12,10 +12,10 @@ import java.util.Set;
 public class KorisnikDto {
 
     private Long idKorisnika;
-    private String imeKorisnika;
-    private String prezimeKorisnika;
+    private String imeKorisnika; //x
+    private String prezimeKorisnika; //x
     private String emailKorisnika;
-    private String brMobKorisnika;
+    private String brMobKorisnika; //x
     private String fotoKorisnika;
     private String googleId;
     private Set<Long> omiljeniIzvodaciIds;
