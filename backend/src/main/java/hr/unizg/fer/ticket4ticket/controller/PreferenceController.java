@@ -113,11 +113,23 @@ public class PreferenceController {
         }
     }
 
-    @GetMapping("/transakcije/aktivne")
-    public ResponseEntity<List<TransakcijaDto>> getActiveTransakcijeByUserPreferences(UsernamePasswordAuthenticationToken token) {
+    @GetMapping("/transakcije/poslane-ponude")
+    public ResponseEntity<List<TransakcijaDto>> getReceivedTransakcijeByUserPreferences(UsernamePasswordAuthenticationToken token) {
         try {
             Long korisnikId = getUserIdFromToken(token);
             List<TransakcijaDto> activeTransakcije = transakcijaService.getTransakcijeByKorisnikPonudaIdAndStatus(korisnikId, Transakcija.StatusTransakcije.CEKA_POTVRDU);
+            return ResponseEntity.ok(activeTransakcije);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @GetMapping("/transakcije/za-potvrditi")
+    public ResponseEntity<List<TransakcijaDto>> getStartedTransakcijeByUserPreferences(UsernamePasswordAuthenticationToken token) {
+        try {
+            Long korisnikId = getUserIdFromToken(token);
+            List<TransakcijaDto> activeTransakcije = transakcijaService.getTransakcijeByKorisnikOglasIdAndStatus(korisnikId, Transakcija.StatusTransakcije.CEKA_POTVRDU);
             return ResponseEntity.ok(activeTransakcije);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

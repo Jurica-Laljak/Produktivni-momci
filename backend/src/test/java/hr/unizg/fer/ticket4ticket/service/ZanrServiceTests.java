@@ -27,9 +27,9 @@ public class ZanrServiceTests {
 
     @Test
     public void zanrService_getAllZanrovi_returnsListOfZanrovi() {
-        Zanr zanr1 = Zanr.builder().imeZanra("Rock")
+        Zanr zanr1 = Zanr.builder().imeZanra(Zanr.ImeZanra.BLUES)
                 .korisnici(new HashSet<>()).izvodaci(new HashSet<>()).build();
-        Zanr zanr2 = Zanr.builder().imeZanra("Pop")
+        Zanr zanr2 = Zanr.builder().imeZanra(Zanr.ImeZanra.CLASSICAL)
                 .korisnici(new HashSet<>()).izvodaci(new HashSet<>()).build();
 
         when(zanrRepository.findAll()).thenReturn(List.of(zanr1, zanr2));

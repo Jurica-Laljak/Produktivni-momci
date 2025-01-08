@@ -2,10 +2,7 @@ package hr.unizg.fer.ticket4ticket.entity;
 
 import jakarta.persistence.*; // Import for JPA annotations
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -13,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "OGLAS") // Maps this class to the "OGLAS" table
+@Builder
 public class Oglas {
 
     @Id

@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.TransakcijaDto;
+import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
@@ -40,10 +41,20 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         Oglas oglas = oglasRepository.findById(oglasId)
                 .orElseThrow(() -> new IllegalArgumentException("Oglas not found"));
 
+        // Fetch the Korisnik objects from Ulaznica entities
+        Korisnik korisnikPonuda = ulaznicaPonuda.getKorisnik();
+        Korisnik korisnikOglas = ulaznicaOglas.getKorisnik();
+
+        if (korisnikPonuda == null || korisnikOglas == null) {
+            throw new IllegalStateException("Korisnik not associated with Ulaznica");
+        }
+
         // Create a new Transakcija instance and set its properties
         Transakcija transakcija = new Transakcija();
         transakcija.setUlaznicaPonuda(ulaznicaPonuda);
         transakcija.setUlaznicaOglas(ulaznicaOglas);
+        transakcija.setKorisnikPonuda(korisnikPonuda); // Set korisnikPonuda
+        transakcija.setKorisnikOglas(korisnikOglas);   // Set korisnikOglas
         transakcija.setOglas(oglas);
         transakcija.setStatusTransakcije(Transakcija.StatusTransakcije.CEKA_POTVRDU);
         transakcija.setDatumTransakcije(LocalDateTime.now());
@@ -51,24 +62,29 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         // Save the Transakcija entity
         transakcija = transakcijaRepository.save(transakcija);
 
-        // Fetch the Korisnik IDs from the Ulaznica entities
-        Long idKorisnikPonuda = (ulaznicaPonuda.getKorisnik() != null) ? ulaznicaPonuda.getKorisnik().getIdKorisnika() : null;
-        Long idKorisnikOglas = (ulaznicaOglas.getKorisnik() != null) ? ulaznicaOglas.getKorisnik().getIdKorisnika() : null;
-
         // Return the DTO containing the created Transakcija's data
         return new TransakcijaDto(
                 transakcija.getIdTransakcije(),
                 transakcija.getUlaznicaPonuda().getIdUlaznice(),
                 transakcija.getUlaznicaOglas().getIdUlaznice(),
-                idKorisnikPonuda,
-                idKorisnikOglas,
+                korisnikPonuda.getIdKorisnika(), // Fetch directly from korisnikPonuda
+                korisnikOglas.getIdKorisnika(), // Fetch directly from korisnikOglas
                 transakcija.getStatusTransakcije().name(),
                 transakcija.getOglas().getIdOglasa(),
                 transakcija.getDatumTransakcije()
-
         );
     }
 
+
+    @Override
+    public void deleteTransakcijaById(Long transakcijaId) {
+        // Check if the Transakcija exists before attempting to delete
+        Transakcija transakcija = transakcijaRepository.findById(transakcijaId)
+                .orElseThrow(() -> new IllegalArgumentException("Transakcija not found"));
+
+        // Delete the Transakcija entity
+        transakcijaRepository.delete(transakcija);
+    }
 
     @Override
     public List<TransakcijaDto> getTransakcijeByKorisnikPonudaIdAndStatus(Long korisnikPonudaId, Transakcija.StatusTransakcije status) {
@@ -79,5 +95,41 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         return transakcije.stream()
                 .map(TransakcijaMapper::mapToTransakcijaDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransakcijaDto> getTransakcijeByKorisnikOglasIdAndStatus(Long korisnikOglasId, Transakcija.StatusTransakcije status) {
+        // Fetch all Transakcija entities by korisnikPonudaId and status
+        List<Transakcija> transakcije = transakcijaRepository.findByKorisnikOglas_IdKorisnikaAndStatusTransakcije(korisnikOglasId, status);
+
+        // Map to DTOs and return the list
+        return transakcije.stream()
+                .map(TransakcijaMapper::mapToTransakcijaDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public TransakcijaDto updateStatusTransakcije(Long transakcijaId, Transakcija.StatusTransakcije newStatus) {
+        // Fetch the Transakcija entity
+        Transakcija transakcija = transakcijaRepository.findById(transakcijaId)
+                .orElseThrow(() -> new IllegalArgumentException("Transakcija not found"));
+
+        // Update the status
+        transakcija.setStatusTransakcije(newStatus);
+
+        // Save the updated Transakcija
+        Transakcija updatedTransakcija = transakcijaRepository.save(transakcija);
+
+        // Convert to DTO and return
+        return new TransakcijaDto(
+                updatedTransakcija.getIdTransakcije(),
+                updatedTransakcija.getUlaznicaPonuda().getIdUlaznice(),
+                updatedTransakcija.getUlaznicaOglas().getIdUlaznice(),
+                updatedTransakcija.getKorisnikPonuda().getIdKorisnika(),
+                updatedTransakcija.getKorisnikOglas().getIdKorisnika(),
+                updatedTransakcija.getStatusTransakcije().name(),
+                updatedTransakcija.getOglas().getIdOglasa(),
+                updatedTransakcija.getDatumTransakcije()
+        );
     }
 }

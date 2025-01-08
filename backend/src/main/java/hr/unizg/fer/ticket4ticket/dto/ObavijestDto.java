@@ -13,8 +13,7 @@ public class ObavijestDto {
     private Long ttl; //
     private Long zanrId;
     private Long oglasId;
-//  private Long transakcijaId;
-    private String oglas_url; //oglasi/id
-
+    private Long transakcijaId;
+    private String obavijest_url;
     private String obavijest;
 }

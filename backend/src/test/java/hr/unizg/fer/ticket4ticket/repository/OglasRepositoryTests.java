@@ -36,14 +36,14 @@ public class OglasRepositoryTests {
         Ulaznica ulaznica1 = Ulaznica.builder()
                 .datumKoncerta(LocalDate.now())
                 .lokacijaKoncerta("Zagreb")
-                .odabranaZona("Zona")
-                .vrstaUlaznice("VIP")
+                .odabranaZona(Ulaznica.OdabranaZona.TRIBINA_A)
+                .vrstaUlaznice(Ulaznica.VrstaUlaznice.FAMILY)
                 .build();
         Ulaznica ulaznica2 = Ulaznica.builder()
                 .datumKoncerta(LocalDate.now())
                 .lokacijaKoncerta("Samobor")
-                .odabranaZona("Zona")
-                .vrstaUlaznice("Regular")
+                .odabranaZona(Ulaznica.OdabranaZona.GALERIJA)
+                .vrstaUlaznice(Ulaznica.VrstaUlaznice.PREMIUM)
                 .build();
 
         ulaznicaRepository.save(ulaznica1);
@@ -76,9 +76,9 @@ public class OglasRepositoryTests {
 
         korisnikRepository.save(korisnik);
 
-        Oglas oglas1 = Oglas.builder().status("status1").ulaznica(ulaznica1)
+        Oglas oglas1 = Oglas.builder().status(Oglas.Status.AKTIVAN).ulaznica(ulaznica1)
                 .korisnik(korisnik).build();
-        Oglas oglas2 = Oglas.builder().status("status2").ulaznica(ulaznica2)
+        Oglas oglas2 = Oglas.builder().status(Oglas.Status.NEAKTIVAN).ulaznica(ulaznica2)
                 .korisnik(korisnik).build();
 
         oglasRepository.save(oglas1);
@@ -88,6 +88,6 @@ public class OglasRepositoryTests {
 
         Assertions.assertEquals(1, savedOglasi.size());
         Assertions.assertNotNull(savedOglasi.getFirst());
-        Assertions.assertEquals("status1", savedOglasi.getFirst().getStatus());
+        Assertions.assertEquals(Oglas.Status.AKTIVAN, savedOglasi.getFirst().getStatus());
     }
 }
