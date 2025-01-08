@@ -58,7 +58,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
             try{
                 const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
                 const userData = response.data;
-                setUserName(userData.imeKorisnika); 
+                const imePrezime = userData.imeKorisnika + " " + userData.prezimeKorisnika
+                setUserName(imePrezime); 
               }
             catch(err){
                 console.log("Doslo je do greske", err);
