@@ -4,6 +4,7 @@ import hr.unizg.fer.ticket4ticket.dto.ObavijestDto;
 import hr.unizg.fer.ticket4ticket.entity.Obavijest;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
+import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 
 import java.time.Duration;
 
@@ -22,6 +23,11 @@ public class ObavijestMapper {
         if (obavijest.getOglas() != null) {
             dto.setOglasId(obavijest.getOglas().getIdOglasa());
         }
+        if (obavijest.getTransakcija() != null) {
+            dto.setTransakcijaId(obavijest.getTransakcija().getIdTransakcije());
+        }
+
+        dto.setObavijest_url(obavijest.getObavijest_url());
 
         return dto;
     }
@@ -43,6 +49,13 @@ public class ObavijestMapper {
             oglas.setIdOglasa(obavijestDto.getOglasId());
             obavijest.setOglas(oglas);
         }
+        if (obavijestDto.getTransakcijaId() != null) {
+            Transakcija transakcija = new Transakcija();
+            transakcija.setIdTransakcije(obavijestDto.getTransakcijaId());
+            obavijest.setTransakcija(transakcija);
+        }
+
+        obavijest.setObavijest_url(obavijestDto.getObavijest_url());
 
         return obavijest;
     }
