@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.*;
+import hr.unizg.fer.ticket4ticket.entity.Obavijest;
 import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 import hr.unizg.fer.ticket4ticket.service.*;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,9 @@ public class PreferenceController {
     @Autowired
     private UlaznicaService ulaznicaService;
 
+    @Autowired
+    private ObavijestService obavijestService;
+
 
 
     private Long getUserIdFromToken(UsernamePasswordAuthenticationToken token) {
@@ -61,9 +65,37 @@ public class PreferenceController {
     @PostMapping("/oglasi/kreiraj")
     public ResponseEntity<OglasDto> createOglas(UsernamePasswordAuthenticationToken token, @RequestBody OglasDto oglasDto) {
         try {
-            Long korisnikId = getUserIdFromToken(token);
-            oglasDto.setKorisnikId(korisnikId);
-            OglasDto createdOglas = oglasService.createOglas(oglasDto);
+            Long korisnikId = getUserIdFromToken(token); // Get the authenticated user's ID
+            oglasDto.setKorisnikId(korisnikId); // Set the user ID for the new ad
+            OglasDto createdOglas = oglasService.createOglas(oglasDto); // Create the new ad
+
+            // Fetch genres for the newly created ad as DTOs
+            List<ZanrDto> zanrovi = oglasService.getZanrsForOglas(createdOglas.getIdOglasa());
+            if (zanrovi.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            // Process each genre
+            for (ZanrDto zanrDto : zanrovi) {
+                Long zanrId = zanrDto.getIdZanra();
+
+                // Fetch users interested in this genre
+                List<KorisnikDto> korisnici = korisnikService.getKorisniciByZanr(zanrId);
+
+                // Loop through users and create notifications for those other than the current user
+                for (KorisnikDto korisnik : korisnici) {
+                    if (!korisnik.getIdKorisnika().equals(korisnikId)) {
+                        ObavijestDto obavijestDto = new ObavijestDto();
+                        obavijestDto.setOglasId(createdOglas.getIdOglasa()); // Set the created ad's ID
+                        obavijestDto.setKorisnikId(korisnik.getIdKorisnika()); // Set the recipient user ID
+                        obavijestDto.setObavijestType(Obavijest.ObavijestTip.OGLAS); // Set notification type
+                        obavijestDto.setZanrId(zanrId); // Set the genre ID
+
+                        obavijestService.createObavijest(obavijestDto); // Save the notification
+                    }
+                }
+            }
+
             return new ResponseEntity<>(createdOglas, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -212,6 +244,18 @@ public class PreferenceController {
 
 
 
+    @GetMapping("/obavijesti")
+    public ResponseEntity<List<ObavijestDto>> getObavijestiByKorisnikId(UsernamePasswordAuthenticationToken token) {
+        try {
+            Long korisnikId = getUserIdFromToken(token);
+            List<ObavijestDto> obavijesti = obavijestService.getObavijestiByKorisnikId(korisnikId);
+            return ResponseEntity.ok(obavijesti);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 

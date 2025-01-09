@@ -2,6 +2,7 @@ package hr.unizg.fer.ticket4ticket.repository;
 
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import  hr.unizg.fer.ticket4ticket.entity.Izvodac;
+import  hr.unizg.fer.ticket4ticket.entity.Zanr;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -56,5 +57,12 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
     // Method to find all Oglasi by Korisnik ID
     List<Oglas> findByKorisnik_IdKorisnika(Long korisnikId);
 
+
+    @Query("SELECT DISTINCT z FROM Oglas o " +
+            "JOIN o.ulaznica u " +
+            "JOIN u.izvodaci i " +
+            "JOIN i.zanrIzvodaca z " +
+            "WHERE o.idOglasa = :oglasId")
+    List<Zanr> findZanrsByOglasId(@Param("oglasId") Long oglasId);
 
 }

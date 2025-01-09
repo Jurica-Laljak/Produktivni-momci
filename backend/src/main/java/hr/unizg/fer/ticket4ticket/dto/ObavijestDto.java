@@ -1,5 +1,6 @@
 package hr.unizg.fer.ticket4ticket.dto;
 
+import hr.unizg.fer.ticket4ticket.entity.Obavijest;
 import lombok.*;
 
 @Getter
@@ -10,10 +11,10 @@ import lombok.*;
 public class ObavijestDto {
 
     private Long idObavijesti;
-    private Long ttl; //
     private Long zanrId;
     private Long oglasId;
     private Long transakcijaId;
-    private String obavijest_url;
-    private String obavijest;
+    private Long korisnikId;  // Added korisnikId
+
+    private Obavijest.ObavijestTip obavijestType;  // Changed to the enum type
 }

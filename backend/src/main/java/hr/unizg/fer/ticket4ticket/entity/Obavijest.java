@@ -1,10 +1,7 @@
-
 package hr.unizg.fer.ticket4ticket.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.Duration;
 
 @Getter
 @Setter
@@ -20,11 +17,8 @@ public class Obavijest {
     @Column(name = "idObavijesti", nullable = false)
     private Long idObavijesti;
 
-    @Column(name = "ttl", nullable = false)
-    private Duration timeToLive;
-
     @ManyToOne
-    @JoinColumn(name = "IDZanra", nullable = false, foreignKey = @ForeignKey(name = "fk_obavijest_zanr"))
+    @JoinColumn(name = "IDZanra", nullable = true, foreignKey = @ForeignKey(name = "fk_obavijest_zanr"))
     private Zanr zanr;
 
     @ManyToOne
@@ -35,9 +29,17 @@ public class Obavijest {
     @JoinColumn(name = "IDTransakcije", foreignKey = @ForeignKey(name = "fk_obavijest_transakcija"))
     private Transakcija transakcija;
 
-    @Column(name = "obavijest", nullable = false)
-    private String obavijest;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "obavijestTip", nullable = false)
+    private ObavijestTip obavijestTip;
 
-    @Column(name = "obavijest_url")
-    private String obavijest_url;
+    @Column(name = "korisnikId", nullable = false) // Added korisnikId column
+    private Long korisnikId;
+
+    public enum ObavijestTip {
+        ODBIO,
+        PRIHVATIO,
+        PONUDIO,
+        OGLAS
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,5 +143,19 @@ public class TransakcijaServiceImpl implements TransakcijaService {
 
         // Delete all matching Transakcije
         transakcijaRepository.deleteAll(transakcijeToDelete);
+    }
+
+    @Override
+    public TransakcijaDto getTransakcijaById(Long id) {
+        Optional<Transakcija> transakcijaOptional = transakcijaRepository.findById(id);
+
+        if (transakcijaOptional.isPresent()) {
+            // Map the entity to DTO
+            Transakcija transakcija = transakcijaOptional.get();
+            return TransakcijaMapper.mapToTransakcijaDto(transakcija);
+        } else {
+            // Handle the case where the transaction is not found, for example, throw an exception
+            throw new RuntimeException("Transakcija not found with id " + id);
+        }
     }
 }

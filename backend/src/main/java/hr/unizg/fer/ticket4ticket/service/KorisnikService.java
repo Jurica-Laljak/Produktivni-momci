@@ -20,5 +20,7 @@ public interface KorisnikService {
     KorisnikDto updateKorisnikFields(Long id, KorisnikUpdateDto updateDto);
 
     void deleteKorisnikById(Long id);
+
+    List<KorisnikDto> getKorisniciByZanr(Long zanrId);
 }
 

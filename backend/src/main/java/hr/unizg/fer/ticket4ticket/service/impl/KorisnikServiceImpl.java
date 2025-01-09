@@ -125,4 +125,20 @@ public class KorisnikServiceImpl implements KorisnikService {
         // Use the mapper to convert the entity to a DTO and return it
         return KorisnikMapper.mapToKorisnikDto(updatedKorisnik);
     }
+
+    @Override
+    public List<KorisnikDto> getKorisniciByZanr(Long zanrId) {
+        // Fetch all users
+        List<Korisnik> korisnici = korisnikRepository.findAll();
+
+        // Filter users who like the given genre
+        List<Korisnik> korisniciByZanr = korisnici.stream()
+                .filter(k -> k.getOmiljeniZanroviIds().contains(zanrId))
+                .collect(Collectors.toList());
+
+        // Map the filtered users to DTOs
+        return korisniciByZanr.stream()
+                .map(KorisnikMapper::mapToKorisnikDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,8 +1,11 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
+import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
+import hr.unizg.fer.ticket4ticket.entity.Zanr;
 import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
+import hr.unizg.fer.ticket4ticket.mapper.ZanrMapper;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
@@ -138,6 +141,17 @@ public class OglasServiceImpl implements OglasService {
 
         // Delete all Oglasi for the given korisnikId
         oglasRepository.deleteAll(oglasiToDelete);
+    }
+
+    @Override
+    public List<ZanrDto> getZanrsForOglas(Long oglasId) {
+        // Fetch the Zanr entities using the repository method
+        List<Zanr> zanrEntities = oglasRepository.findZanrsByOglasId(oglasId);
+
+        // Map each Zanr entity to ZanrDto using ZanrMapper
+        return zanrEntities.stream()
+                .map(ZanrMapper::mapToZanrDto)
+                .collect(Collectors.toList());
     }
 
 

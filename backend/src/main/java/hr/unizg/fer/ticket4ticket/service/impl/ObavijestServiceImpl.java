@@ -39,13 +39,7 @@ public class ObavijestServiceImpl implements ObavijestService {
 
     @Override
     public List<ObavijestDto> getObavijestiByKorisnikId(Long korisnikId) {
-        List<Oglas> oglasi = oglasRepository.findByKorisnikId(korisnikId);
-
-        List<Obavijest> obavijesti = new ArrayList<>();
-
-        for (Oglas oglas : oglasi) {
-            obavijesti.addAll(obavijestRepository.findByOglasId(oglas.getIdOglasa()));
-        }
+        List<Obavijest> obavijesti = obavijestRepository.findByKorisnikId(korisnikId);
 
         return obavijesti.stream()
                 .map(ObavijestMapper::mapToObavijestDto)
@@ -96,22 +90,5 @@ public class ObavijestServiceImpl implements ObavijestService {
         return true;
     }
 
-    @Override
-    @Scheduled(fixedRate = 300000)
-    public Long clearObavijestiOnTtl() {
-        List<Obavijest> obavijesti = obavijestRepository.findAll();
-        Long deleted = 0L;
 
-
-        for (Obavijest obavijest : obavijesti) {
-            Duration ttl = obavijest.getTimeToLive();
-            ttl = ttl.minus(Duration.ofMinutes(5));
-            if (ttl.isNegative() || ttl.isZero()) {
-                obavijestRepository.delete(obavijest);
-                deleted++;
-            }
-        }
-
-        return deleted;
-    }
 }

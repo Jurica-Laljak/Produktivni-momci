@@ -17,4 +17,6 @@ public interface ObavijestRepository extends JpaRepository<Obavijest,Long> {
             "JOIN o.zanr u " +
             "WHERE u.idZanra = :zanrId")
     List<Obavijest> findByZanrId(Long zanrId);
+
+    List<Obavijest> findByKorisnikId(Long korisnikId);
 }

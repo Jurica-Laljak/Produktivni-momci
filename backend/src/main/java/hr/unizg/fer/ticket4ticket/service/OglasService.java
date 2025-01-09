@@ -3,6 +3,9 @@ package hr.unizg.fer.ticket4ticket.service;
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
+import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
+import hr.unizg.fer.ticket4ticket.entity.Zanr;
+
 import java.util.List;
 
 public interface OglasService {
@@ -24,4 +27,6 @@ public interface OglasService {
     List<IzvodacDto> getIzvodaciForOglas(Long oglasId);
 
     public void deleteAllOglasiByKorisnikId(Long idKorisnika);
+
+    List<ZanrDto> getZanrsForOglas(Long oglasId);
 }

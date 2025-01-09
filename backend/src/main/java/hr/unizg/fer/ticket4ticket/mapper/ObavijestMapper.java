@@ -6,16 +6,15 @@ import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
 import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 
-import java.time.Duration;
-
 public class ObavijestMapper {
 
     public static ObavijestDto mapToObavijestDto(Obavijest obavijest) {
         ObavijestDto dto = new ObavijestDto();
 
         dto.setIdObavijesti(obavijest.getIdObavijesti());
-        dto.setTtl(obavijest.getTimeToLive().toMinutes());
-        dto.setObavijest(obavijest.getObavijest());
+
+        // Map ObavijestTip enum from entity to DTO
+        dto.setObavijestType(obavijest.getObavijestTip());
 
         if (obavijest.getZanr() != null) {
             dto.setZanrId(obavijest.getZanr().getIdZanra());
@@ -26,8 +25,8 @@ public class ObavijestMapper {
         if (obavijest.getTransakcija() != null) {
             dto.setTransakcijaId(obavijest.getTransakcija().getIdTransakcije());
         }
-
-        dto.setObavijest_url(obavijest.getObavijest_url());
+        // Map korisnikId
+        dto.setKorisnikId(obavijest.getKorisnikId());
 
         return dto;
     }
@@ -36,8 +35,9 @@ public class ObavijestMapper {
         Obavijest obavijest = new Obavijest();
 
         obavijest.setIdObavijesti(obavijestDto.getIdObavijesti());
-        obavijest.setTimeToLive(Duration.ofMinutes(obavijestDto.getTtl()));
-        obavijest.setObavijest(obavijestDto.getObavijest());
+
+        // Set the ObavijestTip enum from DTO to entity
+        obavijest.setObavijestTip(obavijestDto.getObavijestType());
 
         if (obavijestDto.getZanrId() != null) {
             Zanr zanr = new Zanr();
@@ -55,7 +55,8 @@ public class ObavijestMapper {
             obavijest.setTransakcija(transakcija);
         }
 
-        obavijest.setObavijest_url(obavijestDto.getObavijest_url());
+        // Set korisnikId
+        obavijest.setKorisnikId(obavijestDto.getKorisnikId());
 
         return obavijest;
     }

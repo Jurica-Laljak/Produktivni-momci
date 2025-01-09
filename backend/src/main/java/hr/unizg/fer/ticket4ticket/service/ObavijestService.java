@@ -22,5 +22,5 @@ public interface ObavijestService {
 
     Boolean removeObavijest(Long obavijestId);
 
-    Long clearObavijestiOnTtl();
+
 }

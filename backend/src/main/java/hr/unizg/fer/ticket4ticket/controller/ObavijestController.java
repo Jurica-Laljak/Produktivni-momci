@@ -53,7 +53,7 @@ public class ObavijestController {
         return new ResponseEntity<>(obavijestDto, HttpStatus.OK);
     }
 
-    @GetMapping("/d/{id}")
+    @GetMapping("/izbrisi/{id}")
     public ResponseEntity<Boolean> deleteObavijestById(@PathVariable("id") Long id) {
         Boolean deleted = obavijestService.removeObavijest(id);
 
