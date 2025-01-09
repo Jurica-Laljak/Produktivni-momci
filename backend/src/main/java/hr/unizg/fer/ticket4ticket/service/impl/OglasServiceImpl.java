@@ -1,23 +1,24 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
+import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
+import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
+import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
+import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
 import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
 import hr.unizg.fer.ticket4ticket.mapper.ZanrMapper;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
-import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
-import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
-import hr.unizg.fer.ticket4ticket.entity.Izvodac;
-import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,18 +80,31 @@ public class OglasServiceImpl implements OglasService {
 
     @Override
     public List<OglasDto> getOglasiByFilter(OglasFilterDto filterDto) {
-        List<Oglas> oglasi = oglasRepository.findOglasiByFilter(
-                filterDto.getImeIzvodaca(),
-                filterDto.getPrezimeIzvodaca()
-        );
+        List<Oglas> oglasi = oglasRepository.findAll();
+        Set<Oglas> rezultatOglasi = new HashSet<>();
+        Pattern pattern = Pattern.compile(
+                ".*".concat(filterDto.getPretraga().trim().replaceAll(" ", ".*|.*")).concat(".*"),
+                Pattern.CASE_INSENSITIVE);
 
         // Handle potential null return from the repository
-        if (oglasi == null) {
+        if (oglasi.isEmpty()) {
             return Collections.emptyList();
         }
 
+        for (Oglas oglas : oglasi) {
+            if (pattern.matcher(oglas.getUlaznica().getLokacijaKoncerta()).find()) {
+                rezultatOglasi.add(oglas);
+            }
+            for (Izvodac izvodac : oglas.getUlaznica().getIzvodaci().stream().toList()) {
+                if (pattern.matcher(izvodac.getImeIzvodaca()).find())
+                    rezultatOglasi.add(oglas);
+                else if (pattern.matcher(izvodac.getPrezimeIzvodaca()).find())
+                    rezultatOglasi.add(oglas);
+            }
+        }
+
         // Convert Oglas entities to OglasDto
-        return oglasi.stream()
+        return rezultatOglasi.stream()
                 .map(OglasMapper::mapToOglasDto)
                 .collect(Collectors.toList());
     }
@@ -147,14 +161,9 @@ public class OglasServiceImpl implements OglasService {
     public List<ZanrDto> getZanrsForOglas(Long oglasId) {
         // Fetch the Zanr entities using the repository method
         List<Zanr> zanrEntities = oglasRepository.findZanrsByOglasId(oglasId);
-
         // Map each Zanr entity to ZanrDto using ZanrMapper
         return zanrEntities.stream()
                 .map(ZanrMapper::mapToZanrDto)
                 .collect(Collectors.toList());
     }
-
-
-
-
 }

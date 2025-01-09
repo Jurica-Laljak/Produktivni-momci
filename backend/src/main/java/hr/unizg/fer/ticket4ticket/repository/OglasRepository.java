@@ -14,7 +14,7 @@ import java.util.Set;
 public interface OglasRepository extends JpaRepository<Oglas,Long> {
 
 
-    public List<Oglas> findByKorisnik_IdKorisnikaAndStatus(Long korisnikId, Oglas.Status status);
+    List<Oglas> findByKorisnik_IdKorisnikaAndStatus(Long korisnikId, Oglas.Status status);
 
     @Query("SELECT o FROM Oglas o " +
             "JOIN o.korisnik u " +
@@ -27,16 +27,7 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
             "JOIN u.izvodaci i " +
             "WHERE i.idIzvodaca = :izvodacId")
     Set<Oglas> findByIzvodacId(@Param("izvodacId") Long izvodacId);
-
-    // Finds Oglas instances by Izvodac's first and/or last name if provided (null or empty parameters are ignored)
-    @Query("SELECT o FROM Oglas o " +
-            "JOIN o.ulaznica u " +
-            "JOIN u.izvodaci i " +
-            "WHERE ((:izvodacIme IS NULL OR TRIM(:izvodacIme) = '') OR LOWER(i.imeIzvodaca) = LOWER(:izvodacIme)) AND " +
-            "((:izvodacPrezime IS NULL OR TRIM(:izvodacPrezime) = '') OR LOWER(i.prezimeIzvodaca) = LOWER(:izvodacPrezime))")
-    List<Oglas> findOglasiByFilter(@Param("izvodacIme") String izvodacIme,
-                                   @Param("izvodacPrezime") String izvodacPrezime);
-
+    
     // Finds Oglas instances that match the user's preferences based on the user's preferred genres
     @Query("SELECT DISTINCT o FROM Oglas o " +
             "JOIN o.ulaznica u " +
