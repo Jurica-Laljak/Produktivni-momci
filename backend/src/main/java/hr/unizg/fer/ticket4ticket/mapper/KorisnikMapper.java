@@ -19,37 +19,53 @@ public class KorisnikMapper {
         dto.setBrMobKorisnika(korisnik.getBrMobKorisnika());
         dto.setFotoKorisnika(korisnik.getFotoKorisnika());
         dto.setGoogleId(korisnik.getGoogleId());
+        dto.setPrikazujObavijesti(korisnik.isPrikazujObavijesti()); // New field mapping
 
         // Convert the Set<Izvodac> to Set<Long> (IDs)
         Set<Long> omiljeniIzvodaciIds = korisnik.getOmiljeniIzvodaci()
                 .stream()
-                .map(Izvodac::getIdIzvodaca) // Assuming Izvodac has a method getId()
+                .map(Izvodac::getIdIzvodaca)
                 .collect(Collectors.toSet());
 
         dto.setOmiljeniIzvodaciIds(omiljeniIzvodaciIds);
 
-
-        Set<Long> oglasiIds = korisnik.getOglasi() // Assuming this is the set of Oglas entities
+        Set<Long> oglasiIds = korisnik.getOglasi()
                 .stream()
-                .map(Oglas::getIdOglasa) // Assuming Oglas has a method getIdOglasa()
+                .map(Oglas::getIdOglasa)
                 .collect(Collectors.toSet());
 
         dto.setOglasiIds(oglasiIds);
 
         // Convert the Set<Zanr> to Set<Long> (IDs)
-        Set<Long> omiljeniZanroviIds = korisnik.getOmiljeniZanrovi() // Assuming this is the set of Zanr entities
+        Set<Long> omiljeniZanroviIds = korisnik.getOmiljeniZanrovi()
                 .stream()
-                .map(Zanr::getIdZanra) // Assuming Zanr has a method getIdZanra()
+                .map(Zanr::getIdZanra)
                 .collect(Collectors.toSet());
 
         dto.setOmiljeniZanroviIds(omiljeniZanroviIds);
 
-        Set<Long> roleIds = korisnik.getRoles() // Assuming this is the set of Zanr entities
+        Set<Long> roleIds = korisnik.getRoles()
                 .stream()
-                .map(Role::getIdRole) // Assuming Zanr has a method getIdZanra()
+                .map(Role::getIdRole)
                 .collect(Collectors.toSet());
 
         dto.setRoleIds(roleIds);
+
+        // Map transaction IDs (Ponuda)
+        Set<Long> transakcijePonudaIds = korisnik.getTransakcijePonuda()
+                .stream()
+                .map(Transakcija::getIdTransakcije)
+                .collect(Collectors.toSet());
+
+        dto.setTransakcijePonudaIds(transakcijePonudaIds);
+
+        // Map transaction IDs (Oglas)
+        Set<Long> transakcijeOglasIds = korisnik.getTransakcijeOglas()
+                .stream()
+                .map(Transakcija::getIdTransakcije)
+                .collect(Collectors.toSet());
+
+        dto.setTransakcijeOglasIds(transakcijeOglasIds);
 
         return dto;
     }
@@ -64,52 +80,43 @@ public class KorisnikMapper {
         korisnik.setBrMobKorisnika(korisnikDto.getBrMobKorisnika());
         korisnik.setFotoKorisnika(korisnikDto.getFotoKorisnika());
         korisnik.setGoogleId(korisnikDto.getGoogleId());
+        korisnik.setPrikazujObavijesti(korisnikDto.isPrikazujObavijesti()); // New field mapping
 
         // Initialize omiljeniIzvodaci to an empty Set
         Set<Izvodac> omiljeniIzvodaci = new HashSet<>();
-
         if (korisnikDto.getOmiljeniIzvodaciIds() != null) {
-            // Create Izvodac entities based on the IDs in the DTO
             for (Long id : korisnikDto.getOmiljeniIzvodaciIds()) {
-                Izvodac izvodac = new Izvodac(); // Assuming Izvodac has a default constructor
-                izvodac.setIdIzvodaca(id); // Set the ID
+                Izvodac izvodac = new Izvodac();
+                izvodac.setIdIzvodaca(id);
                 omiljeniIzvodaci.add(izvodac);
             }
         }
-
         korisnik.setOmiljeniIzvodaci(omiljeniIzvodaci);
 
         // Initialize oglasi to an empty Set
         Set<Oglas> oglasi = new HashSet<>();
-
         if (korisnikDto.getOglasiIds() != null) {
-            // Create Oglas entities based on the IDs in the DTO
             for (Long id : korisnikDto.getOglasiIds()) {
-                Oglas oglas = new Oglas(); // Assuming Oglas has a default constructor
-                oglas.setIdOglasa(id); // Set the ID
+                Oglas oglas = new Oglas();
+                oglas.setIdOglasa(id);
                 oglasi.add(oglas);
             }
         }
-
         korisnik.setOglasi(oglasi);
-
 
         // Initialize omiljeniZanrovi to an empty Set
         Set<Zanr> omiljeniZanrovi = new HashSet<>();
-
         if (korisnikDto.getOmiljeniZanroviIds() != null) {
-            // Create Zanr entities based on the IDs in the DTO
             for (Long id : korisnikDto.getOmiljeniZanroviIds()) {
-                Zanr zanr = new Zanr(); // Assuming Zanr has a default constructor
-                zanr.setIdZanra(id); // Set the ID
+                Zanr zanr = new Zanr();
+                zanr.setIdZanra(id);
                 omiljeniZanrovi.add(zanr);
             }
         }
-
         korisnik.setOmiljeniZanrovi(omiljeniZanrovi);
 
+        // Initialize roles to an empty Set
         Set<Role> roles = new HashSet<>();
-
         if (korisnikDto.getRoleIds() != null) {
             for (Long id : korisnikDto.getRoleIds()) {
                 Role role = new Role();
@@ -117,10 +124,30 @@ public class KorisnikMapper {
                 roles.add(role);
             }
         }
-
         korisnik.setRoles(roles);
 
-        return korisnik;
+        // Initialize transakcijePonuda to an empty Set
+        Set<Transakcija> transakcijePonuda = new HashSet<>();
+        if (korisnikDto.getTransakcijePonudaIds() != null) {
+            for (Long id : korisnikDto.getTransakcijePonudaIds()) {
+                Transakcija transakcija = new Transakcija();
+                transakcija.setIdTransakcije(id);
+                transakcijePonuda.add(transakcija);
+            }
+        }
+        korisnik.setTransakcijePonuda(transakcijePonuda);
 
+        // Initialize transakcijeOglas to an empty Set
+        Set<Transakcija> transakcijeOglas = new HashSet<>();
+        if (korisnikDto.getTransakcijeOglasIds() != null) {
+            for (Long id : korisnikDto.getTransakcijeOglasIds()) {
+                Transakcija transakcija = new Transakcija();
+                transakcija.setIdTransakcije(id);
+                transakcijeOglas.add(transakcija);
+            }
+        }
+        korisnik.setTransakcijeOglas(transakcijeOglas);
+
+        return korisnik;
     }
 }

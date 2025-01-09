@@ -61,12 +61,19 @@ public class Ulaznica {
     private Set<Izvodac> izvodaci = new HashSet<>();
 
     // One-to-Many relationship with Oglas
-    @OneToMany(mappedBy = "ulaznica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ulaznica", fetch = FetchType.LAZY)
     private Set<Oglas> oglasi = new HashSet<>();
 
     // Add a field for sifraUlaznice
     @Column(name = "sifraUlaznice", nullable = false, unique = true)
     private String sifraUlaznice;
+
+
+    @OneToMany(mappedBy = "ulaznicaPonuda", fetch = FetchType.LAZY)
+    private Set<Transakcija> transakcijePonuda = new HashSet<>();
+
+    @OneToMany(mappedBy = "ulaznicaOglas", fetch = FetchType.LAZY)
+    private Set<Transakcija> transakcijeOglas = new HashSet<>();
 
     // Enum for status
     public enum Status {
@@ -112,6 +119,20 @@ public class Ulaznica {
         TRIBINA_B,
         PARTER,
         GALERIJA
+    }
+
+    // Method to get IDs of Transakcija related to 'ponuda'
+    public Set<Long> getTransakcijePonudaIds() {
+        return transakcijePonuda.stream()
+                .map(Transakcija::getIdTransakcije)  // Assuming Transakcija has a method getIdTransakcije
+                .collect(Collectors.toSet());
+    }
+
+    // Method to get IDs of Transakcija related to 'oglas'
+    public Set<Long> getTransakcijeOglasIds() {
+        return transakcijeOglas.stream()
+                .map(Transakcija::getIdTransakcije)  // Assuming Transakcija has a method getIdTransakcije
+                .collect(Collectors.toSet());
     }
 }
 

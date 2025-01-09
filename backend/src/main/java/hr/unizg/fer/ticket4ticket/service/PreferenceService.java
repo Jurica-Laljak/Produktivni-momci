@@ -16,4 +16,6 @@ public interface PreferenceService {
 
 
     UlaznicaDto changeUlaznicaStatusAndAssignUser(String sifraUlaznice, Long korisnikId);
+
+    void resetUlazniceStatusAndClearUser(Long korisnikId);
 }

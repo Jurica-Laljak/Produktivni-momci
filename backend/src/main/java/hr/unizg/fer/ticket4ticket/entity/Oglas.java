@@ -3,6 +3,8 @@ package hr.unizg.fer.ticket4ticket.entity;
 import jakarta.persistence.*; // Import for JPA annotations
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import java.util.Set;
+import java.util.HashSet;
 
 @Getter
 @Setter
@@ -24,13 +26,16 @@ public class Oglas {
 
     // Many-to-One relationship with Ulaznica
     @ManyToOne
-    @JoinColumn(name = "IDUlaznice", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica"))
+    @JoinColumn(name = "IDUlaznice", nullable = true, foreignKey = @ForeignKey(name = "fk_oglas_ulaznica"))
     private Ulaznica ulaznica;
 
     // Many-to-One relationship with Korisnik
     @ManyToOne
     @JoinColumn(name = "IDKorisnika", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_korisnik"))
     private Korisnik korisnik;
+
+    @OneToMany( fetch = FetchType.LAZY)
+    private Set<Transakcija> transakcije = new HashSet<>();
 
     // Enum for status
     public enum Status {

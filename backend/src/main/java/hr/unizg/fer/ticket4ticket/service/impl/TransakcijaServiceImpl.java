@@ -132,4 +132,15 @@ public class TransakcijaServiceImpl implements TransakcijaService {
                 updatedTransakcija.getDatumTransakcije()
         );
     }
+
+    @Override
+    public void deleteTransakcijeByKorisnikId(Long korisnikId) {
+        // Delete all Transakcije where the provided korisnikId is either in idKorisnikPonuda or idKorisnikOglas
+        List<Transakcija> transakcijeToDelete = transakcijaRepository.findByKorisnikPonuda_IdKorisnikaOrKorisnikOglas_IdKorisnika(korisnikId,korisnikId);
+
+
+
+        // Delete all matching Transakcije
+        transakcijaRepository.deleteAll(transakcijeToDelete);
+    }
 }

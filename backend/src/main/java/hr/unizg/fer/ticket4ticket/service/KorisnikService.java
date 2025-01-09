@@ -18,5 +18,7 @@ public interface KorisnikService {
     KorisnikDto assignAdminByGoogleId(String googleId);
 
     KorisnikDto updateKorisnikFields(Long id, KorisnikUpdateDto updateDto);
+
+    void deleteKorisnikById(Long id);
 }
 

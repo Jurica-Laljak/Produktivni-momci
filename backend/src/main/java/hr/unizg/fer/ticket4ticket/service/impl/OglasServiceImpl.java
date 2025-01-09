@@ -129,6 +129,17 @@ public class OglasServiceImpl implements OglasService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteAllOglasiByKorisnikId(Long idKorisnika) {
+        // First, find all the Oglasi associated with the given korisnikId
+        List<Oglas> oglasiToDelete = oglasRepository.findByKorisnik_IdKorisnika(idKorisnika);
+
+
+
+        // Delete all Oglasi for the given korisnikId
+        oglasRepository.deleteAll(oglasiToDelete);
+    }
+
 
 
 

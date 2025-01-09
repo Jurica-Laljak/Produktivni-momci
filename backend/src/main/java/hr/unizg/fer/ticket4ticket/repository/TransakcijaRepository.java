@@ -13,4 +13,6 @@ public interface TransakcijaRepository extends JpaRepository<Transakcija, Long> 
     List<Transakcija> findByKorisnikPonuda_IdKorisnikaAndStatusTransakcije(Long korisnikPonudaId, Transakcija.StatusTransakcije statusTransakcije);
 
     List<Transakcija> findByKorisnikOglas_IdKorisnikaAndStatusTransakcije(Long korisnikPonudaId, Transakcija.StatusTransakcije statusTransakcije);
+
+    List<Transakcija> findByKorisnikPonuda_IdKorisnikaOrKorisnikOglas_IdKorisnika(Long korisnikPonudaId, Long korisnikOglasId);
 }

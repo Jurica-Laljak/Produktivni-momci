@@ -51,4 +51,10 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
             "JOIN i.ulaznice u " +
             "WHERE u.idUlaznice = :ulaznicaId")
     List<Izvodac> findIzvodaciByUlaznicaId(@Param("ulaznicaId") Long ulaznicaId);
+
+
+    // Method to find all Oglasi by Korisnik ID
+    List<Oglas> findByKorisnik_IdKorisnika(Long korisnikId);
+
+
 }

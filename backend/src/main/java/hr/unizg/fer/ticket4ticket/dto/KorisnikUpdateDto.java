@@ -11,4 +11,5 @@ public class KorisnikUpdateDto {
     private String imeKorisnika;
     private String prezimeKorisnika;
     private String brMobKorisnika;
+    private Boolean prikazujObavijesti; // Optional field for notifications
 }

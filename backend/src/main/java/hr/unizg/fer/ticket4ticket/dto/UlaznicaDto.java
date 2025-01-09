@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -23,7 +24,9 @@ public class UlaznicaDto {
     private String status; // Status as a String (NEPREUZETA, PREUZETA)
     private Long idKorisnika; // ID of the associated user (if claimed)
     private String sifraUlaznice;
-    private Set<Long> izvodaciIds;
-    private Set<Long> oglasiIds;
+    private Set<Long> izvodaciIds; // Set of Izvodac IDs
+    private Set<Long> oglasiIds; // Set of Oglas IDs
+    private Set<Long> transakcijePonudaIds; // Set of Transakcija IDs for "ponuda"
+    private Set<Long> transakcijeOglasIds; // Set of Transakcija IDs for "oglas"
 }
 

@@ -23,5 +23,5 @@ public interface OglasService {
 
     List<IzvodacDto> getIzvodaciForOglas(Long oglasId);
 
-
+    public void deleteAllOglasiByKorisnikId(Long idKorisnika);
 }

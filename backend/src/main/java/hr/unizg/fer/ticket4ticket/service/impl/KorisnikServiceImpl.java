@@ -38,6 +38,18 @@ public class KorisnikServiceImpl implements KorisnikService {
         return KorisnikMapper.mapToKorisnikDto(savedKorisnik);
     }
 
+
+    @Override
+    @Transactional
+    public void deleteKorisnikById(Long id) {
+
+
+        if (!korisnikRepository.existsById(id)) {
+            throw new EntityNotFoundException("Korisnik with id " + id + " not found");
+        }
+        korisnikRepository.deleteById(id);
+    }
+
     @Override
     public KorisnikDto getKorisnikById(Long korisnikId) {
         Korisnik korisnik = korisnikRepository.findById(korisnikId)
@@ -87,8 +99,9 @@ public class KorisnikServiceImpl implements KorisnikService {
         return KorisnikMapper.mapToKorisnikDto(savedKorisnik);
     }
 
-
+    @Override
     public KorisnikDto updateKorisnikFields(Long id, KorisnikUpdateDto updateDto) {
+        // Fetch the Korisnik entity from the repository
         Korisnik korisnik = korisnikRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Korisnik with id " + id + " not found"));
 
@@ -102,11 +115,14 @@ public class KorisnikServiceImpl implements KorisnikService {
         if (updateDto.getBrMobKorisnika() != null) {
             korisnik.setBrMobKorisnika(updateDto.getBrMobKorisnika());
         }
+        if (updateDto.getPrikazujObavijesti() != null) {
+            korisnik.setPrikazujObavijesti(updateDto.getPrikazujObavijesti());
+        }
 
-        // Save updated entity
+        // Save the updated Korisnik entity
         Korisnik updatedKorisnik = korisnikRepository.save(korisnik);
 
-        // Use the mapper to convert the entity to a DTO
+        // Use the mapper to convert the entity to a DTO and return it
         return KorisnikMapper.mapToKorisnikDto(updatedKorisnik);
     }
 }

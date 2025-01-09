@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.dto;
 
 import lombok.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,4 +14,5 @@ public class OglasDto {
     private String status;
     private Long korisnikId;
     private Long ulaznicaId;
+    private Set<Long> transakcijeIds; // Set of transaction IDs
 }

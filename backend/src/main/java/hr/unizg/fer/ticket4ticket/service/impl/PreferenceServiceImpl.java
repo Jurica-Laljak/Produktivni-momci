@@ -102,5 +102,25 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
 
+    @Override
+    public void resetUlazniceStatusAndClearUser(Long korisnikId) {
+        // Find all Ulaznica entities associated with the given korisnikId
+        List<Ulaznica> ulaznice = ulaznicaRepository.findAllByKorisnik_IdKorisnika(korisnikId); ;
+
+
+
+        // Iterate through each Ulaznica and update the status and clear the user
+        for (Ulaznica ulaznica : ulaznice) {
+            // Set the status to NEPREUZETA
+            ulaznica.setStatus(Ulaznica.Status.NEPREUZETA);
+
+            // Set the idKorisnika (the user) to null
+            ulaznica.setKorisnik(null);
+        }
+
+        // Save all the updated Ulaznica entities
+        ulaznicaRepository.saveAll(ulaznice);
+    }
+
 
 }

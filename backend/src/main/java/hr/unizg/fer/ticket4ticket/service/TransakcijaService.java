@@ -13,4 +13,6 @@ public interface TransakcijaService {
     void deleteTransakcijaById(Long transakcijaId);
 
     TransakcijaDto updateStatusTransakcije(Long transakcijaId, Transakcija.StatusTransakcije newStatus);
+
+    public void deleteTransakcijeByKorisnikId(Long korisnikId);
 }

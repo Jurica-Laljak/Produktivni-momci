@@ -4,11 +4,11 @@ import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
+import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UlaznicaMapper {
 
@@ -24,13 +24,13 @@ public class UlaznicaMapper {
         dto.setUrlInfo(ulaznica.getUrlInfo());
         dto.setStatus(ulaznica.getStatus().name()); // Convert Enum to String
         dto.setIdKorisnika(ulaznica.getKorisnik() != null ? ulaznica.getKorisnik().getIdKorisnika() : null);
-
-        // Map sifraUlaznice
-        dto.setSifraUlaznice(ulaznica.getSifraUlaznice());
-
-        // Map related Izvodaci and Oglasi
+        dto.setSifraUlaznice(ulaznica.getSifraUlaznice()); // Map the new sifraUlaznice field
         dto.setIzvodaciIds(ulaznica.getIzvodaciIds());
         dto.setOglasiIds(ulaznica.getOglasiIds());
+
+        // New fields for transakcijePonuda and transakcijeOglas
+        dto.setTransakcijePonudaIds(ulaznica.getTransakcijePonudaIds());
+        dto.setTransakcijeOglasIds(ulaznica.getTransakcijeOglasIds());
 
         return dto;
     }
@@ -83,6 +83,27 @@ public class UlaznicaMapper {
             }
         }
         ulaznica.setOglasi(oglasi);
+
+        // New fields for transakcijePonuda and transakcijeOglas
+        Set<Transakcija> transakcijePonuda = new HashSet<>();
+        if (ulaznicaDto.getTransakcijePonudaIds() != null) {
+            for (Long id : ulaznicaDto.getTransakcijePonudaIds()) {
+                Transakcija transakcija = new Transakcija();
+                transakcija.setIdTransakcije(id);
+                transakcijePonuda.add(transakcija);
+            }
+        }
+        ulaznica.setTransakcijePonuda(transakcijePonuda);
+
+        Set<Transakcija> transakcijeOglas = new HashSet<>();
+        if (ulaznicaDto.getTransakcijeOglasIds() != null) {
+            for (Long id : ulaznicaDto.getTransakcijeOglasIds()) {
+                Transakcija transakcija = new Transakcija();
+                transakcija.setIdTransakcije(id);
+                transakcijeOglas.add(transakcija);
+            }
+        }
+        ulaznica.setTransakcijeOglas(transakcijeOglas);
 
         return ulaznica;
     }

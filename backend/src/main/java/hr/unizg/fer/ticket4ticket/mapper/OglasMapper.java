@@ -4,6 +4,11 @@ import hr.unizg.fer.ticket4ticket.dto.OglasDto;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
+import hr.unizg.fer.ticket4ticket.entity.Transakcija;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class OglasMapper {
 
@@ -23,6 +28,15 @@ public class OglasMapper {
         }
         if (oglas.getUlaznica() != null) {
             dto.setUlaznicaId(oglas.getUlaznica().getIdUlaznice());
+        }
+
+        // Map the transaction IDs
+        if (oglas.getTransakcije() != null) {
+            Set<Long> transakcijeIds = oglas.getTransakcije()
+                    .stream()
+                    .map(Transakcija::getIdTransakcije)
+                    .collect(Collectors.toSet());
+            dto.setTransakcijeIds(transakcijeIds);
         }
 
         return dto;
@@ -48,6 +62,17 @@ public class OglasMapper {
             Ulaznica ulaznica = new Ulaznica();
             ulaznica.setIdUlaznice(oglasDto.getUlaznicaId());
             oglas.setUlaznica(ulaznica);
+        }
+
+        // Set the related transactions based on their IDs
+        if (oglasDto.getTransakcijeIds() != null) {
+            Set<Transakcija> transakcije = new HashSet<>();
+            for (Long id : oglasDto.getTransakcijeIds()) {
+                Transakcija transakcija = new Transakcija();
+                transakcija.setIdTransakcije(id);
+                transakcije.add(transakcija);
+            }
+            oglas.setTransakcije(transakcije);
         }
 
         return oglas;

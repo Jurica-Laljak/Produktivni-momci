@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -196,6 +197,17 @@ public class PreferenceController {
         Long userId = getUserIdFromToken(authenticationToken); // Get the user ID from the token
         KorisnikDto updatedKorisnik = korisnikService.updateKorisnikFields(userId, updateDto);
         return ResponseEntity.ok(updatedKorisnik);
+    }
+
+    @Transactional
+    @DeleteMapping("/korisnici/izbrisi")
+    public ResponseEntity<Void> deleteKorisnik(UsernamePasswordAuthenticationToken token) {
+        Long korisnikId = getUserIdFromToken(token);
+        preferenceService.resetUlazniceStatusAndClearUser(korisnikId); //this will detach all tickets from user
+        transakcijaService.deleteTransakcijeByKorisnikId(korisnikId);
+        oglasService.deleteAllOglasiByKorisnikId(korisnikId);
+        korisnikService.deleteKorisnikById(korisnikId);
+        return ResponseEntity.noContent().build(); // Returns 204 No Content on successful deletion
     }
 
 
