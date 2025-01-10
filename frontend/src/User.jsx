@@ -5,133 +5,7 @@ import axiosPrivate from "./api/axiosPrivate";
 import "./User2.css";
 import { FiSettings } from "react-icons/fi";
 
-/*
-export default function User(){
 
-    const [formData, setFormData] = useState({
-        firsName:"",
-        lastName:"",
-        phoneNumber:""
-    })
-
-
-    const navigate = useNavigate()
-
-    const handleEditPreferences = () => {
-        navigate("/ChooseGenres")
-    }
-
-     // dohvati ime prezime i broj telefona korsinika
-     useEffect(() => {
-        const token = localStorage.getItem('token');
-        
-         
-          try {
-            const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
-          
-  
-            const getUserData = async () => {
-              try{
-                  const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
-                  const userData = response.data;
-                  const ime = userData.imeKorisnika;
-                  const prezime = userData.prezimeKorisnika;
-                  const broj = userData.brMobKorisnika;
-                    const user = {
-                        firstName: ime,
-                        lastName: prezime,
-                        phoneNumber: broj
-                    }
-                    
-                    setFormData(user);
-
-                }
-              catch(err){
-                  console.log("Doslo je do greske", err);
-              }
-            } 
-             
-             getUserData();
-  
-           
-            
-          } catch (error) {
-            console.error('Error decoding token:', error);
-          }
-        
-      }, []);
-
-    return(
-        <div className="user-settings-container">
-      <div className="settings-row">
-        <div className="section">
-          <h3>Osobni podaci</h3>
-          <div className="form-group">
-            <label htmlFor="first-name">Ime</label>
-            <input
-              type="text"
-              id="first-name"
-              className="form-control"
-              value={formData.firstName}
-              readOnly
-            />
-            <button className="btn btn-outline-primary">Uredi</button>
-          </div>
-          <div className="form-group">
-            <label htmlFor="last-name">Prezime</label>
-            <input
-              type="text"
-              id="last-name"
-              className="form-control"
-              value={formData.lastName}
-              readOnly
-            />
-            <button className="btn btn-outline-primary">Uredi</button>
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone-number">Broj telefona</label>
-            <input
-              type="text"
-              id="phone-number"
-              className="form-control"
-              value={formData.phoneNumber}
-              readOnly
-            />
-            <button className="btn btn-outline-primary">Uredi</button>
-          </div>
-        </div>
-
-        <div className="section">
-          <h3>Preferencije</h3>
-          <button
-            className="btn btn-outline-primary preference-btn"
-            onClick={handleEditPreferences}
-          >
-            <FiSettings className="icon" /> Uredi preferencije
-          </button>
-        </div>
-      </div>
-
-      <div className="section">
-        <h3>Obavijesti</h3>
-        <div className="checkbox-group">
-          <div>
-            <input type="checkbox" id="allow-notifications" checked />
-            <label htmlFor="allow-notifications">
-              Dozvoli obavijesti unutar aplikacije
-            </label>
-          </div>
-          
-        </div>
-      </div>
-
-      <button className="btn btn-danger delete-account-btn">
-        Obriši korisnički račun
-      </button>
-    </div>
-        
-    )
-}   */
 
     export default function User(){
 
@@ -170,9 +44,9 @@ export default function User(){
               try{
                   const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
                   const userData = response.data;
-                  const ime = userData.imeKorisnika;
-                  const prezime = userData.prezimeKorisnika;
-                  const broj = userData.brMobKorisnika;
+                  const ime = userData.imeKorisnika || "";
+                  const prezime = userData.prezimeKorisnika || "";
+                  const broj = userData.brMobKorisnika  || "";
                     const user = {
                         imeKorisnika: ime,
                         prezimeKorisnika: prezime,
@@ -218,6 +92,16 @@ export default function User(){
       };
     
       const handleSave = async (field) => {
+         // Provjera formata broja mobitela
+         console.log("Save")
+         console.log(formData[field])
+         if (field === "brMobKorisnika") {
+          const isValidNumber = /^09\d{7}$/.test(formData[field]);
+          if (!isValidNumber) {
+          alert("Unesite ispravan broj mobitela u formatu '0911234567'.");
+          return; // Prekini ako broj nije ispravan
+            }
+  }
        
         const updatedField = { [field]: formData[field] };
     
@@ -267,7 +151,7 @@ export default function User(){
                       type="text"
                       id={field}
                       className="form-control"
-                      value={formData[field]}
+                      value={formData[field] || ""}
                       onChange={handleInputChange}
                     />
                   ) : (
@@ -275,7 +159,7 @@ export default function User(){
                       type="text"
                       id={field}
                       className="form-control"
-                      value={formData[field]}
+                      value={formData[field] || ""}
                       readOnly
                     />
                   )}
@@ -284,17 +168,17 @@ export default function User(){
                  isEditing[field]
                 ? isChanged[field]
                ? "success"
-             : "secondary" // Onemogućen izgled ako nema promjene
+             : "secondary" 
              : "primary"
                  }`}
                         onClick={() =>
                       isEditing[field]
                    ? isChanged[field]
                   ? handleSave(field)
-                 : alert("Nema promjena za spremanje.") // Može biti suptilnije, npr. gumb onemogućen
+                 : alert("Nema promjena za spremanje.") 
                   : handleEditToggle(field)
                }
-             disabled={isEditing[field] && !isChanged[field]} // Onemogući gumb ako nema promjene
+             disabled={isEditing[field] && !isChanged[field]} 
 >
            {isEditing[field] ? "Spremi" : "Uredi"}
           </button>
@@ -333,3 +217,5 @@ export default function User(){
         </div>
       );
     };
+
+
