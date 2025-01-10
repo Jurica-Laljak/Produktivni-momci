@@ -90,5 +90,16 @@ public class ObavijestServiceImpl implements ObavijestService {
         return true;
     }
 
+    @Override
+    public void deleteObavijestiByKorisnikId(Long korisnikId) {
+        // Fetch all notifications for the given korisnikId
+        List<Obavijest> obavijesti = obavijestRepository.findByKorisnikId(korisnikId);
+
+        // Delete all fetched notifications
+        if (!obavijesti.isEmpty()) {
+            obavijestRepository.deleteAll(obavijesti);
+        }
+    }
+
 
 }

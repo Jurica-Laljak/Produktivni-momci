@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,6 +52,9 @@ public class Transakcija {
     @NotNull
     @Column(name = "datumTransakcije", nullable = false)
     private LocalDateTime datumTransakcije;
+
+    @OneToMany(mappedBy = "transakcija", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Obavijest> obavijesti;
 
     public enum StatusTransakcije {
         CEKA_POTVRDU,

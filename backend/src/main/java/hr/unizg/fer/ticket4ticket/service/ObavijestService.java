@@ -22,5 +22,7 @@ public interface ObavijestService {
 
     Boolean removeObavijest(Long obavijestId);
 
+    void deleteObavijestiByKorisnikId(Long korisnikId);
+
 
 }

@@ -3,6 +3,8 @@ package hr.unizg.fer.ticket4ticket.entity;
 import jakarta.persistence.*; // Import for JPA annotations
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -36,6 +38,9 @@ public class Oglas {
 
     @OneToMany( fetch = FetchType.LAZY)
     private Set<Transakcija> transakcije = new HashSet<>();
+
+    @OneToMany(mappedBy = "oglas", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Obavijest> obavijesti;
 
     // Enum for status
     public enum Status {

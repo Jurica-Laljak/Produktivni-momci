@@ -235,6 +235,7 @@ public class PreferenceController {
     @DeleteMapping("/korisnici/izbrisi")
     public ResponseEntity<Void> deleteKorisnik(UsernamePasswordAuthenticationToken token) {
         Long korisnikId = getUserIdFromToken(token);
+        obavijestService.deleteObavijestiByKorisnikId(korisnikId);
         preferenceService.resetUlazniceStatusAndClearUser(korisnikId); //this will detach all tickets from user
         transakcijaService.deleteTransakcijeByKorisnikId(korisnikId);
         oglasService.deleteAllOglasiByKorisnikId(korisnikId);
