@@ -21,11 +21,11 @@ public class Obavijest {
     @JoinColumn(name = "IDZanra", nullable = true, foreignKey = @ForeignKey(name = "fk_obavijest_zanr"))
     private Zanr zanr;
 
-    @ManyToOne (cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "IDOglasa", foreignKey = @ForeignKey(name = "fk_obavijest_oglas"))
     private Oglas oglas;
 
-    @ManyToOne (cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "IDTransakcije", foreignKey = @ForeignKey(name = "fk_obavijest_transakcija"))
     private Transakcija transakcija;
 
