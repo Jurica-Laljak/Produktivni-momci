@@ -4,11 +4,11 @@ import Listing from './Listing';
 import './ListingList.css';
 import axiosPrivate from "./api/axiosPrivate";
 
-
 export default function UserListingList() {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
+    // Provjera tokena i pohrana u localStorage
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
 
@@ -21,19 +21,15 @@ export default function UserListingList() {
     }
   }, []);
 
-
-//   // Dohvati oglase po preferencama prilikom inicijalnog rendera
   useEffect(() => {
-    
     const fetchListings = async () => {
       try {
-      
-        let response = await axiosPrivate.get('preference/oglasi'); // Dohvaćanje oglasa po preferencama
+        // Dohvaćanje oglasa po preferencama
+        let response = await axiosPrivate.get('preference/oglasi');
         let listingsData = response.data;
 
-        // Provjeravamo je li listingsData prazan niz
+        // Ako nema oglasa po preferencama, dohvaćamo default oglase
         if (listingsData.length === 0) {
-          // Ako je prazan, dohvaćamo oglase putem drugog endpointa
           const fallbackResponse = await axios.get('api/oglasi/list/12');
           listingsData = fallbackResponse.data;
         }
@@ -42,7 +38,7 @@ export default function UserListingList() {
           listingsData.map(async (listing) => {
             const izvodaciResponse = await axios.get(`api/oglasi/${listing.idOglasa}/izvodaci`);
             const ulaznicaResponse = await axios.get(`api/ulaznice/${listing.ulaznicaId}`);
-            
+
             const izvodaciWithGenres = await Promise.all(
               izvodaciResponse.data.map(async (izvodac) => {
                 try {
@@ -78,20 +74,16 @@ export default function UserListingList() {
   }, []);
 
   return (
-    <div className="container mt-4">
-  <div className="row">
-    {listings.map((listing) => (
-      <div key={listing.idOglasa} className="col-12 col-md-4 col-lg-3 mb-5">
+    <div className="listingContainer">
+      {listings.map((listing) => (
         <Listing
+          key={listing.idOglasa}
           idOglasa={listing.idOglasa}
           status={listing.status}
           ulaznica={listing.ulaznica}
           izvodaci={listing.izvodaci}
         />
-      </div>
-    ))}
-  </div>
-</div>
-
+      ))}
+    </div>
   );
 }

@@ -9,6 +9,8 @@
     align-items: center; 
     margin-left: 12em;
     position: relative;
+    border: 2px solid black;
+    border-radius: 15px;
 }
 
 input{
@@ -26,7 +28,7 @@ input:focus{
 }
 
 #search-icon{
-    color: royalblue;
+    color: black;
 }
 
 .search-results-container {
@@ -38,3 +40,7 @@ input:focus{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000; 
 }
+
+input::placeholder {
+    color: black;       /* Providnost teksta */
+  }

@@ -1,42 +1,86 @@
-.custom-navbar{
-  background-color:#b1bcf1  !important; 
-  color: black; 
+.custom-navbar {
+  background-color: #C6CDF1 !important;
+  color: black;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;  
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Dodaje razmak gore/dolje (10px) i lijevo/desno (20px) */
+  border-bottom: 2px solid black;
 }
 
+.navbar-brand {
+  margin-left: 10px; /* Razmak lijevo od logotipa */
+}
 
 .navbar-brand img {
   max-height: 40px;
 }
 
 .navbar-collapse {
+  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
-}
-
-.navbar-collapse .d-flex {
+  justify-content: space-between; /* Ravnomjerno raspoređuje unutar collapse-a */
   align-items: center;
 }
 
+.navbar-collapse .d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Jednostavan način za ravnomjernu udaljenost između elemenata */
+}
+
 .btn-primary {
-  margin-left: 10px; /* Dodaje razmak između "Kreiraj oglas" i Search bara */
+  margin-left: 10px;
 }
 
 .welcome-text {
   flex-grow: 1;
-  text-align: center; /* Centriraj tekst */
+  text-align: center;
   font-size: 1.2rem;
-  margin-right: auto; /* Gura ikone i gumbe desno */
-  margin-left: auto; /* Centriranje između elemenata */
+  margin: 0 auto; /* Centriranje teksta unutar d-flex */
 }
 
-
+.nav-link {
+  margin-right: 10px; /* Razmak desno od "Sign in with Google" gumba */
+}
 
 .nav-link svg {
   margin-left: 5px;
-  
 }
 
+
+.btn-create-ad {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important; 
+  border-radius: 15px !important;
+  font-weight: bold !important;
+  font-size: 16px  !important;
+}
+
+.btn-create-ad:hover{
+  background-color: white !important;
+  color: black !important;
+  border: 2px solid black !important; 
+  border-radius: 15px !important;
+}
+
+.btn-log-out {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important; 
+  border-radius: 15px !important;
+  font-weight: bold !important;
+  font-size: 16px  !important;
+}
+
+.nav-link svg {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover svg {
+  transform: scale(1.2); /* Povećava ikonu kada miš pređe preko nje */
+  color: #0d6efd; /* Plava boja pri hoveru */
+}

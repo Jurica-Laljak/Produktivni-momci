@@ -1,24 +1,8 @@
-
 .listingContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin: 20px auto; 
-  }
-  
-  
- 
-  .card {
-    transition: transform 0.2s ease-in-out;
-    border-radius: 10px;
-    background-color: #f0f4f8;
-    margin: 7px;
-    padding: 0px;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-    
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 oglasa po redu */
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
   

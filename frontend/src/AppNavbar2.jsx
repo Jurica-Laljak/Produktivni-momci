@@ -35,41 +35,34 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import { Link, useLocation, useNavigate } from 'react-router-dom';
   import SearchBar from './SearchBar';
   import { FcGoogle } from 'react-icons/fc';
-  import { FaUserCircle, FaHome } from 'react-icons/fa';
+  import { FaUserCircle, FaHome, FaBell } from 'react-icons/fa'; // Dodali smo FaBell
   import './AppNavbar.css';
-  import axiosPrivate from "./api/axiosPrivate";
+  import axiosPrivate from './api/axiosPrivate';
   
   export default function AppNavbar2({ setResults, zanrovi }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
-
-    // Provjera tokena u localStorage prilikom svakog renderiranja
+  
     useEffect(() => {
       const token = localStorage.getItem('token');
       if (token) {
         setIsLoggedIn(true);
         try {
-          const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
-        
-
+          const googleID = JSON.parse(atob(token.split('.')[1]));
+  
           const getUserData = async () => {
-            try{
-                const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
-                const userData = response.data;
-                const imePrezime = userData.imeKorisnika + " " + userData.prezimeKorisnika
-                setUserName(imePrezime); 
-              }
-            catch(err){
-                console.log("Doslo je do greske", err);
+            try {
+              const response = await axiosPrivate.get(`korisnici/g/${googleID.sub}`);
+              const userData = response.data;
+              const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
+              setUserName(imePrezime);
+            } catch (err) {
+              console.log('Doslo je do greske', err);
             }
-          } 
-           //request za dobit podatke o useru
-           getUserData();
-
-         
-          
+          };
+          getUserData();
         } catch (error) {
           console.error('Error decoding token:', error);
         }
@@ -79,79 +72,75 @@ export default function AppNavbar2({ setResults,zanrovi }) {
     }, [location]);
   
     const handleLogout = () => {
-      localStorage.removeItem('token'); // Briše token iz localStorage
+      localStorage.removeItem('token');
       setIsLoggedIn(false);
       navigate('/');
     };
   
-    const isUserRoute = location.pathname === '/user' || location.pathname === '/userUlaznice' || location.pathname === '/userOglasi';
-
+    const isUserRoute =
+      location.pathname === '/user' ||
+      location.pathname === '/userUlaznice' ||
+      location.pathname === '/userOglasi';
+  
     return (
       <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
-        <div className="container">
+        <div className="d-flex justify-content-between align-items-center w-100">
           <Link className="navbar-brand" to="/">
             <img src="/Ticket4Ticket_transparent.png" alt="t4t" style={{ height: '40px' }} />
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav" style={{ marginLeft: '-100px' }}>
-            <div className="d-flex ms-auto w-100">
-              {isLoggedIn ? (
-                isUserRoute  ? (
-                  // Prilagođeni sadržaj za rutu /user 
-                  <>
-                    <span className="welcome-text">Dobrodošao {userName}</span>
-                    <div className="ms-auto d-flex align-items-center">
-                      <Link to="/UserHome" className="nav-link">
-                        <FaHome style={{ fontSize: '3rem', color: '#0d6efd' }} />
-                      </Link>
-                      <button onClick={handleLogout} className="btn btn-primary ms-2">
-                        Odjavite se
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  // Prilagođeni sadržaj za ostale rute kada je korisnik prijavljen
-                  <>
-                    <SearchBar setResults={setResults} zanrovi={zanrovi} />
-                    <div className="d-flex align-items-center">
-                      <Link to="/create-ad" className="btn btn-primary me-2">
-                        + Kreiraj oglas
-                      </Link>
-                      <Link to="/user" className="nav-link">
-                        <FaUserCircle style={{ fontSize: '2.5rem' }} />
-                      </Link>
-                    </div>
-                  </>
-                )
-              ) : (
-                // Sadržaj za neprijavljene korisnike
-                <>
-                  <SearchBar setResults={setResults} zanrovi={zanrovi} />
-                  <ul className="navbar-nav ms-3">
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/login">
-                        Log in with Google <FcGoogle style={{ marginLeft: '5px' }} />
-                      </Link>
-                    </li>
-                  </ul>
-                </>
-              )}
+  
+          {isLoggedIn ? (
+            isUserRoute ? (
+              <div className="d-flex justify-content-between align-items-center w-100">
+                <span className="welcome-text" >Dobrodošli <span style={{color:'#425DFF'}}>{userName}</span></span>
+                <Link to="/UserHome" className="nav-link">
+                  <FaHome style={{ fontSize: '3rem', color: '#425DFF' }} />
+                </Link>
+                <button onClick={handleLogout} className="btn btn-primary ms-2" style={{backgroundColor:'#425DFF', color:'white', border:'none'}}>
+                  Odjavite se
+                </button>
+              </div>
+            ) : (
+              <div className="d-flex justify-content-between align-items-center w-100">
+                <SearchBar setResults={setResults} zanrovi={zanrovi} />
+                <Link to="/create-ad" className="btn btn-create-ad me-2">
+                  + Kreiraj oglas
+                </Link>
+                {/* Dodajemo ikonu zvona */}
+                <Link to="/notifications" className="nav-link">
+                  <FaBell style={{ fontSize: '2.5rem', color: '#425DFF' }} />
+                </Link>
+                <Link to="/user" className="nav-link">
+                  <FaUserCircle style={{ fontSize: '2.5rem', color: '#425DFF' }} />
+                </Link>
+              </div>
+            )
+          ) : (
+            <div className="d-flex justify-content-between align-items-center w-100">
+              <SearchBar setResults={setResults} zanrovi={zanrovi} />
+              <ul className="navbar-nav ms-3">
+                <li className="nav-item">
+                  <Link
+                    className="nav-link"
+                    to="/login"
+                    style={{
+                      color: 'black',
+                      border: 'solid 2px',
+                      borderRadius: '15px',
+                      backgroundColor: 'white',
+                    }}
+                  >
+                    <FcGoogle style={{ marginLeft: '5px' }} /> Sign in with Google
+                  </Link>
+                </li>
+              </ul>
             </div>
-          </div>
+          )}
         </div>
       </nav>
     );
   }
+  
   
 
 

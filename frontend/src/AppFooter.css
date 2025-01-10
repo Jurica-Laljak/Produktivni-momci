@@ -1,21 +1,31 @@
 .custom-footer {
-    background-color:#455dfb;
-    color: #fbfbe4 ;
-    font-size: 14px;
-  }
-  
-  .custom-footer h5 {
-    color:#fbfbe4 ;
-  }
-  
-  .custom-footer a {
-    color: #fbfbe4 ;
-    text-decoration: none;
-  }
-  
-  .custom-footer a:hover {
-    color: #fcb405 ;
-    text-decoration: underline;
-  }
+  background-color: #C6CDF1; /* Svijetlosiva pozadina */
+  border-top: 2px solid black; /* Gornji rub */
+}
+
+.custom-footer a {
+  text-decoration: none; /* Ukloni podcrtavanje */
+  color: black; /* Crna boja za link */
+}
+
+.custom-footer a:hover {
+  text-decoration: underline; /* Podcrtavanje na hover */
+}
+
+.custom-footer h5 {
+  margin: 0; /* Ukloni dodatni razmak oko naslova */
+}
+
+/* Dodaj flexbox za razmak između ikone i teksta */
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Razmak između ikone i teksta */
+}
+
+.footer-link svg {
+  width: 20px;
+  height: 20px;
+}
   
  

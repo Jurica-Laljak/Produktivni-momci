@@ -6,7 +6,6 @@ import './ListingList.css';
 export default function ListingList() {
   const [listings, setListings] = useState([]);
 
-  // Dohvati oglase prilikom inicijalnog rendera
   useEffect(() => {
     const fetchListings = async () => {
       try {
@@ -17,7 +16,7 @@ export default function ListingList() {
           listingsData.map(async (listing) => {
             const izvodaciResponse = await axios.get(`api/oglasi/${listing.idOglasa}/izvodaci`);
             const ulaznicaResponse = await axios.get(`api/ulaznice/${listing.ulaznicaId}`);
-            
+
             const izvodaciWithGenres = await Promise.all(
               izvodaciResponse.data.map(async (izvodac) => {
                 try {
@@ -53,19 +52,16 @@ export default function ListingList() {
   }, []);
 
   return (
-    <div className="container listingContainer mt-4">
-      <div className="row">
-        {listings.map((listing) => (
-          <div key={listing.idOglasa} className="col-md-4 col-lg-3 mb-5">
-            <Listing
-              idOglasa={listing.idOglasa}
-              status={listing.status}
-              ulaznica={listing.ulaznica}
-              izvodaci={listing.izvodaci}
-            />
-          </div>
-        ))}
-      </div>
+    <div className="listingContainer">
+      {listings.map((listing) => (
+        <Listing
+          key={listing.idOglasa}
+          idOglasa={listing.idOglasa}
+          status={listing.status}
+          ulaznica={listing.ulaznica}
+          izvodaci={listing.izvodaci}
+        />
+      ))}
     </div>
   );
 }

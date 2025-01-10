@@ -18,7 +18,7 @@ export default function  NavigationButtons (){
         <FaUser /> Centar za korisničke podatke
       </Link>
       <Link to="/userOglasi" className={`btn btn-ads ${location.pathname === '/userOglasi' ? 'active' : ''}`}>
-         <FaArchive/> Centar za oglase
+         <FaArchive/> Centar za transakcije
       </Link>
     </div>
   );

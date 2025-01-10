@@ -1,29 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Listing.css';
+import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function Listing({ idOglasa, status, ulaznica, izvodaci }) {
-  
-  // Formatiramo datum u dd.mm.yyyy
-  const formattedDate = new Date(ulaznica.datumKoncerta).toLocaleDateString("hr-HR");
+export default function Listing({ ulaznica, izvodaci }) {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   return (
-    <div className="card shadow-sm h-100 bg-light custom-card">
-      <div className="card-body">
-        <h5 className="card-title" style={{ color: '#455dfb' }}><strong>{ulaznica.lokacijaKoncerta}</strong></h5>
-        <p className="card-text"><strong>Datum:</strong> {formattedDate}</p>
-        <p className="card-text"><strong>Zona:</strong> {ulaznica.odabranaZona}</p>
-        <p className="card-text"><strong>Vrsta Ulaznice:</strong> {ulaznica.vrstaUlaznice}</p>
-        
-        <div className="izvodaci mt-4">
-          <h6 className="text-secondary">Izvođači:</h6>
-          {izvodaci.map((izvodac, idx) => (
-            <div key={idx} className="mb-3">
-              <p className="font-weight-bold mb-0">
-                {izvodac.imeIzvodaca} {izvodac.prezimeIzvodaca} ({izvodac.zanr})
-              </p>
-            </div>
-          ))}
+    <div className="custom-card">
+      <div className="image-container">
+        <img
+          src={ulaznica.urlSlika}
+          alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
+          className="card-img"
+        />
+        <div className="icon-container">
+          <button onClick={toggleFavorite} className="icon-button">
+            {isFavorite ? (
+              <FaHeart className="icon favorite-icon" />
+            ) : (
+              <FaRegHeart className="icon favorite-icon" />
+            )}
+          </button>
+          <button onClick={toggleVisibility} className="icon-button">
+            {isVisible ? (
+              <FaEye className="icon visibility-icon" />
+            ) : (
+              <FaEyeSlash className="icon visibility-icon" />
+            )}
+          </button>
         </div>
+      </div>
+
+      {/* Detalji oglasa */}
+      <div className="card-details">
+        <p className="event-title">
+          {izvodaci.map((izvodac) => (
+            <span key={izvodac.imeIzvodaca}>
+              {izvodac.imeIzvodaca} {izvodac.prezimeIzvodaca},{' '}
+              {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
+              {ulaznica.lokacijaKoncerta}
+            </span>
+          ))}
+        </p>
+        <p className="event-info">{ulaznica.odabranaZona}</p>
       </div>
     </div>
   );
