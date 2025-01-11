@@ -158,4 +158,12 @@ public class TransakcijaServiceImpl implements TransakcijaService {
             throw new RuntimeException("Transakcija not found with id " + id);
         }
     }
+
+    @Override
+    public List<TransakcijaDto> getAllTransakcije() {
+        return transakcijaRepository.findAll()
+                .stream()
+                .map(TransakcijaMapper::mapToTransakcijaDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -7,9 +7,13 @@ import hr.unizg.fer.ticket4ticket.entity.Obavijest;
 import hr.unizg.fer.ticket4ticket.entity.Transakcija;
 import hr.unizg.fer.ticket4ticket.service.ObavijestService;
 import hr.unizg.fer.ticket4ticket.service.TransakcijaService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transakcije")
@@ -21,7 +25,12 @@ public class TransakcijaController {
     @Autowired
     private ObavijestService obavijestService;
 
-
+    @RolesAllowed("ADMIN")
+    @GetMapping
+    public ResponseEntity<List<TransakcijaDto>> getTransakcije() {
+        List<TransakcijaDto> transakcije = transakcijaService.getAllTransakcije();
+        return new ResponseEntity<>(transakcije, HttpStatus.OK);
+    }
 
     // Add delete endpoint
     @DeleteMapping("izbrisi/{id}")

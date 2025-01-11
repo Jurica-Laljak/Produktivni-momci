@@ -17,4 +17,6 @@ public interface TransakcijaService {
     public void deleteTransakcijeByKorisnikId(Long korisnikId);
 
     TransakcijaDto getTransakcijaById(Long id);
+
+    List<TransakcijaDto> getAllTransakcije();
 }
