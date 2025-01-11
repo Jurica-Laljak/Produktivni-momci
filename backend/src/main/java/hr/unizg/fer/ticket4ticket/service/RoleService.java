@@ -5,4 +5,6 @@ import hr.unizg.fer.ticket4ticket.entity.Role;
 public interface RoleService {
 
     Role getRoleByName(String roleName);
+
+    Role getRoleById(Long id);
 }

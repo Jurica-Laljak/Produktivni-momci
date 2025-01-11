@@ -45,7 +45,7 @@ public class KorisnikController {
     }
 
     @GetMapping("/grant/admin/{googleId}")
-    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<KorisnikDto> grantAdmin(@PathVariable("googleId") String googleId){
         KorisnikDto korisnikDto = korisnikService.assignAdminByGoogleId(googleId);
         return ResponseEntity.ok(korisnikDto);

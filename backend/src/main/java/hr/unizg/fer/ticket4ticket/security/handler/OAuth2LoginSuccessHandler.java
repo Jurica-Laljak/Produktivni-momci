@@ -20,6 +20,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,7 +42,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
         String googleId = user.getAttribute("sub");
 
-        String token = jwtTokenService.createToken(googleId);
+        KorisnikDto existingUser = korisnikService.findKorisnikByGoogleId(googleId);
+
+        List<String> roles = new ArrayList<>();
+
+        if (existingUser != null) {
+            for (Long role : existingUser.getRoleIds()) {
+                roles.add(roleService.getRoleById(role).getRole());
+            }
+        }
+        else  {
+            roles.add("ROLE_USER");
+        }
+
+        String token = jwtTokenService.createToken(googleId, roles);
 
         String targetUrl = UriComponentsBuilder.fromUriString(determineTargetUrl(request, response, authentication) + determineProfileStateAndReturnAddress(user))
                 .queryParam("token", token).build().toUriString();

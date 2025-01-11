@@ -36,12 +36,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public String createToken(String googleId) {
+    public String createToken(String googleId, List<String> roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         Map<String,Object> claims = new HashMap<>();
-        claims.put("roles", "ROLE_USER");
+        claims.put("roles", roles.toString());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -94,7 +94,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
         Claims claims = Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().replace("[", "").replace("]", "").split(","))
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().replace("[", "").replace("]", "").split(", "))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
