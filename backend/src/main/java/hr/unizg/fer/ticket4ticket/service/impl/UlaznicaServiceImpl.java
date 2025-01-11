@@ -1,9 +1,11 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
+import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
 import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
+import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
 import hr.unizg.fer.ticket4ticket.service.UlaznicaService;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,26 @@ public class UlaznicaServiceImpl implements UlaznicaService {
 
     @Autowired
     private UlaznicaRepository ulaznicaRepository;
+
+    @Autowired
+    private final OglasRepository oglasRepository;
+
+    @Override
+    public UlaznicaDto getUlaznicaByOglasId(Long oglasId) {
+        // Fetch the Oglas by its ID
+        Oglas oglas = oglasRepository.findById(oglasId)
+                .orElseThrow(() -> new ResourceNotFoundException("Oglas with ID " + oglasId + " not found."));
+
+        // Get the associated Ulaznica
+        Ulaznica ulaznica = oglas.getUlaznica();
+
+        if (ulaznica == null) {
+            throw new ResourceNotFoundException("No Ulaznica associated with Oglas ID " + oglasId);
+        }
+
+        // Map the Ulaznica to UlaznicaDto
+        return UlaznicaMapper.mapToUlaznicaDto(ulaznica);
+    }
 
     @Override
     public UlaznicaDto createUlaznica(UlaznicaDto ulaznicaDto) {
