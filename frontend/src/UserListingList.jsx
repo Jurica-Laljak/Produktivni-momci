@@ -27,6 +27,7 @@ export default function UserListingList() {
         // Dohvaćanje oglasa po preferencama
         let response = await axiosPrivate.get('preference/oglasi');
         let listingsData = response.data;
+        console.log(listingsData)
 
         // Ako nema oglasa po preferencama, dohvaćamo default oglase
         if (listingsData.length === 0) {

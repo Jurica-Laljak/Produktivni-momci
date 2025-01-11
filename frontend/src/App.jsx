@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext } from 'react'
 import "./../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import './App.css'
 import AppNavbar2 from './AppNavbar2'
@@ -16,6 +16,9 @@ import Ulaznice from './Ulaznice';
 import NavigationButtons from "./NavigationButtons";
 import User from './User';
 import UserOglasi from './UserOglasi';
+import Obavijesti from './Obavijesti';
+
+export const Context = createContext()
 
 function App() {
 
@@ -25,6 +28,7 @@ function App() {
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const showNavButtons = ['/user', '/userUlaznice', '/userOglasi']; 
+  const [userName, setUserName] = useState('');
 
  
   //dohvacanje svih zanrova
@@ -46,6 +50,8 @@ function App() {
 
  return (
  
+  <Context.Provider value={[userName, setUserName]}>
+
   <div className='app-container'>
     {/*navbar se prikazuje samo na odredenim putanjama*/ }
  {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi} />} 
@@ -64,12 +70,14 @@ function App() {
     <Route path='/userUlaznice' element={<Ulaznice />}></Route>
     <Route path='/user' element={<User />}></Route>
     <Route path='/userOglasi' element={<UserOglasi />}></Route>
+    <Route path='/notifications' element={<Obavijesti/>}></Route>
 
     </Routes>
     </div>
     <AppFooter />
   
     </div>
+    </Context.Provider>
  )
 }
 

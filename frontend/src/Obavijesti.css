@@ -1,0 +1,80 @@
+
+
+.obavijesti-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 2rem;
+}
+
+.obavijest {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.obavijest.odbio {
+    border-left: 6px solid red;
+    background-color: #ffe6e6;
+}
+
+.obavijest.prihvatio {
+    border-left: 6px solid green;
+    background-color: #e6ffe6;
+}
+
+.obavijest.ponudio {
+    border-left: 6px solid blue;
+    background-color: #e6f0ff;
+}
+
+.obavijest.oglas {
+    border-left: 6px solid blueviolet;
+    background-color: #fff4e6;
+}
+
+.obavijest-text {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button.obrisi {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+button.obrisi:hover {
+    background-color: #e60000;
+}
+
+button.odvedi {
+    background-color: #007bff;
+    color: white;
+}
+
+button.odvedi:hover {
+    background-color: #0056b3;
+}

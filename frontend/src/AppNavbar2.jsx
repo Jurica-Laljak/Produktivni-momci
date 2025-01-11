@@ -31,19 +31,21 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   );
 } */
   
-  import React, { useState, useEffect } from 'react';
+  import React, { useState, useEffect, useContext } from 'react';
   import { Link, useLocation, useNavigate } from 'react-router-dom';
   import SearchBar from './SearchBar';
   import { FcGoogle } from 'react-icons/fc';
   import { FaUserCircle, FaHome, FaBell } from 'react-icons/fa'; // Dodali smo FaBell
   import './AppNavbar.css';
   import axiosPrivate from './api/axiosPrivate';
+  import {Context} from "./App"
   
   export default function AppNavbar2({ setResults, zanrovi }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useContext(Context)
     const location = useLocation();
     const navigate = useNavigate();
+    
   
     useEffect(() => {
       const token = localStorage.getItem('token');
@@ -58,6 +60,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               const userData = response.data;
               const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
               setUserName(imePrezime);
+             console.log("user data: ")
+              console.log(userData)
             } catch (err) {
               console.log('Doslo je do greske', err);
             }

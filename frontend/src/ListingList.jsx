@@ -11,6 +11,7 @@ export default function ListingList() {
       try {
         const response = await axios.get('api/oglasi/list/12'); // Prikaz 12 random oglasa
         const listingsData = response.data;
+        console.log(response.data)
 
         const listingsWithDetails = await Promise.all(
           listingsData.map(async (listing) => {

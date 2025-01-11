@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import axiosPrivate from "./api/axiosPrivate";
 import "./User2.css";
 import { FiSettings } from "react-icons/fi";
-
+import {Context} from "./App"
 
 
     export default function User(){
@@ -27,14 +27,21 @@ import { FiSettings } from "react-icons/fi";
         brMobKorisnika: false,
       });
       
+      const [notificationsOn,setNotificationsOn ] = useState(true); 
 
+      const [userName, setUserName] = useContext(Context);
   
       const navigate = useNavigate()
 
-      // dohvati ime prezime i broj telefona korsinika
+      // dohvati ime prezime i broj telefona korsinika i podatak da li ima ukljucene obavijesti
       useEffect(() => {
         const token = localStorage.getItem('token');
-        
+        const notifications = JSON.parse(localStorage.getItem("obavijesti"))
+          if(notifications!== null){
+            setNotificationsOn(notifications)
+            console.log("razlicito null")
+            console.log(notifications)
+          }
          
           try {
             const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
@@ -110,6 +117,17 @@ import { FiSettings } from "react-icons/fi";
     
           if (response.status == 200) {
             // Uspješna promjena
+            if(field !== "brMobKorisnika"){
+            const token = localStorage.getItem('token');
+            const googleID = JSON.parse(atob(token.split('.')[1]));
+            
+            const response2 = await axiosPrivate.get(`korisnici/g/${googleID.sub}`);
+            const userData = response2.data;
+            const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
+            console.log("ciaoooooooooooooooooooo")
+            setUserName(imePrezime);
+            } 
+
             alert(`${field} je uspješno izmijenjen.`);
             setIsEditing((prev) => ({ ...prev, [field]: false }));
             setIsChanged((prev) => ({ ...prev, [field]: false }));
@@ -123,13 +141,33 @@ import { FiSettings } from "react-icons/fi";
         }
       };
     
-      const handleCheckBoxChange = async () => {
-        console.log("a")
+      const handleCheckBoxChange = async (e) => {
+          const isChecked = e.target.checked;
 
+          try{
+            const response = await axiosPrivate.patch("preference/korisnici/update-info", 
+              {prikazujObavijesti:isChecked});
+
+              if(response.status == 200){
+                setNotificationsOn(isChecked);
+                localStorage.setItem("obavijesti", JSON.stringify(isChecked))
+                
+              }
+
+          } catch(err){
+            console.log("greska prilikom updatea korisinikovih preferenca za obavijesti ", err)
+          }
       }
 
       const handleDeleteAccount = async () => {
-        console.log("b")
+        try {
+          const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
+          console.log('Delete successful:', response.data);
+         navigate("/")
+        } catch (error) {
+          console.error('Error deleting data:', error);
+          
+        }
     }
        
       return (
@@ -202,7 +240,7 @@ import { FiSettings } from "react-icons/fi";
             <h3>Obavijesti</h3>
             <div className="checkbox-group">
               <div>
-                <input type="checkbox" id="allow-notifications"  defaultChecked={true} onChange={handleCheckBoxChange}/>
+                <input type="checkbox" id="allow-notifications"  checked={notificationsOn} onChange={handleCheckBoxChange}/>
                 <label htmlFor="allow-notifications">
                   Dozvoli obavijesti unutar aplikacije
                 </label>
