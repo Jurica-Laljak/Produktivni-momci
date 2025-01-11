@@ -22,6 +22,7 @@ export default function Listing({ ulaznica, izvodaci }) {
           alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
           className="card-img"
         />
+        { /*
         <div className="icon-container">
           <button onClick={toggleFavorite} className="icon-button">
             {isFavorite ? (
@@ -38,6 +39,7 @@ export default function Listing({ ulaznica, izvodaci }) {
             )}
           </button>
         </div>
+        */ }
       </div>
 
       {/* Detalji oglasa */}
