@@ -43,6 +43,7 @@ export default function ListingList() {
           })
         );
 
+        console.log(listingsWithDetails)
         setListings(listingsWithDetails);
       } catch (error) {
         console.error("Greška pri dohvaćanju oglasa i detalja:", error);

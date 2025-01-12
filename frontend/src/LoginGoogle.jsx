@@ -18,7 +18,7 @@ export default function LoginGoogle(){
 
     return (
         <div className="login-page">
-          <h2>Sign up or Log in</h2>
+          <h2>Prijavite se ili se registrirajte preko Googlea</h2>
           <button className="google-auth-button"
                    onClick={ContinueGoogle} >
             <FcGoogle style={{ marginRight: '8px' }} />

@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import './SearchResultsList.css'
+import Listing from './Listing'
+import './ListingList.css'
 
 export default function SearchResultsList({ results }) {
   return (
     <div className="container-fluid mt-5">
-      <h2 className="text-center mb-4">Rezultati Pretrage</h2>
+      <h2 className="text-center mb-4">{results.length} rezultata pretrage</h2>
       {results.length === 0 ? (
         <p className="text-center">Nema oglasa koji odgovaraju vašem pretraživanju.</p>
       ) : (
-        <div className="row">
+        <div className="listingContainer">
           {results.map((oglas, index) => {
             //  Formatiramo datum u "dd.mm.yyyy" format
+            console.log("Oglas: ", oglas, " Index: ", index)
+
+            return (
+              <Listing
+                        key={index}
+                        ulaznica={oglas.ulaznica}
+                        izvodaci={oglas.izvodaci}/>
+            )
+            /*
             const formattedDate = new Date(oglas.datum).toLocaleDateString("hr-HR");
 
             return (
@@ -41,7 +52,7 @@ export default function SearchResultsList({ results }) {
                   </div>
                 </div>
               </div>
-            );
+            ); */
           })}
         </div>
       )}

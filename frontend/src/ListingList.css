@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 oglasa po redu */
   gap: 20px;
-  padding: 20px;
   justify-content: center;
 }
   

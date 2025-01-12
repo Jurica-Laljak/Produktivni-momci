@@ -6,14 +6,15 @@
 .custom-card {
   display: flex;
   flex-direction: column;
-  width: 450px;
-  height: 290px;
-  border: 2px solid #f3c500;
+  width: 560px;
+  height: 360px;
+  border: 7px solid #FFB700;
   border-radius: 0; /* Pravi kutovi */
   overflow: hidden;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  cursor: pointer;
   margin: 15px; /* Razmak između kartica */
 }
 
@@ -24,10 +25,14 @@
   overflow: hidden;
 }
 
+.card-details {
+  text-align: center;
+}
+
 .card-img {
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .icon-container {
@@ -79,13 +84,6 @@
   background-color: rgba(255, 255, 255, 0.3);
 }
 */
-
-
-
-.card-details {
-  padding: 15px;
-  text-align: center;
-}
 
 .event-title {
   font-size: 1.2rem;

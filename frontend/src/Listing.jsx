@@ -14,10 +14,12 @@ export default function Listing({ ulaznica, izvodaci }) {
     setIsVisible(!isVisible);
   };
 
+  //console.log("In Listing, ulaznica: ", ulaznica, " Izvodaci: ", izvodaci)
+
   return (
     <div className="custom-card">
       <div className="image-container">
-        <img
+       <img
           src={ulaznica.urlSlika}
           alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
           className="card-img"

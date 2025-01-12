@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ChooseGenres2.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import axiosPrivate from "./api/axiosPrivate";
+import { genreMap } from "../data/genreMap.js"
 
 export default function ChooseGenres({ zanrovi }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -21,7 +22,7 @@ export default function ChooseGenres({ zanrovi }) {
       window.history.replaceState({}, document.title, newUrl);
     }
   }, []);
-  
+
 
   // Funkcija za selektiranje/odabiranje žanrova
 
@@ -38,23 +39,23 @@ export default function ChooseGenres({ zanrovi }) {
     if (selectedGenres.length >= 1) {
       //console.log('Selected genres:', selectedGenres);
       // saljemo podatke o odabranim zanrovima na backend
-      
+
       axiosPrivate.post(`preference/zanrovi`, selectedGenres, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(response => {
-        console.log('Data successfully sent:', response.data);
-        navigate('/UserHome')
-      })
-      .catch(error => {
-        console.error('There was an error sending the data:', error);
-      });
+        .then(response => {
+          console.log('Data successfully sent:', response.data);
+          navigate('/UserHome')
+        })
+        .catch(error => {
+          console.error('There was an error sending the data:', error);
+        });
 
-     
-      
-      
+
+
+
     } else {
       navigate('/UserHome')
     }
@@ -64,23 +65,28 @@ export default function ChooseGenres({ zanrovi }) {
 
   return (
     <div className="genre-selection-page">
-      <h2>Odaberite od 0 do 15 žanrova glazbe</h2>
+      <h3>Odaberite žanrove glazbe koji Vam se sviđaju</h3>
+
       <div className="genres-grid">
-       
+
         {Object.entries(zanrovi).map(([idZanra, imeZanra]) => (
           <div
             key={idZanra}
             className={`genre-card ${selectedGenres.includes(idZanra) ? 'selected' : ''}`}
-            onClick={() => handleGenreSelect(idZanra)}
-            
-          >
-            <div className="genre-name">{imeZanra}</div>
+            onClick={() => handleGenreSelect(idZanra)}>
+            <div className="genre-name">{genreMap[imeZanra].name}</div>
           </div>
         ))}
+
       </div>
+
       <button onClick={handleSubmit} className="submit-button">
-        Next
+        {
+          (selectedGenres.length > 0) ? "Potvrdi odabir i nastavi"
+            : "Nastavi bez odabranih preferencija"
+        }
       </button>
+      
     </div>
   );
 }
