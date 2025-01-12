@@ -12,13 +12,16 @@ export default function  NavigationButtons (){
   return (
     <div className="navigation-buttons">
       <Link to="/userUlaznice"  className={`btn btn-ticket ${location.pathname === '/userUlaznice' ? 'active' : ''}`}>
-        <FaTicketAlt /> Centar za ulaznice
+        <FaTicketAlt /> 
+        <div>Centar za ulaznice</div>
       </Link>
       <Link to="/user" className={`btn btn-user ${location.pathname === '/user' ? 'active' : ''}`}>
-        <FaUser /> Centar za korisničke podatke
+        <FaUser />
+        <div>Centar za korisničke podatke</div>
       </Link>
       <Link to="/userOglasi" className={`btn btn-ads ${location.pathname === '/userOglasi' ? 'active' : ''}`}>
-         <FaArchive/> Centar za transakcije
+         <FaArchive/> 
+         <div>Centar za transakcije</div>
       </Link>
     </div>
   );

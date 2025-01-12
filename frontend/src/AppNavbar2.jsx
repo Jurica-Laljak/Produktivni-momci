@@ -40,7 +40,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import axiosPrivate from './api/axiosPrivate';
   import {Context} from "./App"
   
-  export default function AppNavbar2({ setResults, zanrovi }) {
+  export default function AppNavbar2({ setResults, zanrovi, userData2, setUserData2 }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useContext(Context)
     const location = useLocation();
@@ -62,6 +62,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               setUserName(imePrezime);
              console.log("user data: ")
               console.log(userData)
+              setUserData2(userData)
             } catch (err) {
               console.log('Doslo je do greske', err);
             }
