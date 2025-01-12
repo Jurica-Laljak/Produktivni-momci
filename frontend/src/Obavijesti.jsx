@@ -1,3 +1,5 @@
+
+/*
 import React, { useState, useEffect } from "react";
 import axiosPrivate from "./api/axiosPrivate"; 
 import "./Obavijesti2.css";
@@ -102,5 +104,81 @@ export default function Obavijesti() {
         </div>
     );
 }
+*/
+
+import React, { useState, useEffect } from "react";
+import axiosPrivate from "./api/axiosPrivate";
+import "./Obavijesti2.css";
+import { FaTrashAlt, FaArrowRight } from "react-icons/fa";
+
+export default function Obavijesti() {
+    const [obavijesti, setObavijesti] = useState([]);
+
+    const obrisiObavijest = async (idObavijesti) => {
+        try {
+            await axiosPrivate.get(`obavijesti/izbrisi/${idObavijesti}`);
+            setObavijesti((prevObavijesti) =>
+                prevObavijesti.filter((obavijest) => obavijest.idObavijesti !== idObavijesti)
+            );
+        } catch (err) {
+            console.error("Greška prilikom brisanja obavijesti:", err);
+        }
+    };
+
+    useEffect(() => {
+        const getObavijesti = async () => {
+            try {
+                const response = await axiosPrivate.get("preference/obavijesti");
+                setObavijesti(response.data);
+            } catch (err) {
+                console.log("Greška prilikom dohvata obavijesti", err);
+            }
+        };
+
+        getObavijesti();
+    }, []);
+
+    const getObavijestText = (obavijest) => {
+        const { autorOglasIme, autorOglasPrezime, izvodaci, ulaznicaPreporuka, ulaznicaPonuda } = obavijest;
+
+        switch (obavijest.obavijestType) {
+            case "PRIHVATIO":
+                return `${autorOglasIme} ${autorOglasPrezime} je prihvatio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
+            case "ODBIO":
+                return `${autorOglasIme} ${autorOglasPrezime} je odbio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
+            case "PONUDIO":
+                return `${autorOglasIme} ${autorOglasPrezime} je ponudio ulaznice na vašem oglasu za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPreporuka.datumKoncerta} ${ulaznicaPreporuka.lokacijaKoncerta} ${ulaznicaPreporuka.odabranaZona}`;
+            case "OGLAS":
+                return `${autorOglasIme} ${autorOglasPrezime} je objavio oglas za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPreporuka.datumKoncerta} ${ulaznicaPreporuka.lokacijaKoncerta} ${ulaznicaPreporuka.odabranaZona}`;
+            default:
+                return "Nepoznata obavijest";
+        }
+    };
+
+    return (
+        <div className="obavijesti-container">
+            {obavijesti.map((obavijest) => (
+                <div key={obavijest.idObavijesti} className="obavijest">
+                    <h5 className="obavijest-text">{getObavijestText(obavijest)}</h5>
+                    <div className="actions">
+                        <button className="obrisi" onClick={() => obrisiObavijest(obavijest.idObavijesti)}>
+                            <FaTrashAlt /> Obriši
+                        </button>
+                        <button
+                            className="odvedi"
+                            onClick={() => {
+                                console.log("Navigacija još nije implementirana."); 
+                                // Ovdje dodati navigaciju unutar aplikacije kad bude spremno
+                            }}
+                        >
+                            <FaArrowRight /> Odvedi me
+                        </button>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 
 
