@@ -31,7 +31,10 @@ export default function SearchBar({ setResults, zanrovi }) {
 
           //prvo cemo filter tako da ostanu samo oglasi koji nisu prodani ili istekli
           const filteredResults = response.data.filter(element => element.status === "AKTIVAN")
-
+          console.log("Filtered res: ", filteredResults)
+          setResults(filteredResults)
+          navigate("/search");
+          /*
           //dohvacamo sve potrebne podatke za svaki oglas
           const oglasiData = await Promise.all(
             filteredResults.map(async (oglas) => {
@@ -46,43 +49,43 @@ export default function SearchBar({ setResults, zanrovi }) {
               );
 
               // Dohvati sve žanrove
-              /* const zanroviData = await axios.get("api/zanrovi");
+               const zanroviData = await axios.get("api/zanrovi");
                const zanroviMap = zanroviData.data.reduce((map, zanr) => {
                  map[zanr.idZanra] = zanr.imeZanra;
                  return map;
-               }, {});*/
+               }, {});
 
               // Mapiraj izvođače u odgovarajući format
               console.log("Izvodaci data: ", izvodaciData.data)
               console.log("Ulaznica data: ", ulaznicaData.data)
-              /*
+              
               const izvodaci = izvodaciData.data.map((izvodac) => ({
                 imeIzvodaca: izvodac.imeIzvodaca,
                 prezimeIzvodaca: izvodac.prezimeIzvodaca,
                 žanr: zanrovi[izvodac.zanrId] || "Unknown",
                 foto: izvodac.fotoIzvodaca,
-              })); */
+              })); 
 
               // Kreiraj konačni format za oglas
-              /*
+              
               return {
                 datum: ulaznicaData.data.datumKoncerta,
                 lokacija: ulaznicaData.data.lokacijaKoncerta,
                 zona: ulaznicaData.data.odabranaZona,
                 vrstaUlaznice: ulaznicaData.data.vrstaUlaznice,
                 izvodaci: izvodaci,
-              }; */
+              }; 
               return {
                 "ulaznica": ulaznicaData.data,
                 "izvodaci": izvodaciData.data
-              }
+              } 
             })
           );
 
           setResults(oglasiData)
           console.log("Oglasi data:", oglasiData)
           navigate("/search");
-
+          */
         })
         .catch(error => {
           console.error('Greška prilikom pretrage:', error);

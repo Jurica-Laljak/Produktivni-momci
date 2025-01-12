@@ -9,6 +9,11 @@ export default function ListingList() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        const response = await axios.get('api/oglasi/list/random-max')
+        var listings = response.data
+        setListings(listings)
+        
+        /*
         const response = await axios.get('api/oglasi/list/12'); // Prikaz 12 random oglasa
         const listingsData = response.data;
         console.log(response.data)
@@ -45,6 +50,7 @@ export default function ListingList() {
 
         console.log(listingsWithDetails)
         setListings(listingsWithDetails);
+        */
       } catch (error) {
         console.error("Greška pri dohvaćanju oglasa i detalja:", error);
       }
@@ -58,10 +64,7 @@ export default function ListingList() {
       {listings.map((listing) => (
         <Listing
           key={listing.idOglasa}
-          idOglasa={listing.idOglasa}
-          status={listing.status}
-          ulaznica={listing.ulaznica}
-          izvodaci={listing.izvodaci}
+          listing={listing}
         />
       ))}
     </div>
