@@ -1,9 +1,6 @@
 package hr.unizg.fer.ticket4ticket.service;
 
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
-import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
-import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
-import hr.unizg.fer.ticket4ticket.dto.ZanrDto;
+import hr.unizg.fer.ticket4ticket.dto.*;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
 
 import java.util.List;
@@ -12,15 +9,17 @@ public interface OglasService {
 
     OglasDto createOglas(OglasDto oglasDto);
 
-    OglasDto getOglasById(Long oglasId);
+    OglasInfoDto getOglasById(Long oglasId);
 
-    List<OglasDto> getAllOglasi();
+    List<OglasInfoDto> getAllOglasi();
 
-    List<OglasDto> getRandomOglasi(int brojRandomOglasa);
+    List<OglasInfoDto> getRandomOglasi(int brojRandomOglasa);
 
-    List<OglasDto> getOglasiByFilter(OglasFilterDto filterDto);
+    List<OglasInfoDto> getOglasiByFilter(OglasFilterDto filterDto);
 
-    List<OglasDto> getOglasiByKorisnikPreference(Long idKorisnika);
+    List<OglasInfoDto> getOglasiByKorisnikPreference(Long idKorisnika);
+
+    List<OglasInfoDto> getRandomOglasiMax();
 
     List<OglasDto> findActiveOglasesByKorisnikId(Long korisnikId);
 

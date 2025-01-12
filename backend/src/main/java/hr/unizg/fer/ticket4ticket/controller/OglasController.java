@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.OglasDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasInfoDto;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import lombok.AllArgsConstructor;
@@ -25,27 +26,37 @@ public class OglasController {
         return new ResponseEntity<>(createdOglas, HttpStatus.CREATED);
     }
 
-    // Returns the Oglas by specified ID
     @GetMapping("/{id}")
-    public ResponseEntity<OglasDto> getOglasById(@PathVariable Long id) {
-        OglasDto oglasDto = oglasService.getOglasById(id);
+    public ResponseEntity<OglasInfoDto> getOglasById(@PathVariable Long id) {
+        OglasInfoDto oglasDto = oglasService.getOglasById(id);
         return new ResponseEntity<>(oglasDto, HttpStatus.OK);
     }
 
 
     // Returns all Oglas resources in the database
     @GetMapping
-    public ResponseEntity<List<OglasDto>> getAllOglasi() {
-        List<OglasDto> oglasi = oglasService.getAllOglasi();
+    public ResponseEntity<List<OglasInfoDto>> getAllOglasi() {
+        List<OglasInfoDto> oglasi = oglasService.getAllOglasi();
         return new ResponseEntity<>(oglasi, HttpStatus.OK);
     }
 
 
     // Returns a specified amount of random Oglas from the database
     @GetMapping("/list/{broj_random_oglasa}")
-    public ResponseEntity<List<OglasDto>> getRandomOglasi(@PathVariable int broj_random_oglasa) {
+    public ResponseEntity<List<OglasInfoDto>> getRandomOglasi(@PathVariable int broj_random_oglasa) {
 
-        List<OglasDto> randomOglasi = oglasService.getRandomOglasi(broj_random_oglasa);
+        List<OglasInfoDto> randomOglasi = oglasService.getRandomOglasi(broj_random_oglasa);
+        return new ResponseEntity<>(randomOglasi, HttpStatus.OK);
+
+    }
+
+
+
+    // Returns a specified amount of random Oglas from the database
+    @GetMapping("/list/random-max")
+    public ResponseEntity<List<OglasInfoDto>> getRandomOglasiMax() {
+
+        List<OglasInfoDto> randomOglasi = oglasService.getRandomOglasiMax();
         return new ResponseEntity<>(randomOglasi, HttpStatus.OK);
 
     }

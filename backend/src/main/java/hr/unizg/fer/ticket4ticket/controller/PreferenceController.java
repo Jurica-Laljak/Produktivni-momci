@@ -103,8 +103,8 @@ public class PreferenceController {
     }
 
     @PostMapping("/oglasi/filter")
-    public ResponseEntity<List<OglasDto>> getOglasiByFilter(@RequestBody OglasFilterDto filterDto) {
-        List<OglasDto> filteredOglasi = preferenceService.getOglasiByFilter(filterDto);
+    public ResponseEntity<List<OglasInfoDto>> getOglasiByFilter(@RequestBody OglasFilterDto filterDto) {
+        List<OglasInfoDto> filteredOglasi = preferenceService.getOglasiByFilter(filterDto);
         return ResponseEntity.ok(filteredOglasi);
     }
 
@@ -125,10 +125,10 @@ public class PreferenceController {
     }
 
     @GetMapping("/oglasi")
-    public ResponseEntity<List<OglasDto>> getOglasiByGoogleId(UsernamePasswordAuthenticationToken token) {
+    public ResponseEntity<List<OglasInfoDto>> getOglasiByGoogleId(UsernamePasswordAuthenticationToken token) {
         try {
             Long korisnikId = getUserIdFromToken(token);
-            List<OglasDto> oglasi = oglasService.getOglasiByKorisnikPreference(korisnikId);
+            List<OglasInfoDto> oglasi = oglasService.getOglasiByKorisnikPreference(korisnikId);
             return ResponseEntity.ok(oglasi);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

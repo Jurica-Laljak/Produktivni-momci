@@ -1,7 +1,6 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
-import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
+import hr.unizg.fer.ticket4ticket.dto.*;
 import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
 import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
@@ -9,8 +8,6 @@ import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import hr.unizg.fer.ticket4ticket.service.PreferenceService;
-import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
-import hr.unizg.fer.ticket4ticket.dto.OglasFilterDto;
 import hr.unizg.fer.ticket4ticket.entity.Zanr;
 import hr.unizg.fer.ticket4ticket.repository.ZanrRepository;
 import lombok.AllArgsConstructor;
@@ -36,7 +33,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 
 
     @Override
-    public List<OglasDto> getOglasiByFilter(OglasFilterDto filterDto) {
+    public List<OglasInfoDto> getOglasiByFilter(OglasFilterDto filterDto) {
         return oglasService.getOglasiByFilter(filterDto);
     }
 
