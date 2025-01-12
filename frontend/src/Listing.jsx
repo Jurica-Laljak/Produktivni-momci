@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Listing.css';
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
+import { ticketMap } from '../data/ticketMap'
 
 export default function Listing({ listing }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -14,12 +16,11 @@ export default function Listing({ listing }) {
     setIsVisible(!isVisible);
   };
   console.log(listing)
-  //console.log("In Listing, ulaznica: ", ulaznica, " Izvodaci: ", izvodaci)
 
   return (
     <div className="custom-card">
       <div className="image-container">
-       <img
+        <img
           src={listing.urlSlika}
           alt={`Poster za ${listing.lokacijaKoncerta}`}
           className="card-img"
@@ -55,7 +56,14 @@ export default function Listing({ listing }) {
             </span>
           ))}
         </p>
-        <p className="event-info">{listing.odabranaZona}</p>
+        <div className="event-info-container">
+          <p className="event-info">{ticketMap[listing.vrstaUlaznice]} ulaznica</p>
+          <p className="event-info">{remainingDaysToEvent(listing.datumKoncerta)}
+            {remainingDaysToEvent(listing.datumKoncerta) > 1
+              ? " dana"
+              : " dan"} do koncerta</p>
+        </div>
+
       </div>
     </div>
   );
