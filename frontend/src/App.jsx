@@ -75,10 +75,14 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<LoginGoogle />} />
             <Route path='/search' element={<SearchResultsList results={results} />} />
-            <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi} />}></Route>
             <Route path='/Home' element={<Home />} />
 
             {/* zaštićene komponente */}
+            <Route path='/ChooseGenres' element={
+              <ProtectedComponent>
+                <ChooseGenres2 zanrovi={zanrovi} />
+              </ProtectedComponent>
+            }></Route>
             <Route path='/UserHome' element={
               <ProtectedComponent>
                 <UserHome />

@@ -1,11 +1,10 @@
 import { Navigate } from "react-router-dom";
 
 function ProtectedRoute ({ children }) {
-    try {
-        const { token } = localStorage.getItem("token");
-    } catch (e) {
+
+    if(localStorage.getItem("token") === null && !window.location.href.includes("token"))
         return <Navigate to="/" />;
-    }
+
     return children;
 };
 
