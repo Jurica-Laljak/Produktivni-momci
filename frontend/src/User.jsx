@@ -29,7 +29,7 @@ import {Context} from "./App"
       
       const [notificationsOn,setNotificationsOn ] = useState(true); 
 
-      const [userName, setUserName] = useContext(Context);
+      const {userName, setUserName} = useContext(Context);
   
       const navigate = useNavigate()
 
