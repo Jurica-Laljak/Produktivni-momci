@@ -42,7 +42,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   
   export default function AppNavbar2({ setResults, zanrovi }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userName, setUserName] = useContext(Context)
+    const {openModal,userName,setUserName} = useContext(Context)
+    //const [userName, setUserName] = imeUsera;
     const location = useLocation();
     const navigate = useNavigate();
     
@@ -60,6 +61,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               const userData = response.data;
               const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
               setUserName(imePrezime);
+              localStorage.setItem("ID",userData.idKorisnika)
              console.log("user data: ")
               console.log(userData)
             } catch (err) {
@@ -107,9 +109,12 @@ export default function AppNavbar2({ setResults,zanrovi }) {
             ) : (
               <div className="d-flex justify-content-between align-items-center w-100">
                 <SearchBar setResults={setResults} zanrovi={zanrovi} />
-                <Link to="/create-ad" className="btn btn-create-ad me-2">
+                  <button
+                  className="btn btn-create-ad me-2"
+                  onClick={openModal}
+                  >
                   + Kreiraj oglas
-                </Link>
+                  </button>
                 {/* Dodajemo ikonu zvona */}
                 <Link to="/notifications" className="nav-link">
                   <FaBell style={{ fontSize: '2.5rem', color: '#425DFF' }} />

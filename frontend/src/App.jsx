@@ -17,6 +17,8 @@ import NavigationButtons from "./NavigationButtons";
 import User from './User';
 import UserOglasi from './UserOglasi';
 import Obavijesti from './Obavijesti';
+import AddOglasModal from './AddOglasModal';
+import axiosPrivate from "./api/axiosPrivate";
 
 export const Context = createContext()
 
@@ -29,6 +31,11 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const showNavButtons = ['/user', '/userUlaznice', '/userOglasi']; 
   const [userName, setUserName] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [korisnikID, setKorisnikID] = useState()
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
  
   //dohvacanje svih zanrova
@@ -46,11 +53,14 @@ function App() {
 
      }).finally(console.log(zanrovi))
      .catch(err => console.log(err))
+
+     
+
   }, [])
 
  return (
  
-  <Context.Provider value={[userName, setUserName]}>
+  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal}}>
 
   <div className='app-container'>
     {/*navbar se prikazuje samo na odredenim putanjama*/ }
@@ -75,7 +85,10 @@ function App() {
     </Routes>
     </div>
     <AppFooter />
-  
+
+     {/* Modal se prikazuje globalno */}
+     {isModalOpen && <AddOglasModal />}
+
     </div>
     </Context.Provider>
  )
