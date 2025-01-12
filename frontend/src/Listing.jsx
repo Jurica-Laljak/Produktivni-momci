@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Listing.css';
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function Listing({ ulaznica, izvodaci }) {
+export default function Listing({ listing }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -20,8 +20,8 @@ export default function Listing({ ulaznica, izvodaci }) {
     <div className="custom-card">
       <div className="image-container">
        <img
-          src={ulaznica.urlSlika}
-          alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
+          src={listing.urlSlika}
+          alt={`Poster za ${listing.lokacijaKoncerta}`}
           className="card-img"
         />
         { /*
@@ -47,15 +47,15 @@ export default function Listing({ ulaznica, izvodaci }) {
       {/* Detalji oglasa */}
       <div className="card-details">
         <p className="event-title">
-          {izvodaci.map((izvodac) => (
+          {listing.izvodaci.map((izvodac) => (
             <span key={izvodac.imeIzvodaca}>
               {izvodac.imeIzvodaca} {izvodac.prezimeIzvodaca},{' '}
-              {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
-              {ulaznica.lokacijaKoncerta}
+              {new Date(listing.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
+              {listing.lokacijaKoncerta}
             </span>
           ))}
         </p>
-        <p className="event-info">{ulaznica.odabranaZona}</p>
+        <p className="event-info">{listing.odabranaZona}</p>
       </div>
     </div>
   );

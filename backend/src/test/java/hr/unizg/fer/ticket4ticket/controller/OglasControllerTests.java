@@ -1,7 +1,7 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasInfoDto;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class OglasControllerTests {
 
     @Test
     public void oglasController_getOglasById_returnsOglas() throws Exception {
-        when(oglasService.getOglasById(1L)).thenReturn(OglasDto.builder().idOglasa(1L).build());
+        when(oglasService.getOglasById(1L)).thenReturn(OglasInfoDto.builder().idOglasa(1L).build());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/oglasi/{id}", 1).with(oauth2Login()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -43,7 +43,7 @@ public class OglasControllerTests {
 
     @Test
     public void oglasController_getAllOglasi_returnsAllOglasi() throws Exception {
-        when(oglasService.getAllOglasi()).thenReturn(List.of(new OglasDto(), new OglasDto(), new OglasDto(), new OglasDto()));
+        when(oglasService.getAllOglasi()).thenReturn(List.of(new OglasInfoDto(), new OglasInfoDto(), new OglasInfoDto(), new OglasInfoDto()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/oglasi").with(oauth2Login()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -58,7 +58,7 @@ public class OglasControllerTests {
 
     @Test
     public void oglasController_getRandomOglasi_returnsRandomOglasi() throws Exception {
-        when(oglasService.getRandomOglasi(2)).thenReturn(List.of(new OglasDto(), new OglasDto()));
+        when(oglasService.getRandomOglasi(2)).thenReturn(List.of(new OglasInfoDto(), new OglasInfoDto()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/oglasi/list/{broj_random_oglasa}", 2))
                 .andExpect(MockMvcResultMatchers.status().isOk())

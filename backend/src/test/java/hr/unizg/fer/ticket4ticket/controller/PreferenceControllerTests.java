@@ -1,7 +1,7 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
-import hr.unizg.fer.ticket4ticket.dto.OglasDto;
+import hr.unizg.fer.ticket4ticket.dto.OglasInfoDto;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
 import hr.unizg.fer.ticket4ticket.service.PreferenceService;
@@ -41,7 +41,7 @@ public class PreferenceControllerTests {
     public void preferenceController_getOglasiByGoogleId_returnsOglasi() throws Exception {
         when(korisnikService.findKorisnikByGoogleId("user")).thenReturn(KorisnikDto.builder().idKorisnika(1L).build());
 
-        when(oglasService.getOglasiByKorisnikPreference(1L)).thenReturn(List.of(new OglasDto(), new OglasDto()));
+        when(oglasService.getOglasiByKorisnikPreference(1L)).thenReturn(List.of(new OglasInfoDto(), new OglasInfoDto()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/preference/oglasi").with(user("user")))
                 .andExpect(MockMvcResultMatchers.status().isOk())

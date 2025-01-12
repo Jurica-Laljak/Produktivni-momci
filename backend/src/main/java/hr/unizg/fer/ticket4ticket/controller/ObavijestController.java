@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.controller;
 
 import hr.unizg.fer.ticket4ticket.dto.ObavijestDto;
+import hr.unizg.fer.ticket4ticket.dto.ObavijestInfoDto;
 import hr.unizg.fer.ticket4ticket.service.ObavijestService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class ObavijestController {
     }
 
     @GetMapping("/korisnik/{id}")
-    public ResponseEntity<List<ObavijestDto>> getObavijestByKorisnikId(@PathVariable("id") Long id) {
-        List<ObavijestDto> obavijesti = obavijestService.getObavijestiByKorisnikId(id);
+    public ResponseEntity<List<ObavijestInfoDto>> getObavijestByKorisnikId(@PathVariable("id") Long id) {
+        List<ObavijestInfoDto> obavijesti = obavijestService.getObavijestiByKorisnikId(id);
         return new ResponseEntity<>(obavijesti, HttpStatus.OK);
     }
 

@@ -67,7 +67,7 @@
   
   .checkbox-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
   
@@ -77,14 +77,16 @@
   }
   
   .delete-account-btn {
-    color: white;
-    background-color: #ff4d4f;
-    border: 1px solid #ff4d4f;
+    background-color: white;
+    color: #ff4d4f;
+    border: 4px solid #ff4d4f;
     width: 100%;
   }
-  
+
   .delete-account-btn:hover {
     background-color: #ff3333;
+    color: white;
+    border-color: #ff4d4f;
   }
 
   .icon {

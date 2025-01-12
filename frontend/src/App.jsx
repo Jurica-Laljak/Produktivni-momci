@@ -36,6 +36,7 @@ function App() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const [userData, setUserData] = useState('');
 
  
   //dohvacanje svih zanrova
@@ -64,7 +65,8 @@ function App() {
 
   <div className='app-container'>
     {/*navbar se prikazuje samo na odredenim putanjama*/ }
- {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi} />} 
+ {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi}
+                                                              userData2={userData} setUserData2={setUserData}/>} 
  
  {/* prikazuje samo na odredenim putanjama*/ }
   {showNavButtons.includes(location.pathname) && <NavigationButtons />}
@@ -78,7 +80,7 @@ function App() {
     <Route path='/UserHome' element={<UserHome />}/>
     <Route path='/Home' element={<Home />}/>
     <Route path='/userUlaznice' element={<Ulaznice />}></Route>
-    <Route path='/user' element={<User />}></Route>
+    <Route path='/user' element={<User userData={userData}/>}></Route>
     <Route path='/userOglasi' element={<UserOglasi />}></Route>
     <Route path='/notifications' element={<Obavijesti/>}></Route>
 

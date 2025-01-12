@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import axiosPrivate from "./api/axiosPrivate";
 import "./User2.css";
 import { FiSettings } from "react-icons/fi";
-import {Context} from "./App"
+import {Context} from "./App" 
 
 
-    export default function User(){
+    export default function User( {userData} ){
 
       const [formData, setFormData] = useState({
-          imeKorisnika:"",
-          prezimeKorisnika:"",
+          imeKorisnika: userData.imeKorisnika,
+          prezimeKorisnika: userData.prezimeKorisnika,
           brMobKorisnika:"091"
       })
   
@@ -66,7 +66,7 @@ import {Context} from "./App"
               catch(err){
                   console.log("Doslo je do greske", err);
               }
-            } 
+            }  
              
              getUserData();
   
@@ -175,7 +175,7 @@ import {Context} from "./App"
           <div className="settings-row">
             <div className="section">
               <h3>Osobni podaci</h3>
-              {["imeKorisnika", "prezimeKorisnika", "brMobKorisnika"].map((field, idx) => (
+              {["imeKorisnika", "prezimeKorisnika"].map((field, idx) => (
                 <div key={idx} className="form-group">
                   <label htmlFor={field}>
                     {field === "imeKorisnika"
@@ -231,7 +231,8 @@ import {Context} from "./App"
                 className="btn btn-outline-primary preference-btn"
                 onClick={() => navigate("/ChooseGenres")}
               >
-                <FiSettings className="icon" /> Uredi preferencije
+                 Uredi preferencije
+                 <FiSettings className="icon" />
               </button>
             </div>
           </div>
@@ -239,12 +240,12 @@ import {Context} from "./App"
           <div className="section">
             <h3>Obavijesti</h3>
             <div className="checkbox-group">
-              <div>
-                <input type="checkbox" id="allow-notifications"  checked={notificationsOn} onChange={handleCheckBoxChange}/>
-                <label htmlFor="allow-notifications">
-                  Dozvoli obavijesti unutar aplikacije
-                </label>
-              </div>
+                <div>
+                  <input type="checkbox" id="allow-notifications"  checked={notificationsOn} onChange={handleCheckBoxChange}/>
+                </div>
+                <div>Dozvoli obavijesti unutar aplikacije</div>
+                
+              
               
             </div>
           </div>

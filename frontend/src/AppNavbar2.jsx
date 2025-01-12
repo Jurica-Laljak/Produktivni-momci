@@ -40,7 +40,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import axiosPrivate from './api/axiosPrivate';
   import {Context} from "./App"
   
-  export default function AppNavbar2({ setResults, zanrovi }) {
+  export default function AppNavbar2({ setResults, zanrovi, userData2, setUserData2 }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const {openModal,userName,setUserName} = useContext(Context)
     //const [userName, setUserName] = imeUsera;
@@ -64,6 +64,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               localStorage.setItem("ID",userData.idKorisnika)
              console.log("user data: ")
               console.log(userData)
+              setUserData2(userData)
             } catch (err) {
               console.log('Doslo je do greske', err);
             }

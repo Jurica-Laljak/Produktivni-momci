@@ -246,10 +246,10 @@ public class PreferenceController {
 
 
     @GetMapping("/obavijesti")
-    public ResponseEntity<List<ObavijestDto>> getObavijestiByKorisnikId(UsernamePasswordAuthenticationToken token) {
+    public ResponseEntity<List<ObavijestInfoDto>> getObavijestiByKorisnikId(UsernamePasswordAuthenticationToken token) {
         try {
             Long korisnikId = getUserIdFromToken(token);
-            List<ObavijestDto> obavijesti = obavijestService.getObavijestiByKorisnikId(korisnikId);
+            List<ObavijestInfoDto> obavijesti = obavijestService.getObavijestiByKorisnikId(korisnikId);
             return ResponseEntity.ok(obavijesti);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

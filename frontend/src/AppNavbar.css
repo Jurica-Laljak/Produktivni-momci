@@ -38,8 +38,8 @@
 .welcome-text {
   flex-grow: 1;
   text-align: center;
-  font-size: 1.2rem;
-  margin: 0 auto; /* Centriranje teksta unutar d-flex */
+  font-size: 1.5rem;
+  margin: 0; /* Centriranje teksta unutar d-flex */
 }
 
 .nav-link {

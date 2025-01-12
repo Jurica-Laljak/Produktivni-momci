@@ -37,6 +37,8 @@ public class KorisnikServiceTests {
                 .omiljeniZanrovi(new HashSet<>())
                 .oglasi(new HashSet<>())
                 .roles(new HashSet<>())
+                .transakcijeOglas(new HashSet<>())
+                .transakcijePonuda(new HashSet<>())
                 .build();
 
         KorisnikDto korisnikDto = KorisnikDto.builder()
@@ -49,6 +51,8 @@ public class KorisnikServiceTests {
                 .omiljeniZanroviIds(new HashSet<>())
                 .oglasiIds(new HashSet<>())
                 .roleIds(new HashSet<>())
+                .transakcijeOglasIds(new HashSet<>())
+                .transakcijePonudaIds(new HashSet<>())
                 .build();
 
         when(korisnikRepository.save(Mockito.any(Korisnik.class))).thenReturn(korisnik);
@@ -70,6 +74,8 @@ public class KorisnikServiceTests {
                 .omiljeniZanrovi(new HashSet<>())
                 .oglasi(new HashSet<>())
                 .roles(new HashSet<>())
+                .transakcijeOglas(new HashSet<>())
+                .transakcijePonuda(new HashSet<>())
                 .build();
 
         when(korisnikRepository.findByGoogleId("123456")).thenReturn(korisnik);

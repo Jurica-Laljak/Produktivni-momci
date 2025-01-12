@@ -18,8 +18,7 @@ export default function SearchResultsList({ results }) {
             return (
               <Listing
                         key={index}
-                        ulaznica={oglas.ulaznica}
-                        izvodaci={oglas.izvodaci}/>
+                        listing={oglas}/>
             )
             /*
             const formattedDate = new Date(oglas.datum).toLocaleDateString("hr-HR");

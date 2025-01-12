@@ -82,13 +82,13 @@ public class Korisnik {
     )
     private Set<Role> roles = new HashSet<>();
 
-
+    // One-to-Many with Transakcija for Ponuda
     @OneToMany(mappedBy = "korisnikPonuda", fetch = FetchType.LAZY)
     private Set<Transakcija> transakcijePonuda = new HashSet<>();
 
+    // One-to-Many with Transakcija for Oglas
     @OneToMany(mappedBy = "korisnikOglas", fetch = FetchType.LAZY)
     private Set<Transakcija> transakcijeOglas = new HashSet<>();
-
 
     // Helper method to get favorite artist IDs
     public Set<Long> getOmiljeniIzvodaciIds() {
@@ -108,6 +108,27 @@ public class Korisnik {
     public Set<Long> getOmiljeniZanroviIds() {
         return omiljeniZanrovi.stream()
                 .map(Zanr::getIdZanra)
+                .collect(Collectors.toSet());
+    }
+
+    // Helper method to get role IDs
+    public Set<Long> getRoleIds() {
+        return roles.stream()
+                .map(Role::getIdRole)
+                .collect(Collectors.toSet());
+    }
+
+    // Helper method to get Ponuda transaction IDs
+    public Set<Long> getTransakcijePonudaIds() {
+        return transakcijePonuda.stream()
+                .map(Transakcija::getIdTransakcije)
+                .collect(Collectors.toSet());
+    }
+
+    // Helper method to get Oglas transaction IDs
+    public Set<Long> getTransakcijeOglasIds() {
+        return transakcijeOglas.stream()
+                .map(Transakcija::getIdTransakcije)
                 .collect(Collectors.toSet());
     }
 }

@@ -9,6 +9,10 @@ proxy:{
 }
   },
   plugins: [react()],
+  build: {
+    outDir: '../backend/src/main/resources/static/',
+    emptyOutDir: true,
+  }
 }) 
  
 // export default defineConfig({

@@ -1,10 +1,12 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
-import hr.unizg.fer.ticket4ticket.dto.ObavijestDto;
-import hr.unizg.fer.ticket4ticket.entity.Obavijest;
-import hr.unizg.fer.ticket4ticket.entity.Oglas;
+import hr.unizg.fer.ticket4ticket.dto.*;
+import hr.unizg.fer.ticket4ticket.entity.*;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.ObavijestMapper;
+import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
+import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
+import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.repository.ObavijestRepository;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.ObavijestService;
@@ -14,8 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,9 @@ public class ObavijestServiceImpl implements ObavijestService {
 
     @Autowired
     private ObavijestRepository obavijestRepository;
+
+    @Autowired
+    private KorisnikRepository korisnikRepository;
 
     @Autowired
     private OglasRepository oglasRepository;
@@ -38,11 +42,89 @@ public class ObavijestServiceImpl implements ObavijestService {
     }
 
     @Override
-    public List<ObavijestDto> getObavijestiByKorisnikId(Long korisnikId) {
+    public List<ObavijestInfoDto> getObavijestiByKorisnikId(Long korisnikId) {
         List<Obavijest> obavijesti = obavijestRepository.findByKorisnikId(korisnikId);
 
         return obavijesti.stream()
-                .map(ObavijestMapper::mapToObavijestDto)
+                .map(obavijest -> {
+                    try {
+                        ObavijestInfoDto dto = new ObavijestInfoDto();
+
+                        // Set basic fields from Obavijest
+                        dto.setIdObavijesti(obavijest.getIdObavijesti());
+                        dto.setObavijestType(obavijest.getObavijestTip());
+                        dto.setKorisnikIdObavijest(obavijest.getKorisnikId());
+
+                        // Handle Transakcija mapping
+                        Transakcija transakcija = obavijest.getTransakcija();
+                        if (transakcija != null) {
+                            dto.setTransakcijaIdObavijest(transakcija.getIdTransakcije());
+                            if (transakcija.getKorisnikOglas() != null) {
+                                dto.setKorisnikOglasIme(transakcija.getKorisnikOglas().getImeKorisnika());
+                                dto.setKorisnikOglasPrezime(transakcija.getKorisnikOglas().getPrezimeKorisnika());
+                            }
+                            if (transakcija.getKorisnikPonuda() != null) {
+                                dto.setKorisnikPonudaIme(transakcija.getKorisnikPonuda().getImeKorisnika());
+                                dto.setKorisnikPonudaPrezime(transakcija.getKorisnikPonuda().getPrezimeKorisnika());
+                            }
+                            dto.setUlaznicaOglas(UlaznicaMapper.mapToUlaznicaDto(transakcija.getUlaznicaOglas()));
+                            dto.setUlaznicaPonuda(UlaznicaMapper.mapToUlaznicaDto(transakcija.getUlaznicaPonuda()));
+
+                            List<IzvodacDto> izvodacDtoList = new ArrayList<>();
+
+                            if (transakcija.getUlaznicaPonuda() != null && transakcija.getUlaznicaPonuda().getIzvodaci() != null) {
+                                // Map each Izvodac to IzvodacDto and add to the list
+                                for (Izvodac izvodac : transakcija.getUlaznicaPonuda().getIzvodaci()) {
+                                    IzvodacDto izvodacDto = IzvodacMapper.mapToIzvodacDto(izvodac); // Map to DTO
+                                    izvodacDtoList.add(izvodacDto); // Add to the list
+                                }
+                            }
+
+                            if (transakcija.getUlaznicaOglas() != null && transakcija.getUlaznicaOglas().getIzvodaci() != null) {
+                                // Map each Izvodac to IzvodacDto and add to the list
+                                for (Izvodac izvodac : transakcija.getUlaznicaOglas().getIzvodaci()) {
+                                    IzvodacDto izvodacDto = IzvodacMapper.mapToIzvodacDto(izvodac); // Map to DTO
+                                    izvodacDtoList.add(izvodacDto); // Add to the list
+                                }
+                            }
+
+                            dto.setIzvodaci(izvodacDtoList);
+                        }
+
+                        // Handle Oglas mapping
+                        Oglas oglas = obavijest.getOglas();
+                        if (oglas != null) {
+                            dto.setOglasIdObavijest(oglas.getIdOglasa());
+                            if (oglas.getKorisnik() != null) {
+                                dto.setAutorOglasIme(oglas.getKorisnik().getImeKorisnika());
+                                dto.setAutorOglasPrezime(oglas.getKorisnik().getPrezimeKorisnika());
+                            }
+                            dto.setUlaznicaPreporuka(UlaznicaMapper.mapToUlaznicaDto(oglas.getUlaznica()));
+                            dto.setZanrIdObavijest(
+                                    oglas.getUlaznica() != null
+                                            && oglas.getUlaznica().getIzvodaci() != null
+                                            && !oglas.getUlaznica().getIzvodaci().isEmpty()
+                                            ? oglas.getUlaznica().getIzvodaci().iterator().next().getZanrId()
+                                            : null
+                            );
+
+                            dto.setIzvodaci(
+                                    oglas.getUlaznica() != null
+                                            && oglas.getUlaznica().getIzvodaci() != null
+                                            ? oglas.getUlaznica().getIzvodaci().stream()
+                                            .map(IzvodacMapper::mapToIzvodacDto) // Map each Izvodac to its DTO
+                                            .collect(Collectors.toList()) // Collect to a List
+                                            : Collections.emptyList() // Return an empty list if null
+                            );
+                        }
+
+                        return dto;
+
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
