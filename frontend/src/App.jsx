@@ -17,6 +17,7 @@ import NavigationButtons from "./NavigationButtons";
 import User from './User';
 import UserOglasi from './UserOglasi';
 import Obavijesti from './Obavijesti';
+import ProtectedComponent from './auth/ProtectedComponent'
 
 export const Context = createContext()
 
@@ -27,60 +28,83 @@ function App() {
   const [results, setResults] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const showNavButtons = ['/user', '/userUlaznice', '/userOglasi']; 
+  const showNavButtons = ['/user', '/userUlaznice', '/userOglasi'];
   const [userName, setUserName] = useState('');
   const [userData, setUserData] = useState('');
 
- 
+
   //dohvacanje svih zanrova
   useEffect(() => {
-    
 
-     axios.get(`api/zanrovi`)
-     .then(res => {
-      console.log(res.data)
-      setZanrovi(res.data.reduce((map, zanr) => {
-        map[zanr.idZanra] = zanr.imeZanra;
-        return map;
-      }, {}))
-      
 
-     }).finally(console.log(zanrovi))
-     .catch(err => console.log(err))
+    axios.get(`api/zanrovi`)
+      .then(res => {
+        console.log(res.data)
+        setZanrovi(res.data.reduce((map, zanr) => {
+          map[zanr.idZanra] = zanr.imeZanra;
+          return map;
+        }, {}))
+
+
+      }).finally(console.log(zanrovi))
+      .catch(err => console.log(err))
   }, [])
 
- return (
- 
-  <Context.Provider value={[userName, setUserName]}>
+  return (
 
-  <div className='app-container'>
-    {/*navbar se prikazuje samo na odredenim putanjama*/ }
- {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2  setResults={setResults} zanrovi={zanrovi}
-                                                              userData2={userData} setUserData2={setUserData}/>} 
- 
- {/* prikazuje samo na odredenim putanjama*/ }
-  {showNavButtons.includes(location.pathname) && <NavigationButtons />}
+    <Context.Provider value={[userName, setUserName]}>
 
-  <div className='container main-content'>
-    <Routes>
-    <Route path='/' element={<Home />}/>
-    <Route path='/login' element={<LoginGoogle />}/>
-    <Route path='/search' element={<SearchResultsList results={results}/>}/>
-    <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi}/>}></Route>
-    <Route path='/UserHome' element={<UserHome />}/>
-    <Route path='/Home' element={<Home />}/>
-    <Route path='/userUlaznice' element={<Ulaznice />}></Route>
-    <Route path='/user' element={<User userData={userData}/>}></Route>
-    <Route path='/userOglasi' element={<UserOglasi />}></Route>
-    <Route path='/notifications' element={<Obavijesti/>}></Route>
+      <div className='app-container'>
+        {/*navbar se prikazuje samo na odredenim putanjama*/}
+        {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2 setResults={setResults} zanrovi={zanrovi}
+          userData2={userData} setUserData2={setUserData} />}
 
-    </Routes>
-    </div>
-    <AppFooter />
-  
-    </div>
+        {/* prikazuje samo na odredenim putanjama*/}
+        {showNavButtons.includes(location.pathname) && <NavigationButtons />}
+
+        <div className='container main-content'>
+          <Routes>
+            {/* nezaštićene komponente */}
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<LoginGoogle />} />
+            <Route path='/search' element={<SearchResultsList results={results} />} />
+            <Route path='/ChooseGenres' element={<ChooseGenres2 zanrovi={zanrovi} />}></Route>
+            <Route path='/Home' element={<Home />} />
+
+            {/* zaštićene komponente */}
+            <Route path='/UserHome' element={
+              <ProtectedComponent>
+                <UserHome />
+              </ProtectedComponent>
+            } />
+            <Route path='/userUlaznice' element={
+              <ProtectedComponent>
+                <Ulaznice />
+              </ProtectedComponent>
+            }></Route>
+            <Route path='/user' element={
+              <ProtectedComponent>
+                <User userData={userData} />
+              </ProtectedComponent>
+            }></Route>
+            <Route path='/userOglasi' element={
+              <ProtectedComponent>
+                <UserOglasi />
+              </ProtectedComponent>
+            }></Route>
+            <Route path='/notifications' element={
+              <ProtectedComponent>
+                <Obavijesti />
+              </ProtectedComponent>
+            }></Route>
+
+          </Routes>
+        </div>
+        <AppFooter />
+
+      </div>
     </Context.Provider>
- )
+  )
 }
 
 export default App

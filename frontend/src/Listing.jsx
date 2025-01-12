@@ -13,7 +13,7 @@ export default function Listing({ listing }) {
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
-
+  console.log(listing)
   //console.log("In Listing, ulaznica: ", ulaznica, " Izvodaci: ", izvodaci)
 
   return (

@@ -24,6 +24,11 @@ export default function UserListingList() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        const response = await axiosPrivate.get('preference/oglasi');
+        var listings = response.data
+        console.log("Listings: ", listings)
+        setListings(listings)
+        /*
         // Dohvaćanje oglasa po preferencama
         let response = await axiosPrivate.get('preference/oglasi');
         let listingsData = response.data;
@@ -66,6 +71,7 @@ export default function UserListingList() {
         );
 
         setListings(listingsWithDetails);
+        */
       } catch (error) {
         console.error("Greška pri dohvaćanju oglasa i detalja:", error);
       }
@@ -79,10 +85,7 @@ export default function UserListingList() {
       {listings.map((listing) => (
         <Listing
           key={listing.idOglasa}
-          idOglasa={listing.idOglasa}
-          status={listing.status}
-          ulaznica={listing.ulaznica}
-          izvodaci={listing.izvodaci}
+          listing={listing}
         />
       ))}
     </div>
