@@ -4,7 +4,6 @@ const ticketMap = {
   "STANDARD": "Standard",
   "FAMILY": "Family",
   "STUDENT": "Student"
-
 }
 
 export { ticketMap }
