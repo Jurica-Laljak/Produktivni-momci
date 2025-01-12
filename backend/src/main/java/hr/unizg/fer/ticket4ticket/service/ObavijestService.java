@@ -1,6 +1,7 @@
 package hr.unizg.fer.ticket4ticket.service;
 
 import hr.unizg.fer.ticket4ticket.dto.ObavijestDto;
+import hr.unizg.fer.ticket4ticket.dto.ObavijestInfoDto;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface ObavijestService {
 
     ObavijestDto createObavijest(ObavijestDto obavijestDto);
 
-    List<ObavijestDto> getObavijestiByKorisnikId(Long korisnikId);
+    List<ObavijestInfoDto>  getObavijestiByKorisnikId(Long korisnikId);
 
     List<ObavijestDto> getObavijestiByZanrId(Long zanrId);
 

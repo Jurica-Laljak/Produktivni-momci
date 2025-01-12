@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,7 +37,7 @@ public class Oglas {
     @JoinColumn(name = "IDKorisnika", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_korisnik"))
     private Korisnik korisnik;
 
-    @OneToMany( fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Transakcija> transakcije = new HashSet<>();
 
     @OneToMany(mappedBy = "oglas", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -46,5 +47,12 @@ public class Oglas {
     public enum Status {
         AKTIVAN,
         NEAKTIVAN
+    }
+
+    // Helper method to get transaction IDs
+    public Set<Long> getTransakcijeIds() {
+        return transakcije.stream()
+                .map(Transakcija::getIdTransakcije)
+                .collect(Collectors.toSet());
     }
 }
