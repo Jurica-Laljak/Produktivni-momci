@@ -63,9 +63,9 @@ class UlaznicaServiceImplTest {
                 // neuspješan test
                 Arguments.of(
                         1L,
+                        null,
                         createUlaznica(1L, LocalDate.of(2025, 1, 15), "Arena Zagreb", "PARTER", "STANDARD",
-                                "http://example.com/slika1.jpg", "http://example.com/info1", "NEPREUZETA", "12345"),
-                        null
+                                "http://example.com/slika1.jpg", "http://example.com/info1", "NEPREUZETA", "12345")
                 )
         );
     }
