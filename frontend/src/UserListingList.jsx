@@ -9,6 +9,19 @@ export default function UserListingList() {
   const [weatherData, setWeatherData] = useState({});
 
   useEffect(() => {
+    // Provjera tokena i pohrana u localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    if (token) {
+      localStorage.setItem("token", token);
+      urlParams.delete("token");
+      const newUrl = `${window.location.pathname}`;
+      window.history.replaceState({}, document.title, newUrl);
+      window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchListings = async () => {
       try {
         let response = await axiosPrivate.get('preference/oglasi');
