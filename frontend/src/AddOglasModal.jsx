@@ -60,6 +60,7 @@ function AddOglasModal() {
               value={selectedUlaznica ? JSON.stringify(selectedUlaznica) : ""}
               onChange={(e) => setSelectedUlaznica(JSON.parse(e.target.value))}
             >
+               <option value="">-- Odaberite ulaznicu --</option>
               {ulaznice.map((ulaznica) => (
                 <option key={ulaznica.sifraUlaznice} value={JSON.stringify(ulaznica)}>
                   {ulaznica.sifraUlaznice}
