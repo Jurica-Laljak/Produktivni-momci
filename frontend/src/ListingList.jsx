@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Listing from './Listing';
 import './ListingList.css';
+import axiosPrivate from './api/axiosPrivate';
 
 export default function ListingList() {
   const [listings, setListings] = useState([]);
@@ -9,50 +10,12 @@ export default function ListingList() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await axios.get('api/oglasi/list/random-max')
-        var listings = response.data
-        setListings(listings)
-        
-        /*
-        const response = await axios.get('api/oglasi/list/12'); // Prikaz 12 random oglasa
+        const response = await axios.get('/api/oglasi/list/random-max'); // Prikaz najveceg broja random oglasa
         const listingsData = response.data;
-        console.log(response.data)
 
-        const listingsWithDetails = await Promise.all(
-          listingsData.map(async (listing) => {
-            const izvodaciResponse = await axios.get(`api/oglasi/${listing.idOglasa}/izvodaci`);
-            const ulaznicaResponse = await axios.get(`api/ulaznice/${listing.ulaznicaId}`);
-
-            const izvodaciWithGenres = await Promise.all(
-              izvodaciResponse.data.map(async (izvodac) => {
-                try {
-                  const genreResponse = await axios.get(`api/zanrovi/${izvodac.zanrId}`);
-                  return {
-                    ...izvodac,
-                    zanr: genreResponse.data.imeZanra,
-                  };
-                } catch {
-                  return {
-                    ...izvodac,
-                    zanr: "Nepoznato",
-                  };
-                }
-              })
-            );
-
-            return {
-              ...listing,
-              izvodaci: izvodaciWithGenres,
-              ulaznica: ulaznicaResponse.data,
-            };
-          })
-        );
-
-        console.log(listingsWithDetails)
-        setListings(listingsWithDetails);
-        */
+        setListings(listingsData);
       } catch (error) {
-        console.error("Greška pri dohvaćanju oglasa i detalja:", error);
+        console.error("Greška pri dohvaćanju oglasa:", error);
       }
     };
 
@@ -64,7 +27,8 @@ export default function ListingList() {
       {listings.map((listing) => (
         <Listing
           key={listing.idOglasa}
-          listing={listing}
+          ulaznica={listing}
+          izvodaci={listing.izvodaci}
         />
       ))}
     </div>
