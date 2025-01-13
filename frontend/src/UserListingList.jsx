@@ -18,6 +18,7 @@ export default function UserListingList() {
       urlParams.delete("token");
       const newUrl = `${window.location.pathname}`;
       window.history.replaceState({}, document.title, newUrl);
+      window.location.reload();
     }
   }, []);
 

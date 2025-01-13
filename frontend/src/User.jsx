@@ -163,6 +163,7 @@ import {Context} from "./App"
         try {
           const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
           console.log('Delete successful:', response.data);
+          localStorage.removeItem("token");
          navigate("/")
         } catch (error) {
           console.error('Error deleting data:', error);

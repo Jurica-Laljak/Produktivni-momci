@@ -9,17 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,6 +226,17 @@ public class PreferenceController {
     @DeleteMapping("/korisnici/izbrisi")
     public ResponseEntity<Void> deleteKorisnik(UsernamePasswordAuthenticationToken token) {
         Long korisnikId = getUserIdFromToken(token);
+        obavijestService.deleteObavijestiByKorisnikId(korisnikId);
+        preferenceService.resetUlazniceStatusAndClearUser(korisnikId); //this will detach all tickets from user
+        transakcijaService.deleteTransakcijeByKorisnikId(korisnikId);
+        oglasService.deleteAllOglasiByKorisnikId(korisnikId);
+        korisnikService.deleteKorisnikById(korisnikId);
+        return ResponseEntity.noContent().build(); // Returns 204 No Content on successful deletion
+    }
+
+    @Transactional
+    @DeleteMapping("/korisnici/izbrisi/{id}")
+    public ResponseEntity<Void> deleteKorisnikByKorisnikId(@PathVariable("id") Long korisnikId) {
         obavijestService.deleteObavijestiByKorisnikId(korisnikId);
         preferenceService.resetUlazniceStatusAndClearUser(korisnikId); //this will detach all tickets from user
         transakcijaService.deleteTransakcijeByKorisnikId(korisnikId);

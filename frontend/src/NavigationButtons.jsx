@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./NavigationButtons.css"; 
 import { FaTicketAlt } from "react-icons/fa";  
 import { FaUser } from "react-icons/fa";       
 import { FaArchive } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 
 export default function  NavigationButtons (){
     
-    const location = useLocation();
+  const location = useLocation();
+
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const googleID = JSON.parse(atob(token.split('.')[1]));
+
+        if(googleID.roles.includes("ROLE_ADMIN"))
+          setIsAdmin(true);
+      }
+      catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  });
 
   return (
     <div className="navigation-buttons">
@@ -23,6 +41,12 @@ export default function  NavigationButtons (){
          <FaArchive/> 
          <div>Centar za transakcije</div>
       </Link>
+      {isAdmin &&
+      <Link to="/admin" className={`btn btn-admin ${location.pathname === '/admin' ? 'active' : ''}`}>
+         <FaLock/> 
+         <div>Centar za administratora</div>
+      </Link>
+      }
     </div>
   );
 };

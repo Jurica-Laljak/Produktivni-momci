@@ -20,6 +20,7 @@ import Obavijesti from './Obavijesti';
 import ProtectedComponent from './auth/ProtectedComponent'
 import AddOglasModal from './AddOglasModal';
 import axiosPrivate from "./api/axiosPrivate";
+import Admin from './Admin';
 
 export const Context = createContext()
 
@@ -30,7 +31,7 @@ function App() {
   const [results, setResults] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const showNavButtons = ['/user', '/userUlaznice', '/userOglasi'];
+  const showNavButtons = ['/user', '/userUlaznice', '/userOglasi', '/admin'];
   const [userName, setUserName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [korisnikID, setKorisnikID] = useState()
@@ -106,6 +107,11 @@ function App() {
             <Route path='/notifications' element={
               <ProtectedComponent>
                 <Obavijesti />
+              </ProtectedComponent>
+            }></Route>
+            <Route path='/admin' element={
+              <ProtectedComponent>
+                <Admin />
               </ProtectedComponent>
             }></Route>
 

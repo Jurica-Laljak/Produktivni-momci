@@ -42,6 +42,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   
   export default function AppNavbar2({ setResults, zanrovi, userData2, setUserData2 }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const {openModal,userName,setUserName} = useContext(Context)
     //const [userName, setUserName] = imeUsera;
     const location = useLocation();
@@ -54,6 +55,11 @@ export default function AppNavbar2({ setResults,zanrovi }) {
         setIsLoggedIn(true);
         try {
           const googleID = JSON.parse(atob(token.split('.')[1]));
+
+          if(googleID.roles.includes("ROLE_ADMIN"))
+            setIsAdmin(true);
+
+          console.log("User is Admin: " + isAdmin);
   
           const getUserData = async () => {
             try {
@@ -87,7 +93,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
     const isUserRoute =
       location.pathname === '/user' ||
       location.pathname === '/userUlaznice' ||
-      location.pathname === '/userOglasi';
+      location.pathname === '/userOglasi' ||
+      location.pathname === '/admin';
   
     return (
       <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
@@ -99,7 +106,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
           {isLoggedIn ? (
             isUserRoute ? (
               <div className="d-flex justify-content-between align-items-center w-100">
-                <span className="welcome-text" >Dobrodošli <span style={{color:'#425DFF'}}>{userName}</span></span>
+                <span className="welcome-text" >Dobrodošli <span style={{color:isAdmin ? "#FFB700" : '#425DFF'}}>{userName}</span></span>
                 <Link to="/UserHome" className="nav-link">
                   <FaHome style={{ fontSize: '3rem', color: '#425DFF' }} />
                 </Link>
@@ -121,7 +128,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
                   <FaBell style={{ fontSize: '2.5rem', color: '#425DFF' }} />
                 </Link>
                 <Link to="/user" className="nav-link">
-                  <FaUserCircle style={{ fontSize: '2.5rem', color: '#425DFF' }} />
+                  <FaUserCircle style={{ fontSize: '2.5rem', color: isAdmin ? "#FFB700" : '#425DFF' }} />
                 </Link>
               </div>
             )

@@ -30,10 +30,19 @@
     color: white;
   }
   
-  
+  .btn.btn-admin:hover {
+    background-color: #FFB700;
+    color: white;
+  }
   
   .btn.active {
     background-color: white; 
     color: #425DFF; 
     border: 1px solid #425DFF; 
+  }
+
+  .btn.btn-admin.active {
+    background-color: white; 
+    color: #FFB700;
+    border: 1px solid #FFB700; 
   }
