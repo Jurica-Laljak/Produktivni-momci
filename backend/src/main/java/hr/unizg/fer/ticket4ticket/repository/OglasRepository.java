@@ -3,6 +3,7 @@ package hr.unizg.fer.ticket4ticket.repository;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import  hr.unizg.fer.ticket4ticket.entity.Izvodac;
 import  hr.unizg.fer.ticket4ticket.entity.Zanr;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -65,4 +66,11 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
 
     // Method to find a single Oglas by Ulaznica ID, returns Optional
     Optional<Oglas> findByUlaznica_IdUlaznice(Long ulaznicaId);
+
+
+    @Query(value = "SELECT * FROM oglas o WHERE o.id_oglasa NOT IN :excludedIds AND o.idkorisnika != :korisnikId ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
+    List<Oglas> findRandomOglasiExcludingIdsAndKorisnikId(
+            @Param("excludedIds") List<Long> excludedIds,
+            @Param("limit") int limit,
+            @Param("korisnikId") Long korisnikId);
 }

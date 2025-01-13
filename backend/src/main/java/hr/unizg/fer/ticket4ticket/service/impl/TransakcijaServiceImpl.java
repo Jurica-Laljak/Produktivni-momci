@@ -13,6 +13,7 @@ import hr.unizg.fer.ticket4ticket.service.TransakcijaService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,20 +90,41 @@ public class TransakcijaServiceImpl implements TransakcijaService {
     }
 
     @Override
-    // Service method to delete all transactions with the same ulaznicaId in either ulaznicaPonuda or ulaznicaOglas
-    public void deleteTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long UlaznicaOglasId) {
-        transakcijaRepository.deleteByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(ulaznicaPonudaId,UlaznicaOglasId);
+    public void deleteTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long ulaznicaOglasId) {
+        // Reuse the existing method to get matching transactions
+        List<TransakcijaDto> transakcijeDto = getTransakcijeWithMatchingUlaznica(ulaznicaPonudaId, ulaznicaOglasId);
+
+        // Convert the list of DTOs back to entities for deletion
+        List<Transakcija> transakcije = transakcijeDto.stream()
+                .map(TransakcijaMapper::mapToTransakcija)  // Assuming you have a method to map DTO back to entity
+                .collect(Collectors.toList());
+
+        // Delete all matching transactions
+        for (Transakcija transakcija : transakcije) {
+            transakcijaRepository.delete(transakcija);
+        }
+
+        System.out.println("Deleted matching transakcije: " + transakcije.size());
     }
 
     @Override
     public List<TransakcijaDto> getTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long ulaznicaOglasId) {
-        // Fetch the transactions where either ulaznicaPonuda or ulaznicaOglas matches the provided IDs
-        List<Transakcija> transakcije = transakcijaRepository.findByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(ulaznicaPonudaId, ulaznicaOglasId);
+        // Fetch transactions where either ulaznicaPonuda or ulaznicaOglas matches the provided IDs
+        List<Transakcija> transakcijeNormal = transakcijaRepository.findMatchingTransakcije(ulaznicaPonudaId, ulaznicaOglasId, Transakcija.StatusTransakcije.CEKA_POTVRDU);
 
-        System.out.println("Found matching transakcije: " + transakcije.size());
+        // Fetch transactions with reversed roles of ulaznicaPonuda and ulaznicaOglas
+        List<Transakcija> transakcijeReversed = transakcijaRepository.findMatchingTransakcije(ulaznicaOglasId, ulaznicaPonudaId, Transakcija.StatusTransakcije.CEKA_POTVRDU);
+
+        // Combine both lists and remove duplicates (if any)
+        List<Transakcija> allTransakcije = new ArrayList<>();
+        allTransakcije.addAll(transakcijeNormal);
+        allTransakcije.addAll(transakcijeReversed);
+        allTransakcije = allTransakcije.stream().distinct().collect(Collectors.toList());
+
+        System.out.println("Found matching transakcije (normal + reversed): " + allTransakcije.size());
 
         // Convert each Transakcija entity to TransakcijaDto
-        return transakcije.stream()
+        return allTransakcije.stream()
                 .map(TransakcijaMapper::mapToTransakcijaDto)
                 .collect(Collectors.toList());
     }
