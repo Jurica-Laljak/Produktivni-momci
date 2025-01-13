@@ -1,7 +1,7 @@
 .listingContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 oglasa po redu */
-  gap: 20px;
+  gap: 10px;
   justify-content: center;
 }
   

@@ -56,12 +56,16 @@ export default function Listing({ listing }) {
             </span>
           ))}
         </p>
-        <div className="event-info-container">
-          <p className="event-info">{ticketMap[listing.vrstaUlaznice]} ulaznica</p>
-          <p className="event-info">{remainingDaysToEvent(listing.datumKoncerta)}
-            {remainingDaysToEvent(listing.datumKoncerta) > 1
-              ? " dana"
-              : " dan"} do koncerta</p>
+        <div className="event-description">
+          <p className='event-creator'>Objavio <span className="name">{listing.imeKorisnika} {listing.prezimeKorisnika}</span></p>
+          <div className="event-info-container">
+            <p className="event-info">{ticketMap[listing.vrstaUlaznice]} ulaznica</p>
+            <p className="event-info">{remainingDaysToEvent(listing.datumKoncerta)}
+              {remainingDaysToEvent(listing.datumKoncerta) > 1
+                ? " dana"
+                : " dan"} do koncerta
+            </p>
+          </div>
         </div>
 
       </div>
