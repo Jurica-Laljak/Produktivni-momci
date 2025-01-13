@@ -25,7 +25,7 @@ export default function UserReport({ korisnik, transakcije }) {
       <div>
         <details>
             <summary className='korisnik-sum'>
-                <div>
+                <div className='korisnik-info'>
                     {korisnik.imeKorisnika} {korisnik.prezimeKorisnika} (GID: {korisnik.googleId})
                 </div>
                 <div>

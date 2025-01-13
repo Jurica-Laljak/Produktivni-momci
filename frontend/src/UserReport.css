@@ -17,6 +17,19 @@
     background-color: darkred;
 }
 
+.korisnik-info {
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.korisnik-info:hover {
+    background-color: #C6CDF1;
+}
+
 .responsive-table {
     li {
         border-radius: 8px;
