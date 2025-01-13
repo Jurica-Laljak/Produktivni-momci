@@ -58,14 +58,14 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                     <div className='grant-admin'>
                         {korisnik.roleIds.filter((role) => role == adminRole.idRole).length == 0 &&
                             <button className='btn-grant-admin' onClick={() => handleOnClickAdmin(korisnik.googleId)}>
-                                <FaLock style={{ color: "#6C7A89" }}/>
+                                <FaLock/>
                                 Dodjeli administratora korisniku
                             </button>
                         }
                     </div>
                     <div>
                         {userData.idKorisnika !== korisnik.idKorisnika ? <button className='btn-delete-korisnik btn-delete' onClick={() => handleOnClickKorisnik(korisnik.idKorisnika)}>
-                            <FaRegTrashAlt style={{ color: "red" }} />
+                            <FaRegTrashAlt/>
                             Obriši korsnika</button> : <a href="/admin">Moj račun</a>}
 
                     </div>
@@ -97,7 +97,7 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                                         <div class="col col-7" data-label="idOglas">{tr.idOglas}</div>
                                         <div class="col col-8" data-label="datumTransakcije">{new Date(tr.datumTransakcije).toLocaleDateString('hr-HR')}</div>
                                         <div class="col col-9"><button className='btn-delete-transakcija btn-delete' onClick={() => handleOnClickTransakcija(tr.idTransakcije)}>
-                                            <FaRegTrashAlt style={{ color: "red" }} />
+                                            <FaRegTrashAlt/>
                                             Obriši transakciju
                                         </button></div>
                                     </li>
