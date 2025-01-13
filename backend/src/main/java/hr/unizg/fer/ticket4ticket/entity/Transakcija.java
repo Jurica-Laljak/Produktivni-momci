@@ -42,7 +42,7 @@ public class Transakcija {
     private Korisnik korisnikOglas;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idOglas", nullable = false)
+    @JoinColumn(name = "idOglas", nullable = true)
     private Oglas oglas;
 
     @Enumerated(EnumType.STRING)

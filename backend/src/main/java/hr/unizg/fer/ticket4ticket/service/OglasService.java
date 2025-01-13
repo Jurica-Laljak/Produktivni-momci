@@ -21,6 +21,8 @@ public interface OglasService {
 
     List<OglasInfoDto> getRandomOglasiMax();
 
+    void deleteOglasById(Long oglasId);
+
     List<OglasDto> findActiveOglasesByKorisnikId(Long korisnikId);
 
     List<IzvodacDto> getIzvodaciForOglas(Long oglasId);
@@ -28,4 +30,12 @@ public interface OglasService {
     public void deleteAllOglasiByKorisnikId(Long idKorisnika);
 
     List<ZanrDto> getZanrsForOglas(Long oglasId);
+
+    void deleteOglasByUlaznicaId(Long ulaznicaId);
+
+    List<OglasInfoDto> getRandomOglasiWithoutKorisnik(int brojRandomOglasa, Long korisnikId);
+
+    void setStatusToNeaktivan(Long idOglasa);
+
+    OglasDto getOglasByUlaznicaId(Long ulaznicaId);
 }

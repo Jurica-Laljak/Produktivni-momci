@@ -1,5 +1,6 @@
 package hr.unizg.fer.ticket4ticket.service.impl;
 
+import hr.unizg.fer.ticket4ticket.entity.Korisnik;
 import hr.unizg.fer.ticket4ticket.entity.Oglas;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
 import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
@@ -7,6 +8,7 @@ import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
+import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
 import hr.unizg.fer.ticket4ticket.service.UlaznicaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UlaznicaServiceImpl implements UlaznicaService {
     @Autowired
     private final OglasRepository oglasRepository;
 
+    @Autowired
+    private final KorisnikRepository korisnikRepository;
+
     @Override
     public UlaznicaDto getUlaznicaByOglasId(Long oglasId) {
         // Fetch the Oglas by its ID
@@ -40,6 +45,25 @@ public class UlaznicaServiceImpl implements UlaznicaService {
 
         // Map the Ulaznica to UlaznicaDto
         return UlaznicaMapper.mapToUlaznicaDto(ulaznica);
+    }
+
+    public UlaznicaDto assignUserToUlaznica(Long idUlaznice, Long korisnikId) {
+        // Find the Ulaznica by its idUlaznice
+        Ulaznica ulaznica = ulaznicaRepository.findById(idUlaznice)
+                .orElseThrow(() -> new RuntimeException("Ulaznica not found"));
+
+        // Find the Korisnik by ID
+        Korisnik korisnik = korisnikRepository.findById(korisnikId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Associate the new user with the Ulaznica
+        ulaznica.setKorisnik(korisnik);
+
+        // Save the updated Ulaznica entity
+        Ulaznica updatedUlaznica = ulaznicaRepository.save(ulaznica);
+
+        // Convert the updated Ulaznica entity to UlaznicaDto using the mapper
+        return UlaznicaMapper.mapToUlaznicaDto(updatedUlaznica);
     }
 
     @Override
@@ -84,5 +108,18 @@ public class UlaznicaServiceImpl implements UlaznicaService {
         return ulaznice.stream()
                 .map(UlaznicaMapper::mapToUlaznicaDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UlaznicaDto> getUlazniceWithoutOglas(Long idKorisnika) {
+        // Fetch all Ulaznice by idKorisnika
+        List<UlaznicaDto> ulaznice = getUlazniceByIdKorisnika(idKorisnika);
+
+        // Filter out the Ulaznice that do not have an associated Oglas
+        List<UlaznicaDto> ulazniceWithoutOglas = ulaznice.stream()
+                .filter(ulaznicaDto -> ulaznicaDto.getOglasiIds() == null || ulaznicaDto.getOglasiIds().isEmpty())
+                .collect(Collectors.toList());
+
+        return ulazniceWithoutOglas;
     }
 }

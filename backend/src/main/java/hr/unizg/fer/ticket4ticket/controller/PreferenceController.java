@@ -213,6 +213,19 @@ public class PreferenceController {
         }
     }
 
+    @GetMapping("/korisnici/ulaznice/without-oglas")
+    public ResponseEntity<List<UlaznicaDto>> getUlazniceWithoutOglasForSignedInUser(UsernamePasswordAuthenticationToken token) {
+        try {
+            Long korisnikId = getUserIdFromToken(token);
+            List<UlaznicaDto> ulaznice = ulaznicaService.getUlazniceWithoutOglas(korisnikId);
+            return new ResponseEntity<>(ulaznice, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PatchMapping("/korisnici/update-info")
     public ResponseEntity<KorisnikDto> updateKorisnik(
             @RequestBody KorisnikUpdateDto updateDto,

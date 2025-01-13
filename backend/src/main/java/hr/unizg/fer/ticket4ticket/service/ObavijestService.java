@@ -17,7 +17,11 @@ public interface ObavijestService {
 
     List<ObavijestDto> getObavijestiByOglasId(Long oglasId);
 
-//    List<ObavijestDto> getObavijestiByTransakcijaId(Long transakcijaId);
+    List<ObavijestDto> getObavijestiByTransakcijaId(Long transakcijaId);
+
+    void getAndDeleteObavijestiByOglasId(Long oglasId);
+
+    void getAndDeleteObavijestiByTransakcijaId(Long transakcijaId);
 
     ObavijestDto getObavijestiById(Long obavijestId);
 

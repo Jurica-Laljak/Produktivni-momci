@@ -139,15 +139,15 @@ export default function Obavijesti() {
     }, []);
 
     const getObavijestText = (obavijest) => {
-        const { autorOglasIme, autorOglasPrezime, izvodaci, ulaznicaPreporuka, ulaznicaPonuda } = obavijest;
+        const { autorOglasIme, autorOglasPrezime, izvodaci, ulaznicaPreporuka, ulaznicaPonuda, ulaznicaOglas,korisnikPonudaIme,korisnikPonudaPrezime,korisnikOglasIme,korisnikOglasPrezime } = obavijest;
 
         switch (obavijest.obavijestType) {
             case "PRIHVATIO":
-                return `${autorOglasIme} ${autorOglasPrezime} je prihvatio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
+                return `${korisnikOglasIme} ${korisnikOglasPrezime} je prihvatio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
             case "ODBIO":
-                return `${autorOglasIme} ${autorOglasPrezime} je odbio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
+                return `${korisnikOglasIme} ${korisnikOglasPrezime} je odbio vašu ponudu ulaznice za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPonuda.datumKoncerta} ${ulaznicaPonuda.lokacijaKoncerta} ${ulaznicaPonuda.odabranaZona}`;
             case "PONUDIO":
-                return `${autorOglasIme} ${autorOglasPrezime} je ponudio ulaznice na vašem oglasu za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPreporuka.datumKoncerta} ${ulaznicaPreporuka.lokacijaKoncerta} ${ulaznicaPreporuka.odabranaZona}`;
+                return `${korisnikPonudaIme} ${korisnikPonudaPrezime} je ponudio ulaznicu na vašem oglasu za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaOglas.datumKoncerta} ${ulaznicaOglas.lokacijaKoncerta} ${ulaznicaOglas.odabranaZona}`;
             case "OGLAS":
                 return `${autorOglasIme} ${autorOglasPrezime} je objavio oglas za ${izvodaci[0].imeIzvodaca} ${izvodaci[0].prezimeIzvodaca}, ${ulaznicaPreporuka.datumKoncerta} ${ulaznicaPreporuka.lokacijaKoncerta} ${ulaznicaPreporuka.odabranaZona}`;
             default:

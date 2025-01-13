@@ -4,6 +4,7 @@ import hr.unizg.fer.ticket4ticket.dto.*;
 import hr.unizg.fer.ticket4ticket.entity.*;
 import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.ObavijestMapper;
+import hr.unizg.fer.ticket4ticket.mapper.OglasMapper;
 import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
 import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
 import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
@@ -156,6 +157,44 @@ public class ObavijestServiceImpl implements ObavijestService {
     }
 
     @Override
+    public List<ObavijestDto> getObavijestiByTransakcijaId(Long transakcijaId) {
+        List<Obavijest> obavijesti = obavijestRepository.findByTransakcijaId(transakcijaId);
+
+        return obavijesti.stream()
+                .map(ObavijestMapper::mapToObavijestDto)
+                .collect(Collectors.toList());
+    }
+
+    public void getAndDeleteObavijestiByOglasId(Long oglasId) {
+        // Retrieve the list of Obavijest objects by the Oglas ID
+        List<Obavijest> obavijesti = obavijestRepository.findByOglasId(oglasId);
+
+        // Check if the list is not empty
+        if (obavijesti != null && !obavijesti.isEmpty()) {
+            // Delete each Obavijest from the list
+            for (Obavijest obavijest : obavijesti) {
+                obavijestRepository.delete(obavijest);  // Delete the individual Obavijest
+            }
+        }
+    }
+
+    public void getAndDeleteObavijestiByTransakcijaId(Long transakcijaId) {
+        // Find all Obavijesti associated with the given transakcijaId
+        List<Obavijest> obavijesti = obavijestRepository.findByTransakcijaId(transakcijaId);
+
+        if (!obavijesti.isEmpty()) {
+            // Delete all the found Obavijesti
+            obavijestRepository.deleteAll(obavijesti);
+
+            // Optionally, print a message to indicate the number of Obavijesti deleted
+            System.out.println("Deleted " + obavijesti.size() + " Obavijesti related to Transakcija ID: " + transakcijaId);
+        } else {
+            System.out.println("No Obavijesti found for Transakcija ID: " + transakcijaId);
+        }
+    }
+
+
+    @Override
     public ObavijestDto getObavijestiById(Long obavijestId) {
         Obavijest obavijest = obavijestRepository.findById(obavijestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Obavijest with ID " + obavijestId + " does not exist."));
@@ -182,6 +221,8 @@ public class ObavijestServiceImpl implements ObavijestService {
             obavijestRepository.deleteAll(obavijesti);
         }
     }
+
+
 
 
 }

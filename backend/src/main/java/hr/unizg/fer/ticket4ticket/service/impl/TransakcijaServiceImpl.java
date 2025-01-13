@@ -76,6 +76,37 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         );
     }
 
+    @Override
+    public void deleteTransakcijaByOglasId(Long oglasId) {
+        transakcijaRepository.deleteByOglasId(oglasId);
+    }
+
+
+
+    @Override
+    public void removeOglasFromTransakcijaByOglasId(Long oglasId) {
+        transakcijaRepository.setOglasToNullByOglasId(oglasId);
+    }
+
+    @Override
+    // Service method to delete all transactions with the same ulaznicaId in either ulaznicaPonuda or ulaznicaOglas
+    public void deleteTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long UlaznicaOglasId) {
+        transakcijaRepository.deleteByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(ulaznicaPonudaId,UlaznicaOglasId);
+    }
+
+    @Override
+    public List<TransakcijaDto> getTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long ulaznicaOglasId) {
+        // Fetch the transactions where either ulaznicaPonuda or ulaznicaOglas matches the provided IDs
+        List<Transakcija> transakcije = transakcijaRepository.findByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(ulaznicaPonudaId, ulaznicaOglasId);
+
+        System.out.println("Found matching transakcije: " + transakcije.size());
+
+        // Convert each Transakcija entity to TransakcijaDto
+        return transakcije.stream()
+                .map(TransakcijaMapper::mapToTransakcijaDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public void deleteTransakcijaById(Long transakcijaId) {
@@ -163,6 +194,17 @@ public class TransakcijaServiceImpl implements TransakcijaService {
     public List<TransakcijaDto> getAllTransakcije() {
         return transakcijaRepository.findAll()
                 .stream()
+                .map(TransakcijaMapper::mapToTransakcijaDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransakcijaDto> getTransakcijeByOglasId(Long oglasId) {
+        // Fetch all Transakcija entities by oglasId
+        List<Transakcija> transakcije = transakcijaRepository.findByOglas_IdOglasa(oglasId);
+
+        // Map to DTOs and return the list
+        return transakcije.stream()
                 .map(TransakcijaMapper::mapToTransakcijaDto)
                 .collect(Collectors.toList());
     }

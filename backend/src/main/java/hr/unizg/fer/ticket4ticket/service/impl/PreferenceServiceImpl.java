@@ -99,6 +99,8 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
 
+
+
     @Override
     public void resetUlazniceStatusAndClearUser(Long korisnikId) {
         // Find all Ulaznica entities associated with the given korisnikId

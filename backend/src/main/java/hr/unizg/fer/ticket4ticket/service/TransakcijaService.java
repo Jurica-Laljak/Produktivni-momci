@@ -19,4 +19,14 @@ public interface TransakcijaService {
     TransakcijaDto getTransakcijaById(Long id);
 
     List<TransakcijaDto> getAllTransakcije();
+
+    void deleteTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId,Long UlaznicaOglasId);
+
+    void deleteTransakcijaByOglasId(Long oglasId);
+
+    void removeOglasFromTransakcijaByOglasId(Long oglasId);
+
+    List<TransakcijaDto> getTransakcijeByOglasId(Long oglasId);
+
+    List<TransakcijaDto> getTransakcijeWithMatchingUlaznica(Long ulaznicaPonudaId, Long ulaznicaOglasId);
 }

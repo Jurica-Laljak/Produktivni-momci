@@ -9,10 +9,12 @@ import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.*;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -39,6 +41,19 @@ public class OglasServiceImpl implements OglasService {
 
         // Convert the saved entity back to DTO
         return OglasMapper.mapToOglasDto(savedOglas);
+    }
+
+    public void deleteOglasById(Long oglasId) {
+        // Check if the Oglas exists
+        Oglas oglas = oglasRepository.findById(oglasId).orElse(null);
+
+        // If Oglas does not exist, return without doing anything
+        if (oglas == null) {
+            return; // No action needed if Oglas does not exist
+        }
+
+        // Perform the deletion
+        oglasRepository.delete(oglas);
     }
 
     @Override
@@ -141,6 +156,52 @@ public class OglasServiceImpl implements OglasService {
     @Override
     public List<OglasInfoDto> getRandomOglasi(int brojRandomOglasa) {
         List<Oglas> allOglasi = oglasRepository.findAll();
+        Collections.shuffle(allOglasi);
+
+        return allOglasi.stream()
+                .limit(brojRandomOglasa)
+                .map(oglas -> {
+                    Ulaznica ulaznica = oglas.getUlaznica();
+                    Set<IzvodacDto> izvodacDtos = ulaznica != null ?
+                            ulaznica.getIzvodaci().stream()
+                                    .map(IzvodacMapper::mapToIzvodacDto)
+                                    .collect(Collectors.toSet()) : new HashSet<>();
+
+                    KorisnikDto korisnikDto = null;
+                    if (oglas.getKorisnik() != null) {
+                        korisnikDto = KorisnikMapper.mapToKorisnikDto(oglas.getKorisnik());
+                    }
+
+                    OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .idOglasa(oglas.getIdOglasa())
+                            .status(oglas.getStatus().name())
+                            .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
+                            .ulaznicaId(ulaznica != null ? ulaznica.getIdUlaznice() : null)
+                            .datumKoncerta(ulaznica != null ? ulaznica.getDatumKoncerta() : null)
+                            .lokacijaKoncerta(ulaznica != null ? ulaznica.getLokacijaKoncerta() : null)
+                            .odabranaZona(ulaznica != null ? ulaznica.getOdabranaZona().name() : null)
+                            .vrstaUlaznice(ulaznica != null ? ulaznica.getVrstaUlaznice().name() : null)
+                            .urlSlika(ulaznica != null ? ulaznica.getUrlSlika() : null)
+                            .urlInfo(ulaznica != null ? ulaznica.getUrlInfo() : null)
+                            .statusUlaznice(ulaznica != null ? ulaznica.getStatus().name() : null)
+                            .sifraUlaznice(ulaznica != null ? ulaznica.getSifraUlaznice() : null)
+                            .idKorisnika(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
+                            .imeKorisnika(korisnikDto != null ? korisnikDto.getImeKorisnika() : null)
+                            .prezimeKorisnika(korisnikDto != null ? korisnikDto.getPrezimeKorisnika() : null)
+                            .emailKorisnika(korisnikDto != null ? korisnikDto.getEmailKorisnika() : null)
+                            .brMobKorisnika(korisnikDto != null ? korisnikDto.getBrMobKorisnika() : null)
+                            .izvodaci(izvodacDtos)
+                            .build();
+
+                    return oglasInfoDto;
+                })
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<OglasInfoDto> getRandomOglasiWithoutKorisnik(int brojRandomOglasa, Long korisnikId) {
+        List<Oglas> allOglasi = oglasRepository.findAllExcludingKorisnik(korisnikId);
         Collections.shuffle(allOglasi);
 
         return allOglasi.stream()
@@ -304,9 +365,9 @@ public class OglasServiceImpl implements OglasService {
         List<Oglas> oglasi = oglasRepository.findOglasiByKorisnikPreference(idKorisnika);
 
         // If no preferences match, return an empty list
-        if (oglasi.isEmpty()) {
-            return Collections.emptyList();
-        }
+        //if (oglasi.isEmpty()) {
+        //    return Collections.emptyList();
+        //}
 
         // Map the fetched Oglas objects to OglasInfoDto
         List<OglasInfoDto> oglasInfoDtos = oglasi.stream()
@@ -346,6 +407,8 @@ public class OglasServiceImpl implements OglasService {
                 })
                 .collect(Collectors.toList());
 
+
+
         // Check if we need more ads to meet the max_oglasi_returned limit
         int maxOglasiReturned = env.getProperty("max_oglasi_returned", Integer.class);
 
@@ -354,7 +417,7 @@ public class OglasServiceImpl implements OglasService {
             int remainingAdsNeeded = maxOglasiReturned - oglasInfoDtos.size();
 
             // Fetch random ads (ensure they don't overlap with already fetched preference ads)
-            List<OglasInfoDto> randomOglasi = getRandomOglasi(remainingAdsNeeded);
+            List<OglasInfoDto> randomOglasi = getRandomOglasiWithoutKorisnik(remainingAdsNeeded,idKorisnika);
 
             // Ensure no duplicates: combine the fetched and random ads
             Set<OglasInfoDto> allOglasiSet = new LinkedHashSet<>(oglasInfoDtos); // LinkedHashSet keeps insertion order
@@ -365,6 +428,7 @@ public class OglasServiceImpl implements OglasService {
                     .limit(maxOglasiReturned)
                     .collect(Collectors.toList());
         }
+
 
         // Return the ads as is, limited by the max_oglasi_returned value
         return oglasInfoDtos.stream()
@@ -418,5 +482,34 @@ public class OglasServiceImpl implements OglasService {
         return zanrEntities.stream()
                 .map(ZanrMapper::mapToZanrDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    // Service method to delete Oglas by Ulaznica ID
+    public void deleteOglasByUlaznicaId(Long ulaznicaId) {
+        oglasRepository.deleteByUlaznica_IdUlaznice(ulaznicaId);
+    }
+
+    public void setStatusToNeaktivan(Long idOglasa) {
+        // Find the Oglas by ID
+        Oglas oglas = oglasRepository.findById(idOglasa)
+                .orElseThrow(() -> new IllegalArgumentException("Oglas not found with ID: " + idOglasa));
+
+        // Set the status to NEAKTIVAN
+        oglas.setStatus(Oglas.Status.NEAKTIVAN);
+
+        // Save the updated Oglas entity back to the database
+        oglasRepository.save(oglas);
+    }
+
+    @Override
+    public OglasDto getOglasByUlaznicaId(Long ulaznicaId) {
+        // Fetch Oglas by Ulaznica ID
+        Oglas oglas = oglasRepository.findByUlaznica_IdUlaznice(ulaznicaId)
+                .orElseThrow(() -> new IllegalArgumentException("Oglas not found for Ulaznica ID: " + ulaznicaId));
+
+        // Map Oglas entity to OglasDto and return
+        return OglasMapper.mapToOglasDto(oglas);
     }
 }

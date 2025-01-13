@@ -12,7 +12,7 @@ function AddOglasModal() {
     useEffect(() => {
       const fetchUlaznice = async () => {
         try {
-          const response = await axiosPrivate.get("preference/korisnici/ulaznice");
+          const response = await axiosPrivate.get("preference/korisnici/ulaznice/without-oglas");
           setUlaznice(response.data);
           console.log("Ulaznice korisnika:", response.data);
         } catch (error) {

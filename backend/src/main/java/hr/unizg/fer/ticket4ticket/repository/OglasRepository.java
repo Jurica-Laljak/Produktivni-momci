@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -27,14 +28,14 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
             "JOIN u.izvodaci i " +
             "WHERE i.idIzvodaca = :izvodacId")
     Set<Oglas> findByIzvodacId(@Param("izvodacId") Long izvodacId);
-    
-    // Finds Oglas instances that match the user's preferences based on the user's preferred genres
+
     @Query("SELECT DISTINCT o FROM Oglas o " +
             "JOIN o.ulaznica u " +
             "JOIN u.izvodaci i " +
             "JOIN i.zanrIzvodaca z " +
             "JOIN z.korisnici korisnik " +
-            "WHERE korisnik.idKorisnika = :idKorisnika")
+            "WHERE korisnik.idKorisnika = :idKorisnika " +
+            "AND o.korisnik.idKorisnika != :idKorisnika") // Exclude ads created by the same user
     List<Oglas> findOglasiByKorisnikPreference(@Param("idKorisnika") Long idKorisnika);
 
 
@@ -56,4 +57,12 @@ public interface OglasRepository extends JpaRepository<Oglas,Long> {
             "WHERE o.idOglasa = :oglasId")
     List<Zanr> findZanrsByOglasId(@Param("oglasId") Long oglasId);
 
+    // Custom method to delete Oglas by Ulaznica ID
+    void deleteByUlaznica_IdUlaznice(Long ulaznicaId);
+
+    @Query("SELECT o FROM Oglas o WHERE o.korisnik.idKorisnika != :idKorisnika")
+    List<Oglas> findAllExcludingKorisnik(@Param("idKorisnika") Long idKorisnika);
+
+    // Method to find a single Oglas by Ulaznica ID, returns Optional
+    Optional<Oglas> findByUlaznica_IdUlaznice(Long ulaznicaId);
 }
