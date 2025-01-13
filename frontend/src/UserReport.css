@@ -1,6 +1,14 @@
 .korisnik-sum {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 13px;
+}
+
+.report-container {
+    border: 3px solid #ffb700;
+    padding: 13px;
+    margin-block: 10px;
+    font-size: 1.15rem;
 }
 
 .btn-delete {
@@ -27,7 +35,7 @@
 }
 
 .korisnik-info:hover {
-    background-color: #C6CDF1;
+    background-color: #ffb700;
 }
 
 .responsive-table {
@@ -39,7 +47,7 @@
         margin-bottom: 5px;
     }
     .table-header {
-        background-color: #C6CDF1;
+        background-color: #ffb700;
         font-size: 16px;
     }
     .table-row {

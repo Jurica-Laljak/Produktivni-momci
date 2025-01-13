@@ -109,3 +109,7 @@ input[type=radio]:checked {
     background-color: #FFB700;
     border-color: #FFB700;
 }
+
+.korisnici {
+    width: 100%;
+}

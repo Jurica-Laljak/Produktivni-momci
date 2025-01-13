@@ -68,7 +68,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
               setUserName(imePrezime);
               localStorage.setItem("ID",userData.idKorisnika)
-             console.log("user data: ")
+              console.log("user data: ")
               console.log(userData)
               setUserData2(userData)
             } catch (err) {

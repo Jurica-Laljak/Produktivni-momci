@@ -111,7 +111,7 @@ function App() {
             }></Route>
             <Route path='/admin' element={
               <ProtectedComponent>
-                <Admin />
+                <Admin userData={userData}/>
               </ProtectedComponent>
             }></Route>
 

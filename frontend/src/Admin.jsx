@@ -6,7 +6,7 @@ import { FaSearch, FaUsers, FaUser } from 'react-icons/fa';
 import "./Admin.css"
 import UserReport from './UserReport';
 
-export default function Admin() {
+export default function Admin( { userData } ) {
 
     const[sentRequest, setSentRequest] = useState(false);
     const[korisnici, setKorisnici] = useState([]);
@@ -35,7 +35,7 @@ export default function Admin() {
         axiosPrivate.get("transakcije")
         .then(async (response) => {
             var transakcije = response.data;
-            console.log(transakcije);
+            console.log("Transakcije: ", transakcije);
             setTransakcije(transakcije);
         });
     };
@@ -94,6 +94,7 @@ export default function Admin() {
                 <UserReport
                 korisnik={korisnik}
                 transakcije={transakcije}
+                userData={userData}
                 />
                 )}
             </div>}
