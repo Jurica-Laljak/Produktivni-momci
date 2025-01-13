@@ -13,7 +13,7 @@ export default function UserListingList() {
       try {
         let response = await axiosPrivate.get('preference/oglasi');
         let listingsData = response.data;
-
+        console.log("Listings data: ", listingsData)
         if (listingsData.length === 0) {
           const fallbackResponse = await axios.get('/api/oglasi/list/random-max');
           listingsData = fallbackResponse.data;

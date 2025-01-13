@@ -12,7 +12,7 @@ export default function ListingList() {
       try {
         const response = await axios.get('/api/oglasi/list/random-max'); // Prikaz najveceg broja random oglasa
         const listingsData = response.data;
-
+        console.log("Listings data: ", listingsData)
         setListings(listingsData);
       } catch (error) {
         console.error("Greška pri dohvaćanju oglasa:", error);

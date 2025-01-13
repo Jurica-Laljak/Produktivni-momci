@@ -77,90 +77,56 @@ export default function Listing({ ulaznica, izvodaci }) {
 
   return (
     <div>
-      {!showDetails ? (
-        <div className="custom-card" onClick={toggleDetails}>
-          <div className="image-container">
-            <img
-              src={ulaznica.urlSlika}
-              alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
-              className="card-img"
-            />
-            { /*   <div className="icon-container">
-              <button onClick={toggleFavorite} className="icon-button">
-                {isFavorite ? (
-                  <FaHeart className="icon favorite-icon" />
-                ) : (
-                  <FaRegHeart className="icon favorite-icon" />
-                )}
-              </button>
-              <button onClick={toggleVisibility} className="icon-button">
-                {isVisible ? (
-                  <FaEye className="icon visibility-icon" />
-                ) : (
-                  <FaEyeSlash className="icon visibility-icon" />
-                )}
-              </button>
-            </div> */}
-          </div>
-          <div className="card-details">
-            <p className="event-title">
-              {izvodaci.map((izvodac) => (
-                <span key={izvodac.imeIzvodaca}>
-                  {izvodac.imeIzvodaca} {izvodac.prezimeIzvodaca},{' '}
-                  {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
-                  {ulaznica.lokacijaKoncerta}
-                </span>
-              ))}
-            </p>
-            <div className="event-description">
-              <p className='event-creator'>Objavio <span className="name">{ulaznica.imeKorisnika} {ulaznica.prezimeKorisnika}</span></p>
-              <div className="event-info-container">
-                <p className="event-info">{ticketMap[ulaznica.vrstaUlaznice]} ulaznica</p>
-                <p className="event-info" style={{ color: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "#425dff" : "none"
-                                                    ,fontWeight: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "bold" : "none"
-                }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
-                  {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                    ? " dana"
-                    : " dan"} do koncerta
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
+      {showDetails ? (
         <div className="outer">
           <div className="overlay" onClick={toggleDetails}></div>
           <div className="detailed-view">
-            <button className="close-details" onClick={toggleDetails} style={{ color: '#FFB700' }}>
+
+            <button className="close-details" onClick={toggleDetails}>
               ✖
             </button>
-            <div className="detailed-header">
-              <h2>{ulaznica.lokacijaKoncerta}</h2>
-              <p className="days-left">
-                {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')}
-              </p>
-            </div>
-            <div className="detailed-img-container">
-              <img
-                src={ulaznica.urlSlika}
-                alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
-                className="detailed-img"
-              />
-            </div>
-            <div className="details-right">
+
+            <div className="header-container">
+              <div className="detailed-header">
+                <h2><span>
+                  {izvodaci.map((izvodac) => (
+                    <span className="title" key={izvodac.imeIzvodaca}>
+                      {izvodac.imeIzvodaca}{izvodac.prezimeIzvodaca ? " " + izvodac.prezimeIzvodaca : <></>},{' '}
+                      {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
+                      {ulaznica.lokacijaKoncerta}
+                    </span>
+                  ))}
+                </span></h2>
+                <p className="event-info" style={{
+                  textDecoration: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "underline" : "none"
+                }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
+                  {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                    ? " dana"
+                    : " dan"} do koncerta {/* (oglas je objavljen {new Date(ulaznica.datumOglasa).toLocaleDateString('hr-HR')}) */}
+                </p>
+              </div>
+
+
               <p className="posted-by">
-                <strong>Objavio:</strong> {ulaznica.imeKorisnika} {ulaznica.prezimeKorisnika}
+                <span>Objavio</span>
+                <span className="blue-text">{ulaznica.imeKorisnika} {ulaznica.prezimeKorisnika}</span>
               </p>
-              <p className="availability-info">
-                Vrsta ulaznice: {ulaznica.vrstaUlaznice}
-              </p>
-              <p className="event-info">{remainingDaysToEvent(ulaznica.datumKoncerta)}
-                {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                  ? " dana"
-                  : " dan"} do koncerta
-              </p>
-              {forecastAvailable ? (
-                weather ? (
+            </div>
+
+            <div className="grid-container">
+              <div className="detailed-img-container">
+                <img
+                  src={ulaznica.urlSlika}
+                  alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
+                  className="detailed-img"
+                />
+              </div>
+
+              <div className="details-right">
+                <p className="availability-info">
+                  Vrsta ulaznice: {ulaznica.vrstaUlaznice}
+                </p>
+                {weather ? (
                   <div className="weather-info">
                     <p>
                       <strong>Vremenska prognoza:</strong>
@@ -176,16 +142,84 @@ export default function Listing({ ulaznica, izvodaci }) {
                       </span>
                     </div>
                   </div>
-                ) : (
-                  <p>Podaci o vremenu trenutno nisu dostupni.</p>
                 )
-              ) : (
-                <p style={{ color: 'black' }}>Podaci o vremenu nisu dostupni za događaje udaljene više od 14 dana.</p>
-              )}
+                  : (<></>
+                  )}
+              </div>
+
+              <div className="button-container">
+                <button className="button">
+                  Razmijeni ulaznice
+                </button>
+                <span className="button-description">
+                  {/* tu ide tekst o količini ulaznica koje korisnik ima
+                      - potrebno je dohvatiti koliko korisnik ima "slobodnih" ulaznica i taj
+                      broj staviti kao i tekst
+                      
+                    Neka zamijeni ono što piše ispod*/}
+                  Nemate dostupne ulaznice za razmjenu
+                </span>
+              </div>
+            </div>
+
+
+          </div>
+        </div>)
+
+        : <></>}
+
+
+      <div className="custom-card" onClick={toggleDetails}>
+        <div className="image-container">
+          <img
+            src={ulaznica.urlSlika}
+            alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
+            className="card-img"
+          />
+          { /*   <div className="icon-container">
+              <button onClick={toggleFavorite} className="icon-button">
+                {isFavorite ? (
+                  <FaHeart className="icon favorite-icon" />
+                ) : (
+                  <FaRegHeart className="icon favorite-icon" />
+                )}
+              </button>
+              <button onClick={toggleVisibility} className="icon-button">
+                {isVisible ? (
+                  <FaEye className="icon visibility-icon" />
+                ) : (
+                  <FaEyeSlash className="icon visibility-icon" />
+                )}
+              </button>
+            </div> */}
+        </div>
+        <div className="card-details">
+          <p className="event-title">
+            {izvodaci.map((izvodac) => (
+              <span key={izvodac.imeIzvodaca}>
+                {izvodac.imeIzvodaca}{izvodac.prezimeIzvodaca ? " " + izvodac.prezimeIzvodaca : <></>},{' '}
+                {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
+                {ulaznica.lokacijaKoncerta}
+              </span>
+            ))}
+          </p>
+          <div className="event-description">
+            <p className='event-creator'>Objavio <span className="name">{ulaznica.imeKorisnika} {ulaznica.prezimeKorisnika}</span></p>
+            <div className="event-info-container">
+              <p className="event-info">{ticketMap[ulaznica.vrstaUlaznice]} ulaznica</p>
+              <p className="event-info" style={{
+                color: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "#425dff" : "none"
+                , fontWeight: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "bold" : "none"
+              }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
+                {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                  ? " dana"
+                  : " dan"} do koncerta
+              </p>
             </div>
           </div>
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
