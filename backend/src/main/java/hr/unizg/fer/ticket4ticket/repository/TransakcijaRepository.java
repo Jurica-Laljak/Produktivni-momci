@@ -29,7 +29,13 @@ public interface TransakcijaRepository extends JpaRepository<Transakcija, Long> 
     void deleteByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(Long ulaznicaPonudaId, Long ulaznicaOglasId);
 
 
-    List<Transakcija> findByUlaznicaPonuda_IdUlazniceOrUlaznicaOglas_IdUlaznice(Long ulaznicaPonudaId, Long ulaznicaOglasId);
+    @Query("SELECT t FROM Transakcija t " +
+            "WHERE (t.ulaznicaPonuda.idUlaznice = :ulaznicaPonudaId OR t.ulaznicaOglas.idUlaznice = :ulaznicaOglasId) " +
+            "AND t.statusTransakcije = :statusTransakcije")
+    List<Transakcija> findMatchingTransakcije(
+            @Param("ulaznicaPonudaId") Long ulaznicaPonudaId,
+            @Param("ulaznicaOglasId") Long ulaznicaOglasId,
+            @Param("statusTransakcije") Transakcija.StatusTransakcije statusTransakcije);
 
     @Modifying
     @Transactional

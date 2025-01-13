@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -364,11 +365,6 @@ public class OglasServiceImpl implements OglasService {
         // Fetch ads based on user preference
         List<Oglas> oglasi = oglasRepository.findOglasiByKorisnikPreference(idKorisnika);
 
-        // If no preferences match, return an empty list
-        //if (oglasi.isEmpty()) {
-        //    return Collections.emptyList();
-        //}
-
         // Map the fetched Oglas objects to OglasInfoDto
         List<OglasInfoDto> oglasInfoDtos = oglasi.stream()
                 .map(oglas -> {
@@ -382,7 +378,7 @@ public class OglasServiceImpl implements OglasService {
                         korisnikDto = KorisnikMapper.mapToKorisnikDto(oglas.getKorisnik());
                     }
 
-                    OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                    return OglasInfoDto.builder()
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -402,12 +398,8 @@ public class OglasServiceImpl implements OglasService {
                             .brMobKorisnika(korisnikDto != null ? korisnikDto.getBrMobKorisnika() : null)
                             .izvodaci(izvodacDtos)
                             .build();
-
-                    return oglasInfoDto;
                 })
                 .collect(Collectors.toList());
-
-
 
         // Check if we need more ads to meet the max_oglasi_returned limit
         int maxOglasiReturned = env.getProperty("max_oglasi_returned", Integer.class);
@@ -416,21 +408,61 @@ public class OglasServiceImpl implements OglasService {
         if (oglasInfoDtos.size() < maxOglasiReturned) {
             int remainingAdsNeeded = maxOglasiReturned - oglasInfoDtos.size();
 
+            // Extract the IDs of the fetched ads
+            List<Long> fetchedOglasiIds = oglasi.stream()
+                    .map(Oglas::getIdOglasa)
+                    .collect(Collectors.toList());
+
             // Fetch random ads (ensure they don't overlap with already fetched preference ads)
-            List<OglasInfoDto> randomOglasi = getRandomOglasiWithoutKorisnik(remainingAdsNeeded,idKorisnika);
+            List<Oglas> randomOglasi = oglasRepository.findRandomOglasiExcludingIdsAndKorisnikId(fetchedOglasiIds, remainingAdsNeeded, idKorisnika);
 
-            // Ensure no duplicates: combine the fetched and random ads
-            Set<OglasInfoDto> allOglasiSet = new LinkedHashSet<>(oglasInfoDtos); // LinkedHashSet keeps insertion order
-            allOglasiSet.addAll(randomOglasi);
+            // Map the random Oglasi to OglasInfoDto
+            List<OglasInfoDto> randomOglasiDtos = randomOglasi.stream()
+                    .map(oglas -> {
+                        Ulaznica ulaznica = oglas.getUlaznica();
+                        Set<IzvodacDto> izvodacDtos = ulaznica.getIzvodaci().stream()
+                                .map(IzvodacMapper::mapToIzvodacDto)
+                                .collect(Collectors.toSet());
 
-            // Return the combined list, ensuring the number doesn't exceed the max limit
-            return allOglasiSet.stream()
+                        KorisnikDto korisnikDto = null;
+                        if (oglas.getKorisnik() != null) {
+                            korisnikDto = KorisnikMapper.mapToKorisnikDto(oglas.getKorisnik());
+                        }
+
+                        return OglasInfoDto.builder()
+                                .idOglasa(oglas.getIdOglasa())
+                                .status(oglas.getStatus().name())
+                                .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
+                                .ulaznicaId(ulaznica != null ? ulaznica.getIdUlaznice() : null)
+                                .datumKoncerta(ulaznica != null ? ulaznica.getDatumKoncerta() : null)
+                                .lokacijaKoncerta(ulaznica != null ? ulaznica.getLokacijaKoncerta() : null)
+                                .odabranaZona(ulaznica != null ? ulaznica.getOdabranaZona().name() : null)
+                                .vrstaUlaznice(ulaznica != null ? ulaznica.getVrstaUlaznice().name() : null)
+                                .urlSlika(ulaznica != null ? ulaznica.getUrlSlika() : null)
+                                .urlInfo(ulaznica != null ? ulaznica.getUrlInfo() : null)
+                                .statusUlaznice(ulaznica != null ? ulaznica.getStatus().name() : null)
+                                .sifraUlaznice(ulaznica != null ? ulaznica.getSifraUlaznice() : null)
+                                .idKorisnika(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
+                                .imeKorisnika(korisnikDto != null ? korisnikDto.getImeKorisnika() : null)
+                                .prezimeKorisnika(korisnikDto != null ? korisnikDto.getPrezimeKorisnika() : null)
+                                .emailKorisnika(korisnikDto != null ? korisnikDto.getEmailKorisnika() : null)
+                                .brMobKorisnika(korisnikDto != null ? korisnikDto.getBrMobKorisnika() : null)
+                                .izvodaci(izvodacDtos)
+                                .build();
+                    })
+                    .collect(Collectors.toList());
+
+            // Combine the original preference-based ads and random ads ensuring no duplication
+            List<OglasInfoDto> allOglasiList = new ArrayList<>(oglasInfoDtos);
+            allOglasiList.addAll(randomOglasiDtos);
+
+            // Limit by max_oglasi_returned
+            return allOglasiList.stream()
                     .limit(maxOglasiReturned)
                     .collect(Collectors.toList());
         }
 
-
-        // Return the ads as is, limited by the max_oglasi_returned value
+        // If no need to fetch random ads, return only the preference ads
         return oglasInfoDtos.stream()
                 .limit(maxOglasiReturned)
                 .collect(Collectors.toList());

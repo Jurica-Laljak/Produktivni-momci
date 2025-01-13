@@ -103,9 +103,13 @@ public class TransakcijaController {
         System.out.println("Assigning user to ulaznica (Oglas -> Ponuda)");
         ulaznicaService.assignUserToUlaznica(idOglasUlaznica, idKorisnikPonuda);
 
-        // Delete the ulaznica for transactions with matching ulaznicas
-        List<TransakcijaDto> transakcije = transakcijaService.getTransakcijeWithMatchingUlaznica(idOglasUlaznica, idPonudaUlaznica); // DOESNT FIND ANY TRANSAKCIJE
+        // Get the transakcije with matching ulaznicas with status CEKA_POTVRDU
+        List<TransakcijaDto> transakcije = transakcijaService.getTransakcijeWithMatchingUlaznica(idOglasUlaznica, idPonudaUlaznica);
         System.out.println("Found matching transakcije: " + transakcije.size());
+
+
+        //This will delete all obavijesti with the provedena transakcijaId
+        obavijestService.getAndDeleteObavijestiByTransakcijaId(updatedTransakcija.getIdTransakcije());
 
         for (TransakcijaDto transakcijaDto : transakcije) {
             System.out.println("Deleting obavijest for transakcijaId: " + transakcijaDto.getIdTransakcije());
@@ -137,6 +141,9 @@ public class TransakcijaController {
         System.out.println("Deleting Oglas with ID: " + oglasPonudaId);
         oglasService.deleteOglasById(oglasPonudaId);
 
+
+
+
         // Create obavijest for prihvacena ponuda
         System.out.println("Creating obavijest for prihvacena ponuda");
         ObavijestDto obavijestDto = new ObavijestDto();
@@ -155,6 +162,10 @@ public class TransakcijaController {
     @Transactional
     @PutMapping("/{id}/odbij")
     public ResponseEntity<TransakcijaDto> setTransakcijaToOdbijena(@PathVariable("id") Long transakcijaId) {
+
+        //delete obavijest of transakcija
+        obavijestService.getAndDeleteObavijestiByTransakcijaId(transakcijaId);
+
         TransakcijaDto updatedTransakcija = transakcijaService.updateStatusTransakcije(transakcijaId, Transakcija.StatusTransakcije.ODBIJENA);
 
         //create obavijest for odbijena ponuda
