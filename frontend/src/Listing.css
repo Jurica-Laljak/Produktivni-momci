@@ -10,15 +10,15 @@ body {
 .custom-card {
   display: flex;
   flex-direction: column;
-  width: 450px;
-  height: 290px;
-  border: 4px solid #FFB700;
-  border-radius: 0;
+  width: 560px;
+  border: 7px solid #FFB700;
+  border-radius: 0; /* Pravi kutovi */
   overflow: hidden;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  margin: 15px;
+  cursor: pointer;
+  margin: 15px; /* Razmak između kartica */
 }
 
 .image-container {
@@ -26,12 +26,19 @@ body {
   width: 100%;
   height: 200px;
   overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.card-details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-img {
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .icon-container {
@@ -77,20 +84,35 @@ body {
 
 
 
-.card-details {
-  padding: 15px;
-  text-align: center;
-}
-
 .event-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  padding-inline: 5px;
   font-weight: bold;
   margin-bottom: 10px;
+  height: 70px;
+  overflow: scroll;
 }
 
-.event-info {
-  font-size: 1rem;
+.event-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.event-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
+.event-info, .event-creator {
+  font-size: 1.15rem;
   color: #555;
+}
+
+.name {
+  color: #425dff;
 }
 
 /* Overlay styles */
@@ -112,9 +134,8 @@ body {
   transform: translate(-50%, -50%);
   background-color: #C6CDF1;
   color: white;
-  border: 2px solid #f3c500;
+  border: 5px solid #FFB700;
   padding: 20px;
-  border-radius: 5px;
   width: 1000px;
   z-index: 1001;
   text-align: left;

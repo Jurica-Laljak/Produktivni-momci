@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Listing.css';
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ticketMap } from '../data/ticketMap'
 
 export default function Listing({ ulaznica, izvodaci }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -44,12 +45,12 @@ export default function Listing({ ulaznica, izvodaci }) {
           const response = await axios.get(
             `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${ulaznica.lokacijaKoncerta}&dt=${ulaznica.datumKoncerta}&aqi=no&alerts=no`
           );
-      
+
           console.log('API Response:', response.data); // Provjera odgovora
-      
+
           // Provjeri postoji li 'forecast' i 'forecastday' u odgovorima
           const forecastData = response.data?.forecast?.forecastday;
-      
+
           if (forecastData && forecastData.length > 0) {
             const forecast = forecastData[0]?.day; // Pristupi prvom danu
             if (forecast) {
@@ -69,7 +70,7 @@ export default function Listing({ ulaznica, izvodaci }) {
           console.error('Greška pri dohvaćanju vremenske prognoze:', error);
         }
       };
-      
+
       fetchWeather();
     }
   }, [showDetails, ulaznica.lokacijaKoncerta, ulaznica.datumKoncerta]);
@@ -84,7 +85,7 @@ export default function Listing({ ulaznica, izvodaci }) {
               alt={`Poster za ${ulaznica.lokacijaKoncerta}`}
               className="card-img"
             />
-        { /*   <div className="icon-container">
+            { /*   <div className="icon-container">
               <button onClick={toggleFavorite} className="icon-button">
                 {isFavorite ? (
                   <FaHeart className="icon favorite-icon" />
@@ -104,14 +105,26 @@ export default function Listing({ ulaznica, izvodaci }) {
           <div className="card-details">
             <p className="event-title">
               {izvodaci.map((izvodac) => (
-                <span key={izvodac.idIzvodaca}>
+                <span key={izvodac.imeIzvodaca}>
                   {izvodac.imeIzvodaca} {izvodac.prezimeIzvodaca},{' '}
                   {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')},{' '}
                   {ulaznica.lokacijaKoncerta}
                 </span>
               ))}
             </p>
-            <p className="event-info">{ulaznica.odabranaZona}</p>
+            <div className="event-description">
+              <p className='event-creator'>Objavio <span className="name">{ulaznica.imeKorisnika} {ulaznica.prezimeKorisnika}</span></p>
+              <div className="event-info-container">
+                <p className="event-info">{ticketMap[ulaznica.vrstaUlaznice]} ulaznica</p>
+                <p className="event-info" style={{ color: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "#425dff" : "none"
+                                                    ,fontWeight: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "bold" : "none"
+                }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
+                  {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                    ? " dana"
+                    : " dan"} do koncerta
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       ) : (
@@ -142,10 +155,10 @@ export default function Listing({ ulaznica, izvodaci }) {
                 Vrsta ulaznice: {ulaznica.vrstaUlaznice}
               </p>
               <p className="event-info">{remainingDaysToEvent(ulaznica.datumKoncerta)}
-              {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                ? " dana"
-                : " dan"} do koncerta
-            </p>
+                {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                  ? " dana"
+                  : " dan"} do koncerta
+              </p>
               {forecastAvailable ? (
                 weather ? (
                   <div className="weather-info">
