@@ -1,26 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import "./UserReport.css";
 import axiosPrivate from "./api/axiosPrivate";
-import { FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegTrashAlt, FaLock } from 'react-icons/fa';
 import { statusTransakcijeMap, statusTranskacijeColor } from '../data/statusTransakcijeMap';
 
-export default function UserReport({ korisnik, transakcije, userData }) {
+export default function UserReport({ korisnik, transakcije, userData, adminRole }) {
 
     function handleOnClickKorisnik(idKorisnika) {
         axiosPrivate.delete(`korisnici/izbrisi/${idKorisnika}`)
-            .catch(function (error) {
-                if (error.response.status == "204") {
-                    window.location.reload();
-                }
+            .then(response => {
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('There was an error sending the data:', error);
             });
     }
 
     function handleOnClickTransakcija(idTransakcije) {
         axiosPrivate.delete(`transakcije/izbrisi/${idTransakcije}`)
-            .catch(function (error) {
-                if (error.response.status == "204") {
-                    window.location.reload();
-                }
+            .then(response => {
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('There was an error sending the data:', error);
+            });
+    }
+
+    function handleOnClickAdmin(idKorisnika) {
+        axiosPrivate.get(`korisnici/grant/admin/${idKorisnika}`)
+            .then(response => {
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('There was an error sending the data:', error);
             });
     }
 
@@ -41,6 +53,14 @@ export default function UserReport({ korisnik, transakcije, userData }) {
                             brojTransakcija > 0 ? <>
                                 - {brojTransakcija} transakcija
                             </> : <></>
+                        }
+                    </div>
+                    <div className='grant-admin'>
+                        {korisnik.roleIds.filter((role) => role == adminRole.idRole).length == 0 &&
+                            <button className='btn-grant-admin' onClick={() => handleOnClickAdmin(korisnik.googleId)}>
+                                <FaLock style={{ color: "#6C7A89" }}/>
+                                Dodjeli administratora korisniku
+                            </button>
                         }
                     </div>
                     <div>

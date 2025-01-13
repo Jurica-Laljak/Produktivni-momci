@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/role")
@@ -24,5 +26,12 @@ public class RoleController {
         if (role == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(role);
+    }
+
+    @RolesAllowed("ADMIN")
+    @GetMapping
+    public ResponseEntity<List<Role>> getAllRoles() {
+        List<Role> roles = roleService.getAllRoles();
+        return ResponseEntity.ok(roles);
     }
 }

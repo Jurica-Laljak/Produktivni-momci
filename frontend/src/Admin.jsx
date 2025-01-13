@@ -11,6 +11,7 @@ export default function Admin( { userData } ) {
     const[sentRequest, setSentRequest] = useState(false);
     const[korisnici, setKorisnici] = useState([]);
     const[transakcije, setTransakcije] = useState([]);
+    const[adminRole, setAdminRole] = useState();
     const[selectedValue, setSelectedValue] = useState("all-users");
     const[korisnikInput, setKorisnikInput] = useState("");
 
@@ -37,6 +38,13 @@ export default function Admin( { userData } ) {
             var transakcije = response.data;
             console.log("Transakcije: ", transakcije);
             setTransakcije(transakcije);
+        });
+        axiosPrivate.get("role")
+        .then(async (response) => {
+            var roles = response.data;
+            var adminRole = roles.find((role) => role.role == "ROLE_ADMIN");
+            console.log("Role: ", adminRole);
+            setAdminRole(adminRole);
         });
     };
 
@@ -95,6 +103,7 @@ export default function Admin( { userData } ) {
                 korisnik={korisnik}
                 transakcije={transakcije}
                 userData={userData}
+                adminRole={adminRole}
                 />
                 )}
             </div>}
