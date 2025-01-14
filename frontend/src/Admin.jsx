@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { FaSearch, FaUsers, FaUser } from 'react-icons/fa';
 import "./Admin.css"
 import UserReport from './UserReport';
+import Autosuggest from 'react-autosuggest';
 
 export default function Admin( { userData } ) {
 
@@ -13,47 +14,83 @@ export default function Admin( { userData } ) {
     const[transakcije, setTransakcije] = useState([]);
     const[adminRole, setAdminRole] = useState();
     const[selectedValue, setSelectedValue] = useState("all-users");
-    const[korisnikInput, setKorisnikInput] = useState("");
+    const[korisnikInput, setKorisnikInput] = useState('');
+    const[suggestions, setSuggestions] = useState([]);
+    const[korisnik, setKorisnik] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axiosPrivate.get("korisnici");
+            const response2 = await axiosPrivate.get("role");
+            const response3 = await axiosPrivate.get("transakcije");
+
+            setKorisnici(response.data);
+
+            var roles = response2.data;
+            var adminRole = roles.find((role) => role.role == "ROLE_ADMIN");
+            setAdminRole(adminRole);
+
+            setTransakcije(response3.data);
+          } catch (error) {
+            console.error("Greška:", error);
+          }
+        };
+        fetchData();
+    }, []);
+
+    const getSuggestions = inputValue => {
+        const regex = new RegExp(inputValue.replace("(", "\\\(").replace(")", "\\\)").trim(), 'i');
+        const inputLength = inputValue.length;
+
+        return inputLength < 2 ? [] : korisnici.filter((korisnik) => regex.test(korisnik.imeKorisnika) || regex.test(korisnik.prezimeKorisnika)
+        || regex.test(korisnik.idKorisnika) || regex.test(`${korisnik.imeKorisnika} ${korisnik.prezimeKorisnika} (ID: ${korisnik.idKorisnika})`));
+    };
+
+    const getSuggestionValue = korisnik => (`${korisnik.imeKorisnika} ${korisnik.prezimeKorisnika} (ID: ${korisnik.idKorisnika})`);
+
+    const renderSuggestion = korisnik => (
+        <div>
+            {korisnik.imeKorisnika} {korisnik.prezimeKorisnika} (ID: {korisnik.idKorisnika})
+        </div>
+    );
+
+    const onSuggestionsFetchRequested = ({ value }) => {
+        setSuggestions(getSuggestions(value));
+    };
+
+    const onSuggestionsClearRequested = () => {
+        setSuggestions([]);
+    };
+
+    const onSuggestionsChange = (event, { newValue }) => {
+        setKorisnikInput(newValue);
+    };
+
+    const onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        setKorisnik(Array(Object(suggestion)));
+    }
+
+    const inputProps = {
+        placeholder: 'Korisnik...',
+        value: korisnikInput,
+        onChange: onSuggestionsChange
+    };
 
     function handleOnClick() {
-        setSentRequest(true);
-        if(selectedValue === "all-users") {
-            axiosPrivate.get('korisnici')
-            .then(async (response) => {
-                var korisnici = response.data;
-                console.log(korisnici);
-                setKorisnici(korisnici);
-            });
+        console.log(korisnik);
+        if(selectedValue === "special-user" && korisnik.length == 0) {
+            alert("Niste odabrali korisnika!");
+            return;
         }
         else if(selectedValue === "special-user") {
-            axiosPrivate.get(`korisnici/g/${korisnikInput}`)
-            .then(async (response) => {
-                var korisnici = Array(Object(response.data));
-                console.log(korisnici);
-                setKorisnici(korisnici);
-            });
+            setKorisnici(korisnik);
         }
-        axiosPrivate.get("transakcije")
-        .then(async (response) => {
-            var transakcije = response.data;
-            console.log("Transakcije: ", transakcije);
-            setTransakcije(transakcije);
-        });
-        axiosPrivate.get("role")
-        .then(async (response) => {
-            var roles = response.data;
-            var adminRole = roles.find((role) => role.role == "ROLE_ADMIN");
-            console.log("Role: ", adminRole);
-            setAdminRole(adminRole);
-        });
+        setSentRequest(true);
     };
 
     const handleOptionChange = changeEvent => {
         setSelectedValue(changeEvent.target.value);
-    };
-
-    const handleInputChange = changeEvent => {
-        setKorisnikInput(changeEvent.target.value);
     };
 
     return (
@@ -83,9 +120,14 @@ export default function Admin( { userData } ) {
                     </div>
                     <div className='input-wrapper-id'>
                         <FaSearch id="search-icon" />
-                        <input placeholder='GID korisnika'
-                            value={korisnikInput}
-                            onChange={handleInputChange}
+                        <Autosuggest
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={onSuggestionsClearRequested}
+                            getSuggestionValue={getSuggestionValue}
+                            renderSuggestion={renderSuggestion}
+                            inputProps={inputProps}
+                            onSuggestionSelected={onSuggestionSelected}
                         />
                     </div>
                 </div>
@@ -98,7 +140,7 @@ export default function Admin( { userData } ) {
 
             {sentRequest &&
             <div className='korisnici'>
-                {korisnici.map((korisnik) => 
+                {korisnici.sort((a, b) => a.idKorisnika > b.idKorisnika).map((korisnik) => 
                 <UserReport
                 korisnik={korisnik}
                 transakcije={transakcije}
@@ -107,7 +149,6 @@ export default function Admin( { userData } ) {
                 />
                 )}
             </div>}
-
         </div>
 
     )

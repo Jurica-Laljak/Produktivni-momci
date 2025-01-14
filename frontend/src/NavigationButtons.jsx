@@ -42,7 +42,7 @@ export default function  NavigationButtons (){
          <div>Centar za transakcije</div>
       </Link>
       {isAdmin &&
-      <Link to="/admin" className={`btn btn-admin ${location.pathname === '/admin' ? 'active' : ''}`}>
+      <Link to="/admin" reloadDocument={location.pathname === '/admin'} className={`btn btn-admin ${location.pathname === '/admin' ? 'active' : ''}`}>
          <FaLock/> 
          <div>Centar za administratora</div>
       </Link>

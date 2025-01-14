@@ -7,24 +7,28 @@ import { statusTransakcijeMap, statusTranskacijeColor } from '../data/statusTran
 
 export default function UserReport({ korisnik, transakcije, userData, adminRole }) {
 
-    function handleOnClickKorisnik(idKorisnika) {
-        axiosPrivate.delete(`preference/korisnici/izbrisi/${idKorisnika}`)
-            .then(response => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('There was an error sending the data:', error);
-            });
+    function handleOnClickKorisnik(korisnik) {
+        if(confirm(`Jeste li sigurni da želite obrisati korisnika ${korisnik.imeKorisnika} ${korisnik.prezimeKorisnika}?`)) {
+            axiosPrivate.delete(`preference/korisnici/izbrisi/${korisnik.idKorisnika}`)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('There was an error sending the data:', error);
+                });
+        }
     }
 
     function handleOnClickTransakcija(idTransakcije) {
-        axiosPrivate.delete(`transakcije/izbrisi/${idTransakcije}`)
-            .then(response => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('There was an error sending the data:', error);
-            });
+        if(confirm(`Jeste li sigurni da želite obrisati transakciju ${idTransakcije}?`)) {
+            axiosPrivate.delete(`transakcije/izbrisi/${idTransakcije}`)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('There was an error sending the data:', error);
+                });
+        }
     }
 
     function handleOnClickAdmin(idKorisnika) {
@@ -46,11 +50,11 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
     }
 
     return (
-        <div className="report-container" key={korisnik.googleId}>
+        <div className="report-container" key={korisnik.idKorisnika}>
             <details>
                 <summary className='korisnik-sum'>
                     <div className='korisnik-info' style={{cursor: brojTransakcija ? "pointer" : "default"}}>
-                        {korisnik.imeKorisnika} {korisnik.prezimeKorisnika} (GID: {korisnik.googleId}) {
+                        {korisnik.imeKorisnika} {korisnik.prezimeKorisnika} (ID: {korisnik.idKorisnika}) {
                             brojTransakcija > 0 && <span style={{fontWeight: "bold"}}>
                                 - {brojTransakcija} transakcija</span>
                         }
@@ -69,7 +73,7 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                         }
                     </div>
                     <div>
-                        {userData.idKorisnika !== korisnik.idKorisnika ? <button className='btn-delete-korisnik btn-delete' onClick={() => handleOnClickKorisnik(korisnik.idKorisnika)}>
+                        {userData.idKorisnika !== korisnik.idKorisnika ? <button className='btn-delete-korisnik btn-delete' onClick={() => handleOnClickKorisnik(korisnik)}>
                             <FaRegTrashAlt/>
                             Obriši korsnika</button> : <a href="/admin" className='korisnik-info'>Moj račun</a>}
 

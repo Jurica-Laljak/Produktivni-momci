@@ -1,7 +1,6 @@
 .korisnik-sum {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 13px;
     cursor: default;
 }
 
@@ -69,6 +68,8 @@
     min-width: 1250px;
     padding-left: 1rem;
     padding-right: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 
     li {
         border-radius: 8px;
