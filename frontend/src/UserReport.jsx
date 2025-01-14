@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./UserReport.css";
 import axiosPrivate from "./api/axiosPrivate";
 import { FaRegTrashAlt, FaLock  } from 'react-icons/fa';
-import { RxCross2 } from "react-icons/rx";
+import { FiMinus } from "react-icons/fi";
 import { statusTransakcijeMap, statusTranskacijeColor } from '../data/statusTransakcijeMap';
 
 export default function UserReport({ korisnik, transakcije, userData, adminRole }) {
@@ -103,7 +103,7 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                                         <div class="col col-4" data-label="idKorisnikPonuda">{tr.idKorisnikPonuda}</div>
                                         <div class="col col-5" data-label="idKorisnikOglas">{tr.idKorisnikOglas}</div>
                                         <div class="col col-6" data-label="statusTransakcije">{statusTransakcijeMap[tr.statusTransakcije].display}</div>
-                                        <div class="col col-7" data-label="idOglas">{tr.idOglas ? tr.idOglas : <RxCross2 />}</div>
+                                        <div class="col col-7" data-label="idOglas">{tr.idOglas ? tr.idOglas : <FiMinus />}</div>
                                         <div class="col col-8" data-label="datumTransakcije">{new Date(tr.datumTransakcije).toLocaleDateString('hr-HR')}</div>
                                         <div class="col col-9"><button className='btn-delete-transakcija btn-delete' onClick={() => handleOnClickTransakcija(tr.idTransakcije)}>
                                             <FaRegTrashAlt/>
