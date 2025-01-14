@@ -66,7 +66,7 @@ export default function UserListingList() {
     try {
       const apiKey = '6bb6d2c8662145aa872134433251001';
       const response = await axios.get(
-        `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&dt=${date}&aqi=no&alerts=no`
+        `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&dt=${date}&aqi=no&alerts=no`
       );
 
       const forecastDay = response.data.forecast.forecastday[0];

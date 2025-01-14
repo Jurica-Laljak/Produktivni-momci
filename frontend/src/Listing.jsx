@@ -43,7 +43,7 @@ export default function Listing({ ulaznica, izvodaci }) {
         try {
           const apiKey = '6bb6d2c8662145aa872134433251001';
           const response = await axios.get(
-            `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${ulaznica.lokacijaKoncerta}&dt=${ulaznica.datumKoncerta}&aqi=no&alerts=no`
+            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${ulaznica.lokacijaKoncerta}&dt=${ulaznica.datumKoncerta}&aqi=no&alerts=no`
           );
 
           console.log('API Response:', response.data); // Provjera odgovora

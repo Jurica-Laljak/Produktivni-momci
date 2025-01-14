@@ -11,15 +11,13 @@ export default function SearchResultsList({ results }) {
         <p className="text-center">Nema oglasa koji odgovaraju vašem pretraživanju.</p>
       ) : (
         <div className="listingContainer">
-          {results.map((oglas, index) => {
-            //  Formatiramo datum u "dd.mm.yyyy" format
-            console.log("Oglas: ", oglas, " Index: ", index)
+          {results.map((listing) =>
+                  <Listing
+                    key={listing.idOglasa}
+                    ulaznica={listing}
+                    izvodaci={listing.izvodaci}
+                  />
 
-            return (
-              <Listing
-                        key={index}
-                        listing={oglas}/>
-            )
             /*
             const formattedDate = new Date(oglas.datum).toLocaleDateString("hr-HR");
 
@@ -52,7 +50,7 @@ export default function SearchResultsList({ results }) {
                 </div>
               </div>
             ); */
-          })}
+          )}
         </div>
       )}
     </div>
