@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./UserReport.css";
 import axiosPrivate from "./api/axiosPrivate";
-import { FaRegTrashAlt, FaLock } from 'react-icons/fa';
+import { FaRegTrashAlt, FaLock  } from 'react-icons/fa';
+import { RxCross2 } from "react-icons/rx";
 import { statusTransakcijeMap, statusTranskacijeColor } from '../data/statusTransakcijeMap';
 
 export default function UserReport({ korisnik, transakcije, userData, adminRole }) {
@@ -48,30 +49,34 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
         <div className="report-container" key={korisnik.googleId}>
             <details>
                 <summary className='korisnik-sum'>
-                    <div className='korisnik-info'>
+                    <div className='korisnik-info' style={{cursor: brojTransakcija ? "pointer" : "default"}}>
                         {korisnik.imeKorisnika} {korisnik.prezimeKorisnika} (GID: {korisnik.googleId}) {
-                            brojTransakcija > 0 ? <>
-                                - {brojTransakcija} transakcija
-                            </> : <></>
+                            brojTransakcija > 0 && <span style={{fontWeight: "bold"}}>
+                                - {brojTransakcija} transakcija</span>
                         }
                     </div>
                     <div className='grant-admin'>
-                        {korisnik.roleIds.filter((role) => role == adminRole.idRole).length == 0 &&
+                        {korisnik.roleIds.filter((role) => role == adminRole.idRole).length == 0?
                             <button className='btn-grant-admin' onClick={() => handleOnClickAdmin(korisnik.googleId)}>
                                 <FaLock/>
                                 Učini korisnika administratorom
                             </button>
+                            :
+                            <div className='div-admin'>
+                                {userData.idKorisnika !== korisnik.idKorisnika && 
+                                "Korisnik je administrator"}
+                            </div>
                         }
                     </div>
                     <div>
                         {userData.idKorisnika !== korisnik.idKorisnika ? <button className='btn-delete-korisnik btn-delete' onClick={() => handleOnClickKorisnik(korisnik.idKorisnika)}>
                             <FaRegTrashAlt/>
-                            Obriši korsnika</button> : <a href="/admin">Moj račun</a>}
+                            Obriši korsnika</button> : <a href="/admin" className='korisnik-info'>Moj račun</a>}
 
                     </div>
                 </summary>
                 {brojTransakcija > 0 ?
-                    <div>
+                    <div style={{overflow: "auto"}}>
                         <ul class="responsive-table">
                             <li class="table-header">
                                 <div class="col col-1">idTransakcije</div>
@@ -94,7 +99,7 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                                         <div class="col col-4" data-label="idKorisnikPonuda">{tr.idKorisnikPonuda}</div>
                                         <div class="col col-5" data-label="idKorisnikOglas">{tr.idKorisnikOglas}</div>
                                         <div class="col col-6" data-label="statusTransakcije">{statusTransakcijeMap[tr.statusTransakcije].display}</div>
-                                        <div class="col col-7" data-label="idOglas">{tr.idOglas}</div>
+                                        <div class="col col-7" data-label="idOglas">{tr.idOglas ? tr.idOglas : <RxCross2 />}</div>
                                         <div class="col col-8" data-label="datumTransakcije">{new Date(tr.datumTransakcije).toLocaleDateString('hr-HR')}</div>
                                         <div class="col col-9"><button className='btn-delete-transakcija btn-delete' onClick={() => handleOnClickTransakcija(tr.idTransakcije)}>
                                             <FaRegTrashAlt/>
