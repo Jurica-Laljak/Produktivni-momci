@@ -7,7 +7,7 @@ import { statusTransakcijeMap, statusTranskacijeColor } from '../data/statusTran
 export default function UserReport({ korisnik, transakcije, userData, adminRole }) {
 
     function handleOnClickKorisnik(idKorisnika) {
-        axiosPrivate.delete(`korisnici/izbrisi/${idKorisnika}`)
+        axiosPrivate.delete(`preference/korisnici/izbrisi/${idKorisnika}`)
             .then(response => {
                 window.location.reload();
             })
