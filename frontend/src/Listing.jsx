@@ -126,28 +126,9 @@ export default function Listing({ ulaznica, izvodaci }) {
                 <p className="availability-info">
                   Vrsta ulaznice: {ulaznica.vrstaUlaznice}
                 </p>
-                {weather ? (
-                  <div className="weather-info">
-                    <p>
-                      <strong>Vremenska prognoza:</strong>
-                    </p>
-                    <div>
-                      <img
-                        src={`https:${weather.icon}`}
-                        alt={weather.condition}
-                        style={{ marginRight: '10px' }}
-                      />
-                      <span>
-                        {weather.tempMin}°C - {weather.tempMax}°C, {weather.condition}
-                      </span>
-                    </div>
-                  </div>
-                )
-                  : (<></>
-                  )}
               </div>
 
-              <div className="button-container">
+              <div className="button-flex">
                 <button className="button">
                   Razmijeni ulaznice
                 </button>
@@ -160,9 +141,40 @@ export default function Listing({ ulaznica, izvodaci }) {
                   Nemate dostupne ulaznice za razmjenu
                 </span>
               </div>
+
+
+              {weather ? (
+                <div className="weather-flex">
+                  <div className="weather-container">
+                    <div className="weather-description">
+                      Vrijeme za {ulaznica.lokacijaKoncerta},<br></br>
+                      {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')}
+                    </div>
+                    <div className="weather-info">
+                      <div className="weather">
+                        {weather.condition}
+                      </div>
+                      <img
+                        src={`https:${weather.icon}`}
+                        alt={weather.condition}
+                        className="wether-icon"
+                      />
+                      <span className="temeperature">
+                        <span>
+                          {Math.round(weather.tempMax)}°C
+                        </span>
+                        <span>
+                          {Math.round(weather.tempMin)}°C
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+                : (<></>
+                )}
+
             </div>
-
-
           </div>
         </div>)
 

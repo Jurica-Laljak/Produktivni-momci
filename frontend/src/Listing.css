@@ -12,13 +12,15 @@ body {
   flex-direction: column;
   width: 560px;
   border: 7px solid #FFB700;
-  border-radius: 0; /* Pravi kutovi */
+  border-radius: 0;
+  /* Pravi kutovi */
   overflow: hidden;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   cursor: pointer;
-  margin: 15px; /* Razmak između kartica */
+  margin: 15px;
+  /* Razmak između kartica */
 }
 
 .image-container {
@@ -57,12 +59,15 @@ body {
 }
 
 .icon {
-  font-size: 2rem !important; /* Uvećaj veličinu ikona */
-  color:white; /* Dodaj zlatnu boju */
+  font-size: 2rem !important;
+  /* Uvećaj veličinu ikona */
+  color: white;
+  /* Dodaj zlatnu boju */
 }
 
 .favorite-icon {
-  margin-left: 5px; /* Dodatno razmicanje ako treba */
+  margin-left: 5px;
+  /* Dodatno razmicanje ako treba */
 }
 
 .visibility-icon {
@@ -106,7 +111,8 @@ body {
 }
 
 
-.event-info, .event-creator {
+.event-info,
+.event-creator {
   font-size: 1.15rem;
   color: #555;
 }
@@ -137,7 +143,7 @@ body {
   border: 5px solid #FFB700;
   padding: 1rem;
   width: 60%;
-  height: 70%;
+  height: 73%;
   z-index: 1001;
   text-align: left;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -194,21 +200,18 @@ body {
   width: 100%;
   height: 84%;
   display: grid;
-  grid-template-columns: 70% auto;
-  grid-template-rows: 2fr 1fr 1fr;
+  grid-template-columns: 60% auto;
+  grid-template-rows: 60% auto;
   row-gap: 1rem;
+  column-gap: 1rem;
 }
 
 .detailed-img-container {
-  grid-row: span 2;
-  grid-column: 1;
   width: 100%;
   display: flex;
   justify-content: start;
   align-items: start;
   text-align: center;
-  margin-bottom: 20px;
-  padding-right: 20px;
 }
 
 .detailed-img {
@@ -217,7 +220,7 @@ body {
 
 .days-left {
   margin-bottom: 15px;
-  color:black;
+  color: black;
 }
 
 .exchange-button {
@@ -233,7 +236,9 @@ body {
   background-color: #ffd700;
 }
 
-.posted-by, .availability-info, .weather-info{
+.posted-by,
+.availability-info,
+.weather-info {
   color: black;
 }
 
@@ -251,13 +256,15 @@ body {
 }
 
 .detailed-img-container {
-  flex: 1;
   text-align: center;
 }
 
 .details-right {
-  flex: 1;
+  padding: 0px;
 }
+
+
+
 
 .exchange-button {
   background-color: #f3c500;
@@ -270,25 +277,84 @@ body {
   margin-top: 10px;
 }
 
-.weather-info {
-  margin-top: 20px;
+
+.button-flex {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background: #555555;
+  color: #CDCDCD;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 3px solid black;
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+  padding-inline: 12px;
+  padding-block: 6px;
+  border-radius: 22px;
+}
+
+.button-description {
+  font-style: italic;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.weather-flex {
+  grid-row: 2;
+  grid-column: 2;
   text-align: center;
   font-size: 1rem;
   color: #000;
-}
-
-
-.button-container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  grid-row: 3;
 }
 
-.button-description {
-  font-style: italic;
-  color: black;
+.weather-container {
+  font-size: 1.05rem;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  background-color: #d6d7dc;
+  border-radius: 15px;
+  border: 5px solid black;
+  font-weight: bold;
+}
+
+.weather-description {
+  text-align: start;
+  text-decoration: underline;
+  font-size: 1.1rem;
+  
+  color: #425DFF;
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+  gap: 0.2rem;
+  
+  color: #425DFF;
+}
+
+.temeperature {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  
+  color: #425DFF;
 }
