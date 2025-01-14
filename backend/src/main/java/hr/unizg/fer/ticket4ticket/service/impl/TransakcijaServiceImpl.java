@@ -151,6 +151,8 @@ public class TransakcijaServiceImpl implements TransakcijaService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     public List<TransakcijaDto> getTransakcijeByKorisnikOglasIdAndStatus(Long korisnikOglasId, Transakcija.StatusTransakcije status) {
         // Fetch all Transakcija entities by korisnikPonudaId and status

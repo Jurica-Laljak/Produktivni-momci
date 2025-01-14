@@ -164,12 +164,17 @@ public class PreferenceController {
     public ResponseEntity<List<TransakcijaDto>> getInactiveTransakcijeByUserPreferences(UsernamePasswordAuthenticationToken token) {
         try {
             Long korisnikId = getUserIdFromToken(token);
-            List<TransakcijaDto> provedenaTransakcije = transakcijaService.getTransakcijeByKorisnikPonudaIdAndStatus(korisnikId, Transakcija.StatusTransakcije.PROVEDENA);
-            List<TransakcijaDto> odbijenaTransakcije = transakcijaService.getTransakcijeByKorisnikPonudaIdAndStatus(korisnikId, Transakcija.StatusTransakcije.ODBIJENA);
+            List<TransakcijaDto> provedenaTransakcijePonuda = transakcijaService.getTransakcijeByKorisnikPonudaIdAndStatus(korisnikId, Transakcija.StatusTransakcije.PROVEDENA);
+            List<TransakcijaDto> odbijenaTransakcijePonuda = transakcijaService.getTransakcijeByKorisnikPonudaIdAndStatus(korisnikId, Transakcija.StatusTransakcije.ODBIJENA);
+
+            List<TransakcijaDto> provedenaTransakcijeOglas = transakcijaService.getTransakcijeByKorisnikOglasIdAndStatus(korisnikId, Transakcija.StatusTransakcije.PROVEDENA);
+            List<TransakcijaDto> odbijenaTransakcijeOglas = transakcijaService.getTransakcijeByKorisnikOglasIdAndStatus(korisnikId, Transakcija.StatusTransakcije.ODBIJENA);
 
             List<TransakcijaDto> allInactiveTransakcije = new ArrayList<>();
-            allInactiveTransakcije.addAll(provedenaTransakcije);
-            allInactiveTransakcije.addAll(odbijenaTransakcije);
+            allInactiveTransakcije.addAll( provedenaTransakcijePonuda);
+            allInactiveTransakcije.addAll(odbijenaTransakcijePonuda);
+            allInactiveTransakcije.addAll(provedenaTransakcijeOglas);
+            allInactiveTransakcije.addAll(odbijenaTransakcijeOglas);
 
             return ResponseEntity.ok(allInactiveTransakcije);
         } catch (IllegalArgumentException e) {
