@@ -168,12 +168,15 @@ public class TransakcijaController {
 
         TransakcijaDto updatedTransakcija = transakcijaService.updateStatusTransakcije(transakcijaId, Transakcija.StatusTransakcije.ODBIJENA);
 
+
+        transakcijaService.removeOglasFromTransakcijaByOglasId(updatedTransakcija.getIdOglas());
+
         //create obavijest for odbijena ponuda
         ObavijestDto obavijestDto = new ObavijestDto();
         obavijestDto.setTransakcijaId(updatedTransakcija.getIdTransakcije());
         obavijestDto.setKorisnikId(updatedTransakcija.getIdKorisnikPonuda());
         obavijestDto.setObavijestType(Obavijest.ObavijestTip.ODBIO);
-        obavijestDto.setOglasId(updatedTransakcija.getIdOglas());
+        obavijestDto.setOglasId(null);
         obavijestService.createObavijest(obavijestDto);
         //END obavijest
 
