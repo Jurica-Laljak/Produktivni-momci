@@ -59,7 +59,7 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                         {korisnik.roleIds.filter((role) => role == adminRole.idRole).length == 0 &&
                             <button className='btn-grant-admin' onClick={() => handleOnClickAdmin(korisnik.googleId)}>
                                 <FaLock/>
-                                Dodjeli administratora korisniku
+                                Učini korisnika administratorom
                             </button>
                         }
                     </div>

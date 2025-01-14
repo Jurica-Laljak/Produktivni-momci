@@ -147,26 +147,30 @@ export default function Listing({ ulaznica, izvodaci }) {
                 <div className="weather-flex">
                   <div className="weather-container">
                     <div className="weather-description">
-                      Vrijeme za {ulaznica.lokacijaKoncerta},<br></br>
-                      {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')}
+                      Vrijeme za {ulaznica.lokacijaKoncerta}
                     </div>
-                    <div className="weather-info">
-                      <div className="weather">
-                        {weather.condition}
+                    <div className="other-container">
+                      <div className="weather-description">
+                        {new Date(ulaznica.datumKoncerta).toLocaleDateString('hr-HR')}
                       </div>
-                      <img
-                        src={`https:${weather.icon}`}
-                        alt={weather.condition}
-                        className="wether-icon"
-                      />
-                      <span className="temeperature">
-                        <span>
-                          {Math.round(weather.tempMax)}°C
+                      <div className="weather-info">
+                        <div className="weather">
+                          {weather.condition}
+                        </div>
+                        <img
+                          src={`https:${weather.icon}`}
+                          alt={weather.condition}
+                          className="weather-icon"
+                        />
+                        <span className="temeperature">
+                          <span>
+                            {Math.round(weather.tempMax)}°C
+                          </span>
+                          <span>
+                            {Math.round(weather.tempMin)}°C
+                          </span>
                         </span>
-                        <span>
-                          {Math.round(weather.tempMin)}°C
-                        </span>
-                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>
