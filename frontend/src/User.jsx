@@ -36,13 +36,8 @@ import {Context} from "./App"
       // dohvati ime prezime i broj telefona korsinika i podatak da li ima ukljucene obavijesti
       useEffect(() => {
         const token = localStorage.getItem('token');
-        const notifications = JSON.parse(localStorage.getItem("obavijesti"))
-          if(notifications!== null){
-            setNotificationsOn(notifications)
-            console.log("razlicito null")
-            console.log(notifications)
-          }
-         
+        setNotificationsOn(userData.prikazujObavijesti);
+
           try {
             const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
           
@@ -80,7 +75,7 @@ import {Context} from "./App"
 
   
       const handleEditPreferences = () => {
-          navigate("/ChooseGenres")
+          navigate("/chooseGenres")
       }
 
 
@@ -150,8 +145,6 @@ import {Context} from "./App"
 
               if(response.status == 200){
                 setNotificationsOn(isChecked);
-                localStorage.setItem("obavijesti", JSON.stringify(isChecked))
-                
               }
 
           } catch(err){
@@ -160,16 +153,17 @@ import {Context} from "./App"
       }
 
       const handleDeleteAccount = async () => {
-        try {
-          const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
-          console.log('Delete successful:', response.data);
-          localStorage.removeItem("token");
-         navigate("/")
-        } catch (error) {
-          console.error('Error deleting data:', error);
-          
+        if(confirm("Jeste li sigurni da želite obrisati svoj korisnički račun?")) {
+          try {
+            const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
+            console.log('Delete successful:', response.data);
+            localStorage.removeItem("token");
+          navigate("/")
+          } catch (error) {
+            console.error('Error deleting data:', error);
+          }
         }
-    }
+      }
        
       return (
         <div className="user-settings-container">
@@ -230,10 +224,10 @@ import {Context} from "./App"
               <h3>Preferencije</h3>
               <button
                 className="btn btn-outline-primary preference-btn"
-                onClick={() => navigate("/ChooseGenres")}
+                onClick={() => navigate("/chooseGenres")}
               >
                  Uredi preferencije
-                 <FiSettings className="icon" />
+                 <FiSettings />
               </button>
             </div>
           </div>

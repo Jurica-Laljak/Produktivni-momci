@@ -50,21 +50,16 @@ public class PreferenceServiceImpl implements PreferenceService {
         // Fetch the genres by their IDs
         List<Zanr> likedZanrovi = zanrRepository.findAllById(zanrIds);
 
-        // Check if the list of liked genres is empty or not
-        if (!likedZanrovi.isEmpty()) {
-            // Clear existing genre preferences (remove old associations in the many-to-many table)
-            korisnik.getOmiljeniZanrovi().clear();
+        // Clear existing genre preferences (remove old associations in the many-to-many table)
+        korisnik.getOmiljeniZanrovi().clear();
 
-            // Add the new genre associations
-            for (Zanr zanr : likedZanrovi) {
-                korisnik.getOmiljeniZanrovi().add(zanr);  // This will add the genres to the user's set of preferred genres
-            }
-
-            korisnikRepository.save(korisnik);  // Save the updated user with new genres
-            return true;
+        // Add the new genre associations
+        for (Zanr zanr : likedZanrovi) {
+            korisnik.getOmiljeniZanrovi().add(zanr);  // This will add the genres to the user's set of preferred genres
         }
 
-        return false;  // If no genres were found, return false
+        korisnikRepository.save(korisnik);  // Save the updated user with new genres
+        return true;
     }
 
     @Override

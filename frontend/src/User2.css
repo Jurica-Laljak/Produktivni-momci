@@ -42,6 +42,7 @@
     font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
+    justify-content: center;
   }
   
   .btn-outline-primary {
@@ -61,7 +62,7 @@
     gap: 8px;
   }
   
-  .icon {
+  .preference-btn svg {
     font-size: 18px;
   }
   
@@ -84,11 +85,7 @@
   }
 
   .delete-account-btn:hover {
-    background-color: #ff3333;
+    background-color: #ff4d4f;
     color: white;
     border-color: #ff4d4f;
-  }
-
-  .icon {
-    font-size: 18px;
   }

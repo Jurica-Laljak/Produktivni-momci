@@ -44,10 +44,12 @@
 
 .nav-link {
   margin-right: 10px; /* Razmak desno od "Sign in with Google" gumba */
+  display: flex;
+  align-items: center;
 }
 
 .nav-link svg {
-  margin-left: 5px;
+  margin: 0 5px;
 }
 
 

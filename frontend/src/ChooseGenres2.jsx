@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import axiosPrivate from "./api/axiosPrivate";
 import { genreMap } from "../data/genreMap.js"
 
-export default function ChooseGenres({ zanrovi }) {
-  const [selectedGenres, setSelectedGenres] = useState([]);
+export default function ChooseGenres({ zanrovi, userData }) {
+  const [selectedGenres, setSelectedGenres] = useState(userData.omiljeniZanroviIds ? userData.omiljeniZanroviIds.map(String) : []);
 
   const navigate = useNavigate();
 
@@ -23,7 +23,6 @@ export default function ChooseGenres({ zanrovi }) {
     }
   }, []);
 
-
   // Funkcija za selektiranje/odabiranje žanrova
 
   const handleGenreSelect = (genreId) => {
@@ -36,31 +35,21 @@ export default function ChooseGenres({ zanrovi }) {
 
   // Funkcija za potvrdu selekcije
   const handleSubmit = () => {
-    if (selectedGenres.length >= 1) {
-      //console.log('Selected genres:', selectedGenres);
-      // saljemo podatke o odabranim zanrovima na backend
+    //console.log('Selected genres:', selectedGenres);
+    // saljemo podatke o odabranim zanrovima na backend
 
-      axiosPrivate.post(`preference/zanrovi`, selectedGenres, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    axiosPrivate.post(`preference/zanrovi`, selectedGenres, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        console.log('Data successfully sent:', response.data);
+        navigate('/')
       })
-        .then(response => {
-          console.log('Data successfully sent:', response.data);
-          navigate('/')
-        })
-        .catch(error => {
-          console.error('There was an error sending the data:', error);
-        });
-
-
-
-
-    } else {
-      navigate('/')
-    }
-
-
+      .catch(error => {
+        console.error('There was an error sending the data:', error);
+      });
   };
 
   return (

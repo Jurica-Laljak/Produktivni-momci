@@ -48,6 +48,8 @@ export default function AppNavbar2({ setResults,zanrovi }) {
     const location = useLocation();
     const navigate = useNavigate();
     
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const frontednUrl = import.meta.env.VITE_FRONTEND_URL;
   
     useEffect(() => {
       const token = localStorage.getItem('token');
@@ -89,6 +91,10 @@ export default function AppNavbar2({ setResults,zanrovi }) {
       setIsLoggedIn(false);
       navigate('/');
     };
+
+    const login = () => {
+      window.location.href = `${backendUrl}/oauth2/authorization/google?redirect_uri=${frontednUrl}`;
+    }
   
     const isUserRoute =
       location.pathname === '/user' ||
@@ -137,9 +143,9 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               <SearchBar setResults={setResults} zanrovi={zanrovi} />
               <ul className="navbar-nav ms-3">
                 <li className="nav-item">
-                  <Link
+                  <button
                     className="nav-link"
-                    to="/login"
+                    onClick={login}
                     style={{
                       color: 'black',
                       border: 'solid 2px',
@@ -148,7 +154,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
                     }}
                   >
                     <FcGoogle style={{ marginLeft: '5px' }} /> Sign in with Google
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>

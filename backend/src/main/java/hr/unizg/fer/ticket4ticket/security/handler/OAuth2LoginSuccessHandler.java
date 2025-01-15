@@ -101,13 +101,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .fotoKorisnika(photo)
                 .googleId(googleId)
                 .roleIds(Set.of(roleService.getRoleByName("ROLE_USER").getIdRole()))
+                .prikazujObavijesti(true)
                 .build();
 
         // Create a new user using createKorisnik method
         korisnikService.createKorisnik(noviKorisnik);
 
         // Redirect to ChooseGenres after successful creation of the new user
-        return "/ChooseGenres";
+        return "/chooseGenres";
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

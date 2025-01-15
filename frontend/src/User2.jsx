@@ -9,7 +9,7 @@ export default function User(){
     const navigate = useNavigate();
 
     const handleEditPreferences = () => {
-        navigate("/ChooseGenres")
+        navigate("/chooseGenres")
     }
 
     return(

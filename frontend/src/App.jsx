@@ -4,7 +4,6 @@ import './App.css'
 import AppNavbar2 from './AppNavbar2'
 import Button from 'react-bootstrap/Button';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import LoginGoogle from './LoginGoogle';
 import Home from './Home'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import SearchResultsList from './SearchResultsList';
@@ -26,7 +25,7 @@ export const Context = createContext()
 function App() {
 
   const location = useLocation();
-  const noNavbarRoutes = ['/login', '/ChooseGenres'];
+  const noNavbarRoutes = ['/chooseGenres'];
   const [results, setResults] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -73,13 +72,12 @@ function App() {
           <Routes>
             {/* nezaštićene komponente */}
             <Route path='/' element={<Home />} />
-            <Route path='/login' element={<LoginGoogle />} />
             <Route path='/search' element={<SearchResultsList results={results} />} />
 
             {/* zaštićene komponente */}
-            <Route path='/ChooseGenres' element={
+            <Route path='/chooseGenres' element={
               <ProtectedComponent>
-                <ChooseGenres2 zanrovi={zanrovi} />
+                <ChooseGenres2 zanrovi={zanrovi} userData={userData} />
               </ProtectedComponent>
             }></Route>
             <Route path='/userUlaznice' element={

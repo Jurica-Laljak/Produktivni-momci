@@ -9,11 +9,9 @@ import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
 import hr.unizg.fer.ticket4ticket.mapper.*;
 import hr.unizg.fer.ticket4ticket.repository.OglasRepository;
 import hr.unizg.fer.ticket4ticket.service.OglasService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -412,6 +410,8 @@ public class OglasServiceImpl implements OglasService {
             List<Long> fetchedOglasiIds = oglasi.stream()
                     .map(Oglas::getIdOglasa)
                     .collect(Collectors.toList());
+
+            if(fetchedOglasiIds.isEmpty()) fetchedOglasiIds.add(-1L);
 
             // Fetch random ads (ensure they don't overlap with already fetched preference ads)
             List<Oglas> randomOglasi = oglasRepository.findRandomOglasiExcludingIdsAndKorisnikId(fetchedOglasiIds, remainingAdsNeeded, idKorisnika);
