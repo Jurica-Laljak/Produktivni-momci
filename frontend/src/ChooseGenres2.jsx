@@ -47,7 +47,7 @@ export default function ChooseGenres({ zanrovi }) {
       })
         .then(response => {
           console.log('Data successfully sent:', response.data);
-          navigate('/UserHome')
+          navigate('/')
         })
         .catch(error => {
           console.error('There was an error sending the data:', error);
@@ -57,7 +57,7 @@ export default function ChooseGenres({ zanrovi }) {
 
 
     } else {
-      navigate('/UserHome')
+      navigate('/')
     }
 
 

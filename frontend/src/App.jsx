@@ -11,7 +11,6 @@ import SearchResultsList from './SearchResultsList';
 import axios from 'axios';
 import AppFooter from './AppFooter'
 import ChooseGenres2 from './ChooseGenres2'
-import UserHome from './UserHome'
 import Ulaznice from './Ulaznice';
 import NavigationButtons from "./NavigationButtons";
 import User from './User';
@@ -76,7 +75,6 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<LoginGoogle />} />
             <Route path='/search' element={<SearchResultsList results={results} />} />
-            <Route path='/Home' element={<Home />} />
 
             {/* zaštićene komponente */}
             <Route path='/ChooseGenres' element={
@@ -84,11 +82,6 @@ function App() {
                 <ChooseGenres2 zanrovi={zanrovi} />
               </ProtectedComponent>
             }></Route>
-            <Route path='/UserHome' element={
-              <ProtectedComponent>
-                <UserHome />
-              </ProtectedComponent>
-            } />
             <Route path='/userUlaznice' element={
               <ProtectedComponent>
                 <Ulaznice />

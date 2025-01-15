@@ -90,7 +90,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         KorisnikDto existingUser = korisnikService.findKorisnikByGoogleId(googleId);
 
         if (existingUser != null) {
-            return "/UserHome";
+            return "/";
         }
 
         // User does not exist, populate KorisnikDto with user information
