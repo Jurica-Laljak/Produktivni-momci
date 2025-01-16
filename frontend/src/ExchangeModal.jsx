@@ -4,7 +4,7 @@ import "./AddOglasModal.css";
 import axiosPrivate from "./api/axiosPrivate";
 
 function ExchangeModal() {
-    const { closeRazmijeniModal, modalRazmijeniData } = useContext(Context); // Dohvati podatke proslijeđene iz modala
+    const { closeRazmijeniModal, razmijeniModalData } = useContext(Context); // Dohvati podatke proslijeđene iz modala
     const [ulaznice, setUlaznice] = useState([]);
     const [selectedUlaznica, setSelectedUlaznica] = useState(null);
   
@@ -31,10 +31,13 @@ function ExchangeModal() {
       }
   
       const id = Number(localStorage.getItem("ID"));
+
+      console.log(razmijeniModalData);
+
       const reqBody = {
         "ulaznicaPonudaId": selectedUlaznica.idUlaznice,
-        "ulaznicaOglasId": modalRazmijeniData.idUlaznice,
-        "oglasId": modalRazmijeniData.idOglasa
+        "ulaznicaOglasId": razmijeniModalData.idUlaznice,
+        "oglasId": razmijeniModalData.idOglasa
       };
       
   

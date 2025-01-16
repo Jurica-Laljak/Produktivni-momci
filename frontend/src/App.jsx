@@ -88,7 +88,7 @@ function App() {
 
  return (
  
-  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal,isRazmijeniModalOpen,openRazmijeniModal,closeRazmijeniModal, razmijeniModalData}}>
+  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal,isRazmijeniModalOpen,openRazmijeniModal,closeRazmijeniModal,razmijeniModalData}}>
 
       <div className='app-container'>
         {/*navbar se prikazuje samo na odredenim putanjama*/}

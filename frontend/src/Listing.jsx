@@ -49,11 +49,14 @@ export default function Listing({ ulaznica, izvodaci }) {
     fetchUserTickets();
 }, []);
 
-const handleOpenRazmijeniModal = () => {
-  openRazmijeniModal({
-    idUlaznice: ulaznica.idUlaznice,
-    idOglasa: ulaznica.oglasId
-  });
+const handleOpenRazmijeniModal = (oglas) => {
+
+  const mod = {
+    idUlaznice: oglas.ulaznicaId,
+    idOglasa: oglas.idOglasa
+  };
+
+  openRazmijeniModal(mod);
 };
 
 
@@ -160,7 +163,7 @@ const handleOpenRazmijeniModal = () => {
               </div>
 
               <div className="button-flex">
-                <button className="button"                   onClick={handleOpenRazmijeniModal} style={{
+                <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
                     backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
                     color: availableTickets > 0 ? 'black' : ''
                   }}
