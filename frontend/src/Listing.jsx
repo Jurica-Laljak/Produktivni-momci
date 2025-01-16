@@ -162,7 +162,8 @@ const handleOpenRazmijeniModal = (oglas) => {
                 </p>
               </div>
 
-              <div className="button-flex">
+              {localStorage.getItem("token") &&
+                <div className="button-flex">
                 <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
                     backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
                     color: availableTickets > 0 ? 'black' : ''
@@ -179,7 +180,7 @@ const handleOpenRazmijeniModal = (oglas) => {
       : "Nemate dostupne ulaznice za razmjenu."}
 
                 </span>
-              </div>
+              </div>}
 
 
               {weather ? (
