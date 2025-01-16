@@ -19,6 +19,8 @@ import ProtectedComponent from './auth/ProtectedComponent'
 import AddOglasModal from './AddOglasModal';
 import axiosPrivate from "./api/axiosPrivate";
 import Admin from './Admin';
+import Listing from "./Listing";
+import ExchangeModal from './ExchangeModal';
 
 export const Context = createContext()
 
@@ -33,11 +35,39 @@ function App() {
   const [userName, setUserName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [korisnikID, setKorisnikID] = useState()
+  const [razmijeniModalData, setRazmijeniModalData] = useState(null);
+  const [ulaznice, setUlaznice] = useState([]); // Drži podatke o ulaznicama
+  const [izvodaci, setIzvodaci] = useState([]);
+  const [isRazmijeniModalOpen, setIsRazmijeniModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [userData, setUserData] = useState('');
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ulazniceResponse = await axiosPrivate.get('preference/korisnici/ulaznice');
+        setUlaznice(ulazniceResponse.data); // Postavljanje podataka o ulaznicama
+
+        const izvodaciResponse = await axiosPrivate.get('izvodaci'); // Zamijenite s vašim endpointom za izvođače
+        setIzvodaci(izvodaciResponse.data); // Postavljanje podataka o izvođačima
+      } catch (error) {
+        console.error("Greška pri dohvaćanju podataka:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const openRazmijeniModal = (data) => {
+    setRazmijeniModalData(data);
+    setIsRazmijeniModalOpen(true);
+  };
+  const closeRazmijeniModal = () => {
+    setIsRazmijeniModalOpen(false);
+    setRazmijeniModalData(null);
+  };
+  
 
   //dohvacanje svih zanrova
   useEffect(() => {
@@ -58,7 +88,7 @@ function App() {
 
  return (
  
-  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal}}>
+  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal,isRazmijeniModalOpen,openRazmijeniModal,closeRazmijeniModal, razmijeniModalData}}>
 
       <div className='app-container'>
         {/*navbar se prikazuje samo na odredenim putanjama*/}
@@ -111,6 +141,10 @@ function App() {
         <AppFooter />
         {/* Modal se prikazuje globalno */}
         {isModalOpen && <AddOglasModal />}
+        {ulaznice.length > 0 && izvodaci.length > 0 && (
+          <Listing ulaznica={ulaznice} izvodaci={izvodaci} /> // x trebate odabrati odgovarajuću ulaznicu
+        )}
+        {isRazmijeniModalOpen && <ExchangeModal />}
 
       </div>
     </Context.Provider>

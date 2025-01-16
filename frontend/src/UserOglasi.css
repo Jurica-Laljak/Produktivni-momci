@@ -1,0 +1,25 @@
+.transakcija {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.transakcija h3 {
+    margin: 0 0 10px;
+}
+
+button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

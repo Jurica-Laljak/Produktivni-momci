@@ -1,0 +1,51 @@
+.oglas-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.ulaznica-row {
+    margin-bottom: 10px;
+}
+
+.arrow {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.status-section {
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.button-section {
+    display: flex;
+    justify-content: space-around;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.edit-button {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.view-button {
+    background-color: #4caf50;
+    color: white;
+}

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import axios from 'axios';
 import './Listing.css';
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ticketMap } from '../data/ticketMap'
+import axiosPrivate from './api/axiosPrivate';
+import {Context} from "./App"
 
 export default function Listing({ ulaznica, izvodaci }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -11,6 +13,8 @@ export default function Listing({ ulaznica, izvodaci }) {
   const [showDetails, setShowDetails] = useState(false);
   const [weather, setWeather] = useState(null);
   const [forecastAvailable, setForecastAvailable] = useState(true);
+  const {openRazmijeniModal} = useContext(Context)
+  const [availableTickets, setAvailableTickets] = useState(null);
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
@@ -25,6 +29,33 @@ export default function Listing({ ulaznica, izvodaci }) {
   const toggleDetails = () => {
     setShowDetails(!showDetails);
   };
+
+  useEffect(() => {
+    const fetchUserTickets = async () => {
+      try {
+        // Poziv API-ja za dohvaćanje ulaznica
+        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
+        const userTickets = response.data;
+  
+        // Broji koliko ulaznica ima trenutni korisnik
+        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
+        setAvailableTickets(freeTickets);
+      } catch (error) {
+        console.error('Greška pri dohvaćanju ulaznica:', error);
+        setAvailableTickets(0); // Ako dođe do greške, postavi 0
+      }
+    };
+
+    fetchUserTickets();
+}, []);
+
+const handleOpenRazmijeniModal = () => {
+  openRazmijeniModal({
+    idUlaznice: ulaznica.idUlaznice,
+    idOglasa: ulaznica.oglasId
+  });
+};
+
 
   useEffect(() => {
     if (showDetails) {
@@ -129,16 +160,20 @@ export default function Listing({ ulaznica, izvodaci }) {
               </div>
 
               <div className="button-flex">
-                <button className="button">
+                <button className="button"                   onClick={handleOpenRazmijeniModal} style={{
+                    backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                  }}
+                >
+
                   Razmijeni ulaznice
                 </button>
                 <span className="button-description">
-                  {/* tu ide tekst o količini ulaznica koje korisnik ima
-                      - potrebno je dohvatiti koliko korisnik ima "slobodnih" ulaznica i taj
-                      broj staviti kao i tekst
-                      
-                    Neka zamijeni ono što piše ispod*/}
-                  Nemate dostupne ulaznice za razmjenu
+                {availableTickets === null
+      ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
+      : availableTickets > 0
+      ? `Imate ${availableTickets} slobodnih ulaznica za razmjenu.`
+      : "Nemate dostupne ulaznice za razmjenu."}
+
                 </span>
               </div>
 
