@@ -162,6 +162,7 @@ const handleOpenRazmijeniModal = () => {
               <div className="button-flex">
                 <button className="button"                   onClick={handleOpenRazmijeniModal} style={{
                     backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                    color: availableTickets > 0 ? 'black' : ''
                   }}
                 >
 
