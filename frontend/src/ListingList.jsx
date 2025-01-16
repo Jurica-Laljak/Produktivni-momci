@@ -4,6 +4,7 @@ import Listing from './Listing';
 import './ListingList.css';
 import axiosPrivate from './api/axiosPrivate';
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 
 export default function ListingList() {
   const [listings, setListings] = useState([]);
@@ -37,6 +38,10 @@ export default function ListingList() {
           listingsData = fallbackResponse.data;
         }
 
+        const stariOglasi = listingsData.filter((oglas) => remainingDaysToEvent(oglas.datumKoncerta) < 0);
+        listingsData = listingsData.filter((oglas) => remainingDaysToEvent(oglas.datumKoncerta) >= 0);
+        stariOglasi?.map(oglas => deleteStariOglas(oglas));
+
         console.log("Listings data: ", listingsData)
         setLoading(false);
         setListings(listingsData);
@@ -47,6 +52,14 @@ export default function ListingList() {
 
     fetchListings();
   }, []);
+
+  const deleteStariOglas = async (oglas) => {
+    try {
+      const response = await axiosPrivate.delete(`oglasi/izbrisi/${oglas.idOglasa}`);
+    } catch (error) {
+      console.error("Greška:", error);
+    }
+  };
 
   return (
     <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center"}}>

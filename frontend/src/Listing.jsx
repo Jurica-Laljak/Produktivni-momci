@@ -133,10 +133,10 @@ const handleOpenRazmijeniModal = (oglas) => {
                 </span></h2>
                 <p className="event-info" style={{
                   textDecoration: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "underline" : "none"
-                }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
+                }}>{remainingDaysToEvent(ulaznica.datumKoncerta) ? remainingDaysToEvent(ulaznica.datumKoncerta) : ""}
                   {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                    ? " dana"
-                    : " dan"} do koncerta {/* (oglas je objavljen {new Date(ulaznica.datumOglasa).toLocaleDateString('hr-HR')}) */}
+                    ? " dana do koncerta"
+                    : remainingDaysToEvent(ulaznica.datumKoncerta) == 0 ? "Koncert je danas" : " dan do koncerta"}
                 </p>
               </div>
 
@@ -265,10 +265,10 @@ const handleOpenRazmijeniModal = (oglas) => {
               <p className="event-info" style={{
                 color: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "#425dff" : "none"
                 , fontWeight: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "bold" : "none"
-              }}>{remainingDaysToEvent(ulaznica.datumKoncerta)}
-                {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                  ? " dana"
-                  : " dan"} do koncerta
+              }}>{remainingDaysToEvent(ulaznica.datumKoncerta) ? remainingDaysToEvent(ulaznica.datumKoncerta) : ""}
+              {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                ? " dana do koncerta"
+                : remainingDaysToEvent(ulaznica.datumKoncerta) == 0 ? "Koncert je danas" : " dan do koncerta"}
               </p>
             </div>
           </div>

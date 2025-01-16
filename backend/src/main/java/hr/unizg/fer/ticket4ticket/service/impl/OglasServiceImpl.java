@@ -539,7 +539,7 @@ public class OglasServiceImpl implements OglasService {
     public OglasDto getOglasByUlaznicaId(Long ulaznicaId) {
         // Fetch Oglas by Ulaznica ID
         Oglas oglas = oglasRepository.findByUlaznica_IdUlaznice(ulaznicaId)
-                .orElseThrow(() -> new IllegalArgumentException("Oglas not found for Ulaznica ID: " + ulaznicaId));
+                .orElse(Oglas.builder().idOglasa(-1L).build());
 
         // Map Oglas entity to OglasDto and return
         return OglasMapper.mapToOglasDto(oglas);
