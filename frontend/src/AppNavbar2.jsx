@@ -112,7 +112,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
           {isLoggedIn ? (
             isUserRoute ? (
               <div className="d-flex justify-content-between align-items-center w-100">
-                <span className="welcome-text" >Dobrodošli <span style={{color:isAdmin ? "#FFB700" : '#425DFF'}}>{userName}</span></span>
+                <span className="welcome-text" >Dobrodošli <span style={{color:isAdmin ? "#FFB700" : '#425DFF', textShadow:isAdmin && "0 0 8px black"}}>{userName}</span></span>
                 <Link to="/" className="nav-link">
                   <FaHome style={{ fontSize: '3rem', color: '#425DFF' }} />
                 </Link>

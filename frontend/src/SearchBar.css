@@ -11,6 +11,12 @@
     position: relative;
     border: 2px solid black;
     border-radius: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-wrapper:focus-within {
+    border-color: #425DFF;
+    box-shadow: 0 0 8px #425DFF;
 }
 
 input{
@@ -21,6 +27,7 @@ input{
     max-width: 100%;
     margin-left: 5px;
     color:hsl(0, 0%, 20%);
+    width: 100%;
 }
 
 input:focus{

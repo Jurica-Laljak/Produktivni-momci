@@ -141,9 +141,6 @@ function App() {
         <AppFooter />
         {/* Modal se prikazuje globalno */}
         {isModalOpen && <AddOglasModal />}
-        {ulaznice.length > 0 && izvodaci.length > 0 && (
-          <Listing ulaznica={ulaznice} izvodaci={izvodaci} /> // x trebate odabrati odgovarajuću ulaznicu
-        )}
         {isRazmijeniModalOpen && <ExchangeModal />}
 
       </div>
