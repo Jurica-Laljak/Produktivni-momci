@@ -6,6 +6,7 @@ import { FaSearch, FaUsers, FaUser } from 'react-icons/fa';
 import "./Admin.css"
 import UserReport from './UserReport';
 import Autosuggest from 'react-autosuggest';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 export default function Admin( { userData } ) {
 
@@ -17,6 +18,7 @@ export default function Admin( { userData } ) {
     const[korisnikInput, setKorisnikInput] = useState('');
     const[suggestions, setSuggestions] = useState([]);
     const[korisnik, setKorisnik] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,6 +34,7 @@ export default function Admin( { userData } ) {
             setAdminRole(adminRole);
 
             setTransakcije(response3.data);
+            setLoading(false);
           } catch (error) {
             console.error("Greška:", error);
           }
@@ -95,7 +98,7 @@ export default function Admin( { userData } ) {
 
     return (
         <div className='admin-content'>
-            {!sentRequest &&
+            {!sentRequest ?
             <div className='admin-wrapper'>
                 <div className='radio-el'>
                     <label>
@@ -136,9 +139,18 @@ export default function Admin( { userData } ) {
                     onClick={handleOnClick}
                     >Obavi pretragu</button>
                 </div>
-            </div>}
-
-            {sentRequest &&
+            </div>
+            :
+            <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center"}}>
+            {loading ?
+              <ScaleLoader
+              height={100}
+              radius={15}
+              width={10}
+              margin={4}
+              color='#FFB700'
+              />
+            : 
             <div className='korisnici'>
                 {korisnici.sort((a, b) => a.idKorisnika > b.idKorisnika).map((korisnik) => 
                 <UserReport
@@ -146,8 +158,10 @@ export default function Admin( { userData } ) {
                 transakcije={transakcije}
                 userData={userData}
                 adminRole={adminRole}
+                loading={loading}
                 />
                 )}
+            </div>}
             </div>}
         </div>
 
