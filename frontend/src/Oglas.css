@@ -3,12 +3,14 @@
     margin-bottom: 15px;
     background-color: #C6CDF1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-bottom:10px;
 }
 .outer-container{
     width: 65vw;
     margin-top: 40px;
     margin-left: auto;
   margin-right: auto;
+  margin-bottom: 3vw;
 }
 
 .ulaznica-row {
@@ -39,6 +41,8 @@ button {
     cursor: pointer;
     font-size: 24px;
 }
+
+
 /*
 .edit-button {
     background-color: #ffcc00;
@@ -55,6 +59,11 @@ button {
     gap: 5px;
 }
 
+.delete-button:hover {
+  /* background-color: #DB0000; */
+  background-color: #C6CDF1;
+}
+
 .view-button {
   /*  background-color: #425DFF; */
   background-color: #C6CDF1;
@@ -63,6 +72,12 @@ button {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+
+.view-button:hover {
+  /* background-color: #DB0000; */
+  background-color: #C6CDF1;
 }
 
 .accept-button {
@@ -79,6 +94,11 @@ button {
     padding: 5px;
   }
 
+  .accept-button:hover {
+    /* background-color: #DB0000; */
+    background-color: white;
+  }
+
   .reject-button {
     /*  background-color: #425DFF; */
     background-color: white;
@@ -91,6 +111,11 @@ button {
     align-items: center;
     gap: 5px;
     padding: 5px;
+  }
+
+  .reject-button:hover {
+    /* background-color: #DB0000; */
+    background-color: white;
   }
 
   .ponuda{
