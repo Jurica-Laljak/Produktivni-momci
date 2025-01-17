@@ -27,6 +27,8 @@ export default function UserOglasi() {
         fetchUlaznice();
     }, []);
 
+    
+
   /*  // ✅ Funkcija za kreiranje oglasa
     const kreirajOglas = async () => {
         try {
@@ -53,7 +55,7 @@ export default function UserOglasi() {
 
     return (
         <div> 
-            <h1>U IZRADI (!)</h1>
+            <h1>U IZRADI</h1>
         {  /*  <input
                 type="text"
                 value={ulaznicaId}
@@ -70,6 +72,7 @@ export default function UserOglasi() {
             <Oglas
                 key={index}
                 oglasId={ulaznica.idUlaznice}
+                danaDo={ulaznica.datumKoncerta}
                 ulaznica1={ulaznica}
                 ulaznica2={{
                     datumKoncerta: "Placeholder datum",

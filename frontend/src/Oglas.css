@@ -1,20 +1,25 @@
 .oglas-container {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    background-color: #f4f4f4;
+    padding-top: 1px;
+    margin-bottom: 15px;
+    background-color: #C6CDF1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.outer-container{
+    width: 65vw;
+    margin-top: 40px;
+    margin-left: auto;
+  margin-right: auto;
 }
 
 .ulaznica-row {
     margin-bottom: 10px;
+
+
 }
 
 .arrow {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 44px;
 }
 
 .status-section {
@@ -32,20 +37,71 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 24px;
 }
-
+/*
 .edit-button {
     background-color: #ffcc00;
     color: #333;
-}
+} */
 
 .delete-button {
-    background-color: #ff4d4d;
-    color: white;
+   /* background-color: #DB0000; */
+   background-color: #C6CDF1;
+    color: #DB0000;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .view-button {
-    background-color: #4caf50;
-    color: white;
+  /*  background-color: #425DFF; */
+  background-color: #C6CDF1;
+    color: #425DFF;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+.accept-button {
+    /*  background-color: #425DFF; */
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 12px;
+    color: #308614;
+    font-weight: bold;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .reject-button {
+    /*  background-color: #425DFF; */
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 12px;
+    color: #920909;
+    font-weight: bold;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .ponuda{
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: #425DFF;
+  }
+
+  .button-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

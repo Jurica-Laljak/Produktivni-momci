@@ -1,9 +1,11 @@
 import React from "react";
 import Ulaznica from "./Ulaznica";
+import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import "./Oglas.css";
 
 export default function Oglas({
     oglasId,
+    danaDo,
     ulaznica1,
     ulaznica2,
     statusPonude,
@@ -12,8 +14,15 @@ export default function Oglas({
     naPogledaj,
 }) {
     return (
+        <div className="outer-container">
+            <span className="header-container">
+        <h3>Moj oglas #{oglasId}</h3>
+        <h5 style={{color:'#787878'}}><span style={{fontWeight:'bold'}}>{remainingDaysToEvent(danaDo)}
+            {remainingDaysToEvent(danaDo) > 1
+              ? " dana"
+              : " dan"}</span> do koncerta</h5>
+              </span>
         <div className="oglas-container">
-            <h3>Vaš oglas #{oglasId}</h3>
 
             {/* Prikaz prve ulaznice */}
             <div className="ulaznica-row">
@@ -21,10 +30,11 @@ export default function Oglas({
             </div>
 
             {/* Strelica između ulaznica */}
-            <div className="arrow">⬇️</div>
+            <div className="arrow">⬇️</div> 
 
             {/* Prikaz druge ulaznice */}
             <div className="ulaznica-row">
+           {/* <img src="src\assets\arrow.png" style={{height:'74px'}}></img> */}
                 <Ulaznica {...ulaznica2} />
             </div>
 
@@ -37,9 +47,15 @@ export default function Oglas({
             {/* Gumbi */}
             <div className="button-section">
                {/*<button onClick={naUredi} className="edit-button">Uredi</button>*/}
-                <button onClick={naPogledaj} className="view-button">Pogledaj</button> 
-                <button onClick={naObrisi} className="delete-button">Obriši</button>
+                <button onClick={naPogledaj} className="view-button" style={{fontSize:'18px'}}><img src="src\assets\view.png" style={{height:'15px'}}/>Pogledaj</button> 
+                <button onClick={naObrisi} className="delete-button" style={{fontSize:'18px'}}><img src="src\assets\trash.png"style={{height:'15px'}}/>Obriši</button>
             </div>
+        </div>
+        <div className="button-section">
+                <button className="accept-button"><img src="src\assets\tick.png" style={{height:'15px'}}/>Prihvatite</button> 
+                <span className="ponuda">Ponuda od <span style={{color:'#425DFF'}}>Ime Prezime</span></span>
+                <button className="reject-button"><img src="src\assets\x.png"style={{height:'15px'}}/>Odbijte</button>
+                </div>
         </div>
     );
 }
