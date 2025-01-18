@@ -110,9 +110,11 @@ import React, { useState, useEffect } from "react";
 import axiosPrivate from "./api/axiosPrivate";
 import "./Obavijesti2.css";
 import { FaTrashAlt, FaArrowRight } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 export default function Obavijesti() {
     const [obavijesti, setObavijesti] = useState([]);
+    const navigate = useNavigate();
 
     const obrisiObavijest = async (idObavijesti) => {
         try {
@@ -125,10 +127,18 @@ export default function Obavijesti() {
         }
     };
 
+    const handleOdvediMe = (oglasId) => {
+        //console.log("id oglasa:  ")
+        //console.log(oglasId)
+        navigate(`/#${oglasId}`)
+    }
+
     useEffect(() => {
         const getObavijesti = async () => {
             try {
                 const response = await axiosPrivate.get("preference/obavijesti");
+                console.log("DATAAA:")
+                console.log(response.data)
                 setObavijesti(response.data);
             } catch (err) {
                 console.log("Greška prilikom dohvata obavijesti", err);
@@ -167,8 +177,8 @@ export default function Obavijesti() {
                         <button
                             className="odvedi"
                             onClick={() => {
-                                console.log("Navigacija još nije implementirana."); 
-                                // Ovdje dodati navigaciju unutar aplikacije kad bude spremno
+                                handleOdvediMe(obavijest.oglasIdObavijest)
+                                    //console.log(obavijest.oglasIdObavijest)
                             }}
                         >
                             <FaArrowRight /> Odvedi me

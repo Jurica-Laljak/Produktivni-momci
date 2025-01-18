@@ -5,8 +5,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px; /* Dodaje razmak gore/dolje (10px) i lijevo/desno (20px) */
+  padding: 10px 20px; 
   border-bottom: 2px solid black;
+  
 }
 
 .navbar-brand {
@@ -28,7 +29,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px; /* Jednostavan način za ravnomjernu udaljenost između elemenata */
+  gap: 15px; 
 }
 
 .btn-primary {
@@ -83,6 +84,6 @@
 }
 
 .nav-link:hover svg {
-  transform: scale(1.2); /* Povećava ikonu kada miš pređe preko nje */
-  color: #0d6efd; /* Plava boja pri hoveru */
+  transform: scale(1.2); 
+  color: #0d6efd; 
 }

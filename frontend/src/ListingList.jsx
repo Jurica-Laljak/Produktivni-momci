@@ -5,10 +5,13 @@ import './ListingList.css';
 import axiosPrivate from './api/axiosPrivate';
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
+import { useLocation } from 'react-router-dom';
 
 export default function ListingList() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [selectedListing, setSelectedListing] = useState(null);
 
   useEffect(() => {
     // Provjera tokena i pohrana u localStorage
@@ -53,6 +56,23 @@ export default function ListingList() {
     fetchListings();
   }, []);
 
+  useEffect(() => {
+    
+    if(!loading) {
+      const elementId = location.hash.replace('#', ''); // Uzimamo ID iz hash-a
+    const element = document.getElementById(elementId);
+    console.log("element")
+    console.log(elementId)
+    console.log(element)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' }); // Pomakni na element
+      setSelectedListing(elementId);
+
+    }
+    }
+    
+  }, [loading])
+
   const deleteStariOglas = async (oglas) => {
     try {
       const response = await axiosPrivate.delete(`oglasi/izbrisi/${oglas.idOglasa}`);
@@ -72,12 +92,22 @@ export default function ListingList() {
         color='#425DFF'
         />
       : <div className="listingContainer">
+         
           {listings.map((listing) => (
+            <div
+            key={listing.idOglasa}
+            id={`oglas-${listing.idOglasa}`}
+           className={`listing-item ${selectedListing == listing.idOglasa ? 'selected' : ''}`}
+
+            
+          >
             <Listing
               key={listing.idOglasa}
               ulaznica={listing}
               izvodaci={listing.izvodaci}
+              idOglasa={listing.idOglasa}
             />
+            </div>
           ))}
         </div>
       }

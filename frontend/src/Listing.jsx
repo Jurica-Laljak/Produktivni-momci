@@ -7,7 +7,7 @@ import { ticketMap } from '../data/ticketMap'
 import axiosPrivate from './api/axiosPrivate';
 import {Context} from "./App"
 
-export default function Listing({ ulaznica, izvodaci }) {
+export default function Listing({ ulaznica, izvodaci, idOglasa }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
@@ -110,7 +110,7 @@ const handleOpenRazmijeniModal = (oglas) => {
   }, [showDetails, ulaznica.lokacijaKoncerta, ulaznica.datumKoncerta]);
 
   return (
-    <div>
+    <div id={idOglasa}>
       {showDetails ? (
         <div className="outer">
           <div className="overlay" onClick={toggleDetails}></div>
