@@ -16,15 +16,25 @@ export default function Oglas({
     tipTransakcije, // Dodan prop za prepoznavanje tipa transakcije
 }) {
     return (
-        <div className="outer-container">
+        <div className={`outer-container ${tipTransakcije === "smece" ? "smece-container" : ""}`}>
+            
             <span className="header-container">
                 <h3>{tipTransakcije === "poslanePonude"
         ? `Moja ponuda #${idTransakcije}`
         : `Moj oglas #${oglasId}`}</h3>
                 <h5 style={{ color: '#787878' }}>
                     <span style={{ fontWeight: 'bold' }}>
-                        {remainingDaysToEvent(danaDo)} 
-                        {remainingDaysToEvent(danaDo) > 1 ? " dana" : " dan"}
+                    {tipTransakcije === "smece" ? (
+        <span style={{ fontWeight: "bold" }}>
+            {danaDo > 0
+                ? `${danaDo} dana preostalo do brisanja`
+                : "Oglas će uskoro biti obrisan"}
+        </span>
+    ) : (
+        <span style={{ fontWeight: "bold" }}>
+            {remainingDaysToEvent(danaDo)} {remainingDaysToEvent(danaDo) > 1 ? "dana" : "dan"}
+        </span>
+    )}
                     </span>{" "}
                     do koncerta
                 </h5>
@@ -65,8 +75,8 @@ export default function Oglas({
                 {/* Gumbi */}
             <div className="button-section">
                {/*<button onClick={naUredi} className="edit-button">Uredi</button>*/}
-                <button /*onClick={naPogledaj}*/ className="view-button" style={{fontSize:'18px'}}><img src="src\assets\view.png" style={{height:'15px'}}/>Pogledaj</button> 
-                <button /*onClick={naObrisi}*/ className="delete-button" onClick={naObrisi} style={{fontSize:'18px'}}><img src="src\assets\trash.png"style={{height:'15px'}}/>Obriši</button>
+              {/*   <button onClick={naPogledaj} className="view-button" style={{fontSize:'18px'}}><img src="src\assets\view.png" style={{height:'15px'}}/>Pogledaj</button>   */} 
+                <button  className="delete-button" onClick={() => {naObrisi(); premjestiUKos();}} style={{fontSize:'18px'}}><img src="src\assets\trash.png"style={{height:'15px'}}/>Obriši</button>
             </div>
             </div>
 
@@ -91,6 +101,7 @@ export default function Oglas({
                     </span>
                 )}
                 {tipTransakcije === "ostalo" && null}
+                {tipTransakcije === "provedeno" && null}
             </div>
         </div>
     );
