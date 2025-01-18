@@ -8,8 +8,8 @@
 
 
 .listing-item.selected {
-  border: 2px solid #425DFF; 
-  box-shadow: 0 4px 8px rgba(66, 95, 255, 0.3); 
-  background-color: rgba(66, 95, 255, 0.1); 
-  transform: scale(1.05);
+ 
+  border: 5px solid #FFB700; 
+  
+  background-color:#425DFF;
 }
