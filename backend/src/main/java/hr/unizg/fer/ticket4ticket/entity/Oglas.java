@@ -37,7 +37,7 @@ public class Oglas {
     @JoinColumn(name = "IDKorisnika", nullable = false, foreignKey = @ForeignKey(name = "fk_oglas_korisnik"))
     private Korisnik korisnik;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "oglas", fetch = FetchType.LAZY)
     private Set<Transakcija> transakcije = new HashSet<>();
 
     @OneToMany(mappedBy = "oglas", cascade = CascadeType.REMOVE, orphanRemoval = true)
