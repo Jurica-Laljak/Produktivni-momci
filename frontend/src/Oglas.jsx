@@ -22,8 +22,8 @@ export default function Oglas({
         <div className={`outer-container ${tipTransakcije === "smece" ? "smece-container" : ""}`}>
             
             <span className="header-container">
-                <h3>{tipTransakcije === "poslanePonude"
-        ? `Moja ponuda #${idTransakcije}`
+                <h3>{idTransakcije
+        ? (tipTransakcije === "provedeno" ? `Transakcija #${idTransakcije}` : `Moja ponuda #${idTransakcije}`)
         : `Moj oglas #${oglasId}`}</h3>
                 <h5 style={{ color: '#787878' }}>
                     <span style={{ fontWeight: 'bold' }}>
@@ -78,7 +78,7 @@ export default function Oglas({
                 {/* Gumbi */}
             <div className="button-section">
                 <button  className="delete-button" onClick={() => {naObrisi(); premjestiUKos();}} style={{fontSize:'18px'}}>
-                    <FaRegTrashAlt/>Obriši
+                    <FaRegTrashAlt/>{idTransakcije ? (tipTransakcije === "provedeno" ? "Obriši transakciju" : "Obriši ponudu") : "Obriši oglas"}
                 </button>
             </div>
             </div>

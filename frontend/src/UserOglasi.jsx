@@ -9,7 +9,7 @@ import { differenceInDays } from "date-fns";
 export default function UserOglasi() {
     const [zaprimljeneTransakcije, setZaprimljeneTransakcije] = useState([]);
     const [poslanePonude, setPoslanePonude] = useState([]);
-    const [ulazniceKojeNisuTransakcija, setUlazniceKojeNisuTransakcija] = useState([]);
+    const [oglasiBezPonuda, setOglasiBezPonuda] = useState([]);
     const [error, setError] = useState(null);
     const [kosZaSmece, setKosZaSmece] = useState([]); // Novo stanje za "Koš za smeće"
     const [openedSections, setOpenedSections] = useState({}); // Stanje za praćenje otvorenih sekcija
@@ -20,11 +20,11 @@ export default function UserOglasi() {
         // Otvori sve sekcije
         newSections["zaprimljenePonude"] = true;
         newSections["poslanePonude"] = true;
-        newSections["ostaleUlaznice"] = true;
+        newSections["ostaliOglasi"] = true;
 
         // Otvori sve oglase unutar sekcija
         [...transakcije, ...ponude, ...ulaznice].forEach((item) => {
-            newSections[item.idTransakcije || item.idUlaznice] = true;
+            newSections[item.idTransakcije || item.idOglasa] = true;
         });
 
         setOpenedSections(newSections);
@@ -50,8 +50,8 @@ export default function UserOglasi() {
         setPoslanePonude((prev) =>
             prev.filter((t) => t.idTransakcije !== oglas.idTransakcije)
         );
-        setUlazniceKojeNisuTransakcija((prev) =>
-            prev.filter((u) => u.idUlaznice !== oglas.idUlaznice)
+        setOglasiBezPonuda((prev) =>
+            prev.filter((u) => u.idOglasa !== oglas.idOglasa)
         );
     };
 
@@ -135,16 +135,29 @@ export default function UserOglasi() {
     };
 
     // Funkcija za dohvaćanje svih ulaznica
-    const fetchUlaznice = async () => {
+    const fetchOglasi = async () => {
         try {
-            const response = await axiosPrivate.get("preference/korisnici/ulaznice");
-            const ulaznice = response.data.filter(
-                (ulaznica) =>
-                    ulaznica.transakcijePonudaIds.length === 0 &&
-                    ulaznica.transakcijeOglasIds.length === 0
+            const response = await axiosPrivate.get("preference/oglasi/aktivni");
+            const oglasi = response.data.filter(
+                (oglas) => oglas.transakcijeIds.length === 0);
+            const ponude = await Promise.all(
+                oglasi.map(async (oglas) => {
+                    const ulaznicaOglas = await axiosPrivate.get(
+                        `ulaznice/${oglas.ulaznicaId}`
+                    );
+                    const korisnikOglas = await axiosPrivate.get(
+                        `korisnici/${oglas.korisnikId}`
+                    );
+                    return {
+                        ...oglas,
+                        ulaznicaOglas: ulaznicaOglas.data,
+                        korisnikOglas: korisnikOglas.data
+                    };
+                })
             );
-            setUlazniceKojeNisuTransakcija(ulaznice);
-            return ulaznice;
+            setOglasiBezPonuda(ponude);
+            console.log(ponude);
+            return ponude;
         } catch (err) {
             console.error("Greška prilikom dohvaćanja ulaznica:", err);
             setError("Došlo je do greške prilikom dohvaćanja ulaznica.");
@@ -183,7 +196,7 @@ export default function UserOglasi() {
             const [transakcije, ponude, ulaznice] = await Promise.all([
                 fetchZaprimljeneTransakcije(),
                 fetchPoslanePonude(),
-                fetchUlaznice(),
+                fetchOglasi(),
             ]);
             initializeOpenedSections(transakcije, ponude, ulaznice);
     
@@ -235,8 +248,8 @@ export default function UserOglasi() {
     const obrisiOglas = async (idOglas) => {
         try {
             await axiosPrivate.delete(`oglasi/${idOglas}`);
-            setUlazniceKojeNisuTransakcija((prev) =>
-                prev.filter((u) => u.idUlaznice !== idOglas)
+            setOglasiBezPonuda((prev) =>
+                prev.filter((u) => u.idOglasa !== idOglas)
             );
         } catch (err) {
             console.error("Greška prilikom brisanja oglasa:", err);
@@ -268,9 +281,9 @@ export default function UserOglasi() {
                                         statusPonude={transakcija.status}
                                         naPrihvati={() => prihvatiPonudu(transakcija.idTransakcije)}
                                         naOdbij={() => odbijPonudu(transakcija.idTransakcije)}
-                                        naObrisi={() => {obrisiTransakciju(transakcija.idTransakcije);
+                                        naObrisi={() => {obrisiOglas(transakcija.idOglas);
                                             premjestiUKos(transkacija);
-                            }}
+                                        }}
                                         imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} //treba popravit
                                         tipTransakcije="zaPrihvatiti"
                                     />
@@ -316,29 +329,23 @@ export default function UserOglasi() {
 
             {/* Ulaznice koje nisu transakcije */}
             <section>
-                <h3 onClick={() => toggleSection("ostaleUlaznice")} style={{ color: "#425DFF", cursor: "pointer" }}>
-                    {openedSections["ostaleUlaznice"] ? "▼" : "▶"} Ostale Ulaznice
+                <h3 onClick={() => toggleSection("ostaliOglasi")} style={{ color: "#425DFF", cursor: "pointer" }}>
+                    {openedSections["ostaliOglasi"] ? "▼" : "▶"} Ostali Oglasi
                 </h3>
-                {openedSections["ostaleUlaznice"] && (
-                    ulazniceKojeNisuTransakcija.length > 0 ? (
-                        ulazniceKojeNisuTransakcija.map((ulaznica) => (
-                            <div key={ulaznica.idUlaznice}>
-                              {/*  <h3
-                                    onClick={() => toggleAd(ulaznica.idUlaznice)}
-                                    style={{ color: "#425DFF", cursor: "pointer" }}
-                                >
-                                    {openedSections[ulaznica.idUlaznice] ? "▼" : "▶"} Oglas #{ulaznica.idUlaznice}
-                                </h3> */}
-                                {openedSections[ulaznica.idUlaznice] && (
+                {openedSections["ostaliOglasi"] && (
+                    oglasiBezPonuda.length > 0 ? (
+                        oglasiBezPonuda.map((oglas) => (
+                            <div key={oglas.idOglasa}>
+                                {openedSections[oglas.idOglasa] && (
                                     <Oglas
-                                        oglasId={ulaznica.idUlaznice}
-                                        danaDo={ulaznica.datumKoncerta}
-                                        ulaznica1={ulaznica}
+                                        oglasId={oglas.idOglasa}
+                                        danaDo={oglas.ulaznicaOglas.datumKoncerta}
+                                        ulaznica1={oglas.ulaznicaOglas}
                                         ulaznica2={{ datumKoncerta: "N/A" }}
                                         naObrisi={() => {
-                                            obrisiOglas(ulaznica.idUlaznice); // Stara funkcija za trajno brisanje
-                                            premjestiUKos(ulaznica); // Nova funkcija za premještanje u koš
-                                          }}
+                                            obrisiOglas(oglas.idOglasa); // Stara funkcija za trajno brisanje
+                                            premjestiUKos(oglas); // Nova funkcija za premještanje u koš
+                                        }}
                                         tipTransakcije="ostalo"
                                     />
                                 )}
@@ -359,7 +366,6 @@ export default function UserOglasi() {
                         provedeneTransakcije.map((transakcija) => (
                             <Oglas
                                 key={transakcija.idTransakcije}
-                                oglasId={transakcija.idOglas}
                                 idTransakcije={transakcija.idTransakcije}
                                 danaDo={transakcija.ulaznicaPonuda.datumKoncerta} // Prikaz datuma završetka
                                 ulaznica1={transakcija.ulaznicaOglas}
@@ -385,8 +391,8 @@ export default function UserOglasi() {
             
                             return (
                                 <Oglas
-                                    key={oglas.idTransakcije || oglas.idUlaznice}
-                                    oglasId={oglas.idTransakcije || oglas.idUlaznice}
+                                    key={oglas.idTransakcije || oglas.idOglasa}
+                                    oglasId={oglas.idTransakcije || oglas.idOglasa}
                                     danaDo={preostaliDani > 0 ? preostaliDani : 0} // Postavi na 0 ako je isteklo
                                     ulaznica1={oglas.ulaznica1}
                                     ulaznica2={oglas.ulaznica2}
