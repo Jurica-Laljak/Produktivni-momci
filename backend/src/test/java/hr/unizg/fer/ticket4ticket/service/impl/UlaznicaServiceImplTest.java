@@ -2,102 +2,160 @@ package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.UlaznicaDto;
 import hr.unizg.fer.ticket4ticket.entity.Ulaznica;
+import hr.unizg.fer.ticket4ticket.entity.Korisnik;
+import hr.unizg.fer.ticket4ticket.exception.ResourceNotFoundException;
+import hr.unizg.fer.ticket4ticket.mapper.UlaznicaMapper;
 import hr.unizg.fer.ticket4ticket.repository.UlaznicaRepository;
+import hr.unizg.fer.ticket4ticket.repository.KorisnikRepository;
+import hr.unizg.fer.ticket4ticket.service.IzvodacService;
+import hr.unizg.fer.ticket4ticket.service.impl.UlaznicaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
+
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.*;
+
+import static hr.unizg.fer.ticket4ticket.entity.Ulaznica.OdabranaZona.TRIBINA_A;
+import static hr.unizg.fer.ticket4ticket.entity.Ulaznica.OdabranaZona.TRIBINA_B;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import java.util.stream.Stream;
 
-class UlaznicaServiceImplTest {
+public class UlaznicaServiceImplTest {
 
     @Mock
     private UlaznicaRepository ulaznicaRepository;
 
+    @Mock
+    private KorisnikRepository korisnikRepository;
+
+    @Mock
+    private UlaznicaMapper ulaznicaMapper;
+
     @InjectMocks
     private UlaznicaServiceImpl ulaznicaService;
 
+    private Korisnik korisnik;
+
     @BeforeEach
-    void setUp() {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
+        korisnik = new Korisnik();
+        korisnik.setIdKorisnika(1L);
+        korisnik.setImeKorisnika("Marko");
+        korisnik.setPrezimeKorisnika("Marković");
     }
 
-    @ParameterizedTest
-    @MethodSource("provideUlaznicaTestDataWithFailure")
-    void testGetUlaznicaById(Long ulaznicaId, Ulaznica ulaznica, UlaznicaDto expectedDto) {
+    @Test
+    public void testGetUlazniceByIdKorisnikaMultipleTickets() {
+        // Arrange
+        List<Ulaznica> ulaznice = new ArrayList<>();
+        Ulaznica ulaznica1 = new Ulaznica(1L, LocalDate.of(2025,1,18), "Arena Zagreb", TRIBINA_A,
+                Ulaznica.VrstaUlaznice.STANDARD, null, null, Ulaznica.Status.NEPREUZETA,
+                null, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
+        Ulaznica ulaznica2 = new Ulaznica(2L, LocalDate.of(2025,10,12), "KC Vatroslav Lisinski", TRIBINA_B,
+                Ulaznica.VrstaUlaznice.STUDENT, null, null, Ulaznica.Status.NEPREUZETA,
+                null, new HashSet<>(), new HashSet<>(), "2", new HashSet<>(), new HashSet<>());
+        ulaznice.add(ulaznica1);
+        ulaznice.add(ulaznica2);
 
-        when(ulaznicaRepository.findById(ulaznicaId)).thenReturn(Optional.ofNullable(ulaznica));
+        // Mocking the repository methods
+        when(korisnikRepository.findById(1L)).thenReturn(Optional.of(korisnik)); // Mock korisnik repository
+        when(ulaznicaRepository.findAllByKorisnik_IdKorisnika(1L)).thenReturn(ulaznice); // Mock ulaznica repository
 
-            UlaznicaDto result = ulaznicaService.getUlaznicaById(ulaznicaId);
+        // Mocking the static method of UlaznicaMapper using MockedStatic
+        try (MockedStatic<UlaznicaMapper> mockedStatic = Mockito.mockStatic(UlaznicaMapper.class)) {
+            mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica1)).thenReturn(new UlaznicaDto(1L, LocalDate.of(2025,1,18), "Arena Zagreb",
+                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", null, "1", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
+            mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica2)).thenReturn(new UlaznicaDto(2L, LocalDate.of(2025,10,12), "KC Vatroslav Lisinski",
+                    "TRIBINA_B", "STUDENT", null, null, "NEPREUZETA", null, "2", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
 
+            // Act
+            List<UlaznicaDto> result = ulaznicaService.getUlazniceByIdKorisnika(1L);
+
+            // Assert
             assertNotNull(result);
-            assertEquals(expectedDto.getIdUlaznice(), result.getIdUlaznice());
-            assertEquals(expectedDto.getDatumKoncerta(), result.getDatumKoncerta());
-            assertEquals(expectedDto.getLokacijaKoncerta(), result.getLokacijaKoncerta());
-            assertEquals(expectedDto.getOdabranaZona(), result.getOdabranaZona());
-            assertEquals(expectedDto.getVrstaUlaznice(), result.getVrstaUlaznice());
-            assertEquals(expectedDto.getUrlSlika(), result.getUrlSlika());
-            assertEquals(expectedDto.getUrlInfo(), result.getUrlInfo());
-            assertEquals(expectedDto.getStatus(), result.getStatus());
-            assertEquals(expectedDto.getSifraUlaznice(), result.getSifraUlaznice());
+            assertEquals(2, result.size());
+            assertEquals(1L, result.get(0).getIdUlaznice());
+            assertEquals(2L, result.get(1).getIdUlaznice());
 
-    }
+            // Asserting the individual fields of the first ticket
+            assertEquals(LocalDate.of(2025,1,18), result.get(0).getDatumKoncerta());
+            assertEquals("Arena Zagreb", result.get(0).getLokacijaKoncerta());
+            assertEquals("TRIBINA_A", result.get(0).getOdabranaZona());
+            assertEquals("STANDARD", result.get(0).getVrstaUlaznice());
+            assertEquals("NEPREUZETA", result.get(0).getStatus());
+            assertEquals("1", result.get(0).getSifraUlaznice());
 
-    static Stream<Arguments> provideUlaznicaTestDataWithFailure() {
-        return Stream.of(
-                // uspješan test
-                Arguments.of(
-                        1L,
-                        createUlaznica(1L, LocalDate.of(2025, 1, 15), "Arena Zagreb", "PARTER", "STANDARD",
-                                "http://example.com/slika1.jpg", "http://example.com/info1", "NEPREUZETA", "12345"),
-                        createUlaznicaDto(1L, LocalDate.of(2025, 1, 15), "Arena Zagreb", "PARTER", "STANDARD",
-                                "http://example.com/slika1.jpg", "http://example.com/info1", "NEPREUZETA", "12345")
-                ),
-                // neuspješan test
-                Arguments.of(
-                        1L,
-                        null,
-                        createUlaznica(1L, LocalDate.of(2025, 1, 15), "Arena Zagreb", "PARTER", "STANDARD",
-                                "http://example.com/slika1.jpg", "http://example.com/info1", "NEPREUZETA", "12345")
-                )
-        );
+            // Asserting the individual fields of the second ticket
+            assertEquals(LocalDate.of(2025,10,12), result.get(1).getDatumKoncerta());
+            assertEquals("KC Vatroslav Lisinski", result.get(1).getLokacijaKoncerta());
+            assertEquals("TRIBINA_B", result.get(1).getOdabranaZona());
+            assertEquals("STUDENT", result.get(1).getVrstaUlaznice());
+            assertEquals("NEPREUZETA", result.get(1).getStatus());
+            assertEquals("2", result.get(1).getSifraUlaznice());
+        }
     }
 
 
-    private static Ulaznica createUlaznica(Long id, LocalDate datum, String lokacija, String zona, String vrsta,
-                                           String slika, String info, String status, String sifra) {
-        Ulaznica ulaznica = new Ulaznica();
-        ulaznica.setIdUlaznice(id);
-        ulaznica.setDatumKoncerta(datum);
-        ulaznica.setLokacijaKoncerta(lokacija);
-        ulaznica.setOdabranaZona(Ulaznica.OdabranaZona.valueOf(zona));
-        ulaznica.setVrstaUlaznice(Ulaznica.VrstaUlaznice.valueOf(vrsta));
-        ulaznica.setUrlSlika(slika);
-        ulaznica.setUrlInfo(info);
-        ulaznica.setStatus(Ulaznica.Status.valueOf(status));
-        ulaznica.setSifraUlaznice(sifra);
-        return ulaznica;
+    @Test
+    public void testGetUlazniceByIdKorisnikaSingleTicket() {
+        // Arrange
+        List<Ulaznica> ulaznice = new ArrayList<>();
+        Ulaznica ulaznica = new Ulaznica(1L, LocalDate.of(2025,1,18), "Arena Zagreb", TRIBINA_A,
+                Ulaznica.VrstaUlaznice.STANDARD, null, null, Ulaznica.Status.NEPREUZETA,
+                null, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
+        ulaznice.add(ulaznica);
+
+        // Mocking the repository methods
+        when(korisnikRepository.findById(1L)).thenReturn(Optional.of(korisnik)); // Mock korisnik repository
+        when(ulaznicaRepository.findAllByKorisnik_IdKorisnika(1L)).thenReturn(ulaznice); // Mock ulaznica repository
+
+        // Mocking the static method of UlaznicaMapper
+        try (MockedStatic<UlaznicaMapper> mockedStatic = Mockito.mockStatic(UlaznicaMapper.class)) {
+            mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica)).thenReturn(new UlaznicaDto(1L, LocalDate.of(2025,1,18), "Arena Zagreb",
+                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", null, "1", new HashSet<>(), new HashSet<>(), null, null));
+
+            // Act
+            List<UlaznicaDto> result = ulaznicaService.getUlazniceByIdKorisnika(1L);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.size());
+            assertEquals(1L, result.get(0).getIdUlaznice());
+            assertEquals(LocalDate.of(2025,1,18), result.get(0).getDatumKoncerta());
+            assertEquals("Arena Zagreb", result.get(0).getLokacijaKoncerta());
+            assertEquals("TRIBINA_A", result.get(0).getOdabranaZona());
+            assertEquals("STANDARD", result.get(0).getVrstaUlaznice());
+            assertEquals("NEPREUZETA", result.get(0).getStatus());
+            assertEquals("1", result.get(0).getSifraUlaznice());
+        }
     }
 
-    private static UlaznicaDto createUlaznicaDto(Long id, LocalDate datum, String lokacija, String zona, String vrsta,
-                                                 String slika, String info, String status, String sifra) {
-        UlaznicaDto ulaznicaDto = new UlaznicaDto();
-        ulaznicaDto.setIdUlaznice(id);
-        ulaznicaDto.setDatumKoncerta(datum);
-        ulaznicaDto.setLokacijaKoncerta(lokacija);
-        ulaznicaDto.setOdabranaZona(zona);
-        ulaznicaDto.setVrstaUlaznice(vrsta);
-        ulaznicaDto.setUrlSlika(slika);
-        ulaznicaDto.setUrlInfo(info);
-        ulaznicaDto.setStatus(status);
-        ulaznicaDto.setSifraUlaznice(sifra);
-        return ulaznicaDto;
+    @Test
+    public void testGetUlazniceByIdKorisnikaNoTickets() {
+        // Arrange
+        List<Ulaznica> ulaznice = new ArrayList<>();
+
+        when(korisnikRepository.findById(1L)).thenReturn(Optional.of(korisnik));
+        when(ulaznicaRepository.findAllByKorisnik_IdKorisnika(1L)).thenReturn(ulaznice);
+
+        // Act
+        List<UlaznicaDto> result = ulaznicaService.getUlazniceByIdKorisnika(1L);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetUlazniceByIdKorisnikaUserNotFound() {
+        // Arrange
+        when(korisnikRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            ulaznicaService.getUlazniceByIdKorisnika(1L);
+        });
     }
 }
