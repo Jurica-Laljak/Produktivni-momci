@@ -15,17 +15,6 @@ export default function UserOglasi() {
     const [openedSections, setOpenedSections] = useState({}); // Stanje za praćenje otvorenih sekcija
     const [provedeneTransakcije, setProvedeneTransakcije] = useState([]);
 
-    // Placeholder ulaznica
-    const placeholderUlaznica = {
-        idUlaznice: 0,
-        datumKoncerta: "N/A",
-        lokacijaKoncerta: "Nepoznato",
-        odabranaZona: "N/A",
-        vrstaUlaznice: "N/A",
-        urlSlika: "https://via.placeholder.com/150",
-        urlInfo: "#",
-    };
-
     const initializeOpenedSections = (transakcije, ponude, ulaznice) => {
         const newSections = {};
         // Otvori sve sekcije
@@ -79,8 +68,6 @@ export default function UserOglasi() {
     
         return () => clearInterval(interval); // Očistite interval prilikom unmounta
     }, []);
-    
-    
 
     // Funkcija za dohvaćanje transakcija koje čekaju potvrdu
     const fetchZaprimljeneTransakcije = async () => {
@@ -94,10 +81,14 @@ export default function UserOglasi() {
                     const ulaznicaPonuda = await axiosPrivate.get(
                         `ulaznice/${transakcija.idUlaznicaPonuda}`
                     );
+                    const korisnikPonuda = await axiosPrivate.get(
+                        `korisnici/${transakcija.idKorisnikPonuda}`
+                    );
                     return {
                         ...transakcija,
                         ulaznicaOglas: ulaznicaOglas.data,
                         ulaznicaPonuda: ulaznicaPonuda.data,
+                        korisnikPonuda: korisnikPonuda.data
                     };
                 })
             );
@@ -123,10 +114,14 @@ export default function UserOglasi() {
                     const ulaznicaPonuda = await axiosPrivate.get(
                         `ulaznice/${transakcija.idUlaznicaPonuda}`
                     );
+                    const korisnikProdavac = await axiosPrivate.get(
+                        `korisnici/${transakcija.idKorisnikOglas}`
+                    );
                     return {
                         ...transakcija,
                         ulaznicaOglas: ulaznicaOglas.data,
                         ulaznicaPonuda: ulaznicaPonuda.data,
+                        korisnikProdavac: korisnikProdavac.data
                     };
                 })
             );
@@ -157,30 +152,32 @@ export default function UserOglasi() {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const [transakcije, ponude, ulaznice] = await Promise.all([
-                fetchZaprimljeneTransakcije(),
-                fetchPoslanePonude(),
-                fetchUlaznice(),
-            ]);
-            initializeOpenedSections(transakcije, ponude, ulaznice);
-        };
-
-        fetchData();
-    }, []);
-
     const fetchProvedeneTransakcije = async () => {
         try {
             const response = await axiosPrivate.get("preference/transakcije/provedene");
-            setProvedeneTransakcije(response.data); // Postavi dobivene transakcije u stanje
+            const transakcije = await Promise.all(
+                response.data.filter(data => data.statusTransakcije == "PROVEDENA")
+                    .map(async (transakcija) => {
+                    const ulaznicaOglas = await axiosPrivate.get(
+                            `ulaznice/${transakcija.idUlaznicaOglas}`
+                        );
+                        const ulaznicaPonuda = await axiosPrivate.get(
+                            `ulaznice/${transakcija.idUlaznicaPonuda}`
+                        );
+                        return {
+                            ...transakcija,
+                            ulaznicaOglas: ulaznicaOglas.data,
+                            ulaznicaPonuda: ulaznicaPonuda.data,
+                        };
+                })
+            );
+            setProvedeneTransakcije(transakcije); // Postavi dobivene transakcije u stanje
         } catch (err) {
             console.error("Greška prilikom dohvaćanja provedenih transakcija:", err);
             setError("Došlo je do greške prilikom dohvaćanja provedenih transakcija.");
         }
     };
 
-    
     useEffect(() => {
         const fetchData = async () => {
             const [transakcije, ponude, ulaznice] = await Promise.all([
@@ -208,6 +205,7 @@ export default function UserOglasi() {
             console.error("Greška prilikom prihvaćanja ponude:", err);
             setError("Došlo je do greške prilikom prihvaćanja ponude.");
         }
+        window.location.reload();
     };
 
     const odbijPonudu = async (idTransakcije) => {
@@ -261,16 +259,10 @@ export default function UserOglasi() {
                     zaprimljeneTransakcije.length > 0 ? (
                         zaprimljeneTransakcije.map((transakcija) => (
                             <div key={transakcija.idTransakcije}>
-                              {/*   <h3
-                                    onClick={() => toggleAd(transakcija.idTransakcije)}
-                                    style={{ color: "#425DFF", cursor: "pointer" }}
-                                >
-                                    {openedSections[transakcija.idTransakcije] ? "▼" : "▶"} Oglas #{transakcija.idTransakcije}
-                                </h3> */}
                                 {openedSections[transakcija.idTransakcije] && (
                                     <Oglas
                                         oglasId={transakcija.idOglas}
-                                        danaDo={ulaznicaOglas.datumKoncerta} //treba popravit
+                                        danaDo={transakcija.ulaznicaOglas.datumKoncerta}
                                         ulaznica1={transakcija.ulaznicaOglas}
                                         ulaznica2={transakcija.ulaznicaPonuda}
                                         statusPonude={transakcija.status}
@@ -279,7 +271,7 @@ export default function UserOglasi() {
                                         naObrisi={() => {obrisiTransakciju(transakcija.idTransakcije);
                                             premjestiUKos(transkacija);
                             }}
-                                        imePonuditelja={transakcija.imePonuditelja} //treba popravit
+                                        imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} //treba popravit
                                         tipTransakcije="zaPrihvatiti"
                                     />
                                 )}
@@ -300,24 +292,17 @@ export default function UserOglasi() {
                     poslanePonude.length > 0 ? (
                         poslanePonude.map((transakcija) => (
                             <div key={transakcija.idTransakcije}>
-                                 {/*<h3
-                                    onClick={() => toggleAd(transakcija.idTransakcije)}
-                                    style={{ color: "#425DFF", cursor: "pointer" }}
-                                >
-                                    {openedSections[transakcija.idTransakcije] ? "▼" : "▶"} Oglas #{transakcija.idTransakcije}
-                                </h3> */}
                                 {openedSections[transakcija.idTransakcije] && (
                                     <Oglas
                                         idTransakcije={transakcija.idTransakcije}
-                                     //   oglasId={transakcija.idTransakcije}
-                                        danaDo={transakcija.datumKoncerta} //treba popravit
+                                        danaDo={transakcija.ulaznicaOglas.datumKoncerta}
                                         ulaznica1={transakcija.ulaznicaPonuda}
                                         ulaznica2={transakcija.ulaznicaOglas}
                                         statusPonude={transakcija.status}
                                         naObrisi={() => {obrisiTransakciju(transakcija.idTransakcije);
                                                         premjestiUKos(transkacija);
                                         }}
-                                        imePonuditelja={transakcija.imePonuditelja} //treba popravit
+                                        imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)} //treba popravit
                                         tipTransakcije="poslanePonude"
                                     />
                                 )}
@@ -366,30 +351,30 @@ export default function UserOglasi() {
             </section>
 
             <section>
-    <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#42B983", cursor: "pointer" }}>
-        {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Provedene transakcije
-    </h3>
-    {openedSections["provedeneTransakcije"] && (
-        provedeneTransakcije.length > 0 ? (
-            provedeneTransakcije.map((transakcija) => (
-                <Oglas
-                    key={transakcija.idTransakcije}
-                    oglasId={transakcija.idTransakcije}
-                    danaDo={transakcija.datumZavrsetka} // Prikaz datuma završetka
-                    ulaznica1={transakcija.ulaznicaOglas}
-                    ulaznica2={transakcija.ulaznicaPonuda}
-                    tipTransakcije="provedeno"
-                />
-            ))
-        ) : (
-            <p>Nemate završenih transakcija.</p>
-        )
-    )}
-</section>
-
+                <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614", cursor: "pointer" }}>
+                    {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Provedene transakcije
+                </h3>
+                {openedSections["provedeneTransakcije"] && (
+                    provedeneTransakcije.length > 0 ? (
+                        provedeneTransakcije.map((transakcija) => (
+                            <Oglas
+                                key={transakcija.idTransakcije}
+                                oglasId={transakcija.idOglas}
+                                idTransakcije={transakcija.idTransakcije}
+                                danaDo={transakcija.ulaznicaPonuda.datumKoncerta} // Prikaz datuma završetka
+                                ulaznica1={transakcija.ulaznicaOglas}
+                                ulaznica2={transakcija.ulaznicaPonuda}
+                                tipTransakcije="provedeno"
+                            />
+                        ))
+                    ) : (
+                        <p>Nemate završenih transakcija.</p>
+                    )
+                )}
+            </section>
 
             <section>
-                <h3 onClick={() => toggleSection("kosZaSmece")} style={{ color: "#FF4242", cursor: "pointer" }}>
+                <h3 onClick={() => toggleSection("kosZaSmece")} style={{ color: "#920909", cursor: "pointer" }}>
                     {openedSections["kosZaSmece"] ? "▼" : "▶"} Koš za smeće
                 </h3>
                 {openedSections["kosZaSmece"] &&
@@ -408,7 +393,7 @@ export default function UserOglasi() {
                                     tipTransakcije="smece"
                                 />
                             );
-})
+                        })
                     ) : (
                         <p>Nemate oglasa u košu za smeće.</p>
                     ))}

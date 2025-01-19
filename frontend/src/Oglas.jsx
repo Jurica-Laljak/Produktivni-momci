@@ -2,6 +2,9 @@ import React from "react";
 import Ulaznica from "./Ulaznica";
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import "./Oglas.css";
+import { FaArrowDown, FaRegTrashAlt } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 export default function Oglas({
     idTransakcije,
@@ -47,7 +50,7 @@ export default function Oglas({
                 </div>
 
                 {/* Strelica između ulaznica */}
-                <div className="arrow">⬇️</div> 
+                <div className="arrow"><FaArrowDown /></div> 
 
                 {/* Prikaz druge ulaznice */}
                 <div className="ulaznica-row">
@@ -74,9 +77,9 @@ export default function Oglas({
                 </div>
                 {/* Gumbi */}
             <div className="button-section">
-               {/*<button onClick={naUredi} className="edit-button">Uredi</button>*/}
-              {/*   <button onClick={naPogledaj} className="view-button" style={{fontSize:'18px'}}><img src="src\assets\view.png" style={{height:'15px'}}/>Pogledaj</button>   */} 
-                <button  className="delete-button" onClick={() => {naObrisi(); premjestiUKos();}} style={{fontSize:'18px'}}><img src="src\assets\trash.png"style={{height:'15px'}}/>Obriši</button>
+                <button  className="delete-button" onClick={() => {naObrisi(); premjestiUKos();}} style={{fontSize:'18px'}}>
+                    <FaRegTrashAlt/>Obriši
+                </button>
             </div>
             </div>
 
@@ -85,10 +88,10 @@ export default function Oglas({
                 {tipTransakcije === "zaPrihvatiti" && (
                     <>
                         <button onClick={naPrihvati} className="accept-button">
-                            <img src="src/assets/tick.png" onClick={naPrihvati} style={{ height: '15px' }} /> Prihvatite
+                            <FaCheck /> Prihvatite
                         </button>
                         <button onClick={naOdbij} className="reject-button">
-                            <img src="src/assets/x.png" onClick={naOdbij} style={{ height: '15px' }} /> Odbijte
+                            <IoClose style={{ fontSize: "32px" }} /> Odbijte
                         </button>
                         <span className="ponuda">
                             Ponuda od <span style={{ color: '#425DFF' }}>{imePonuditelja}</span>

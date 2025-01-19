@@ -193,7 +193,7 @@ import {Context} from "./App"
                       id={field}
                       className="form-control"
                       value={formData[field] || ""}
-                      readOnly
+                      disabled
                     />
                   )}
                  <button

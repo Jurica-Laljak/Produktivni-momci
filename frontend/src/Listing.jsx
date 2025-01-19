@@ -75,7 +75,7 @@ const handleOpenRazmijeniModal = (oglas) => {
 
       const fetchWeather = async () => {
         try {
-          const apiKey = '6bb6d2c8662145aa872134433251001';
+          const apiKey = import.meta.env.VITE_PROGNOZA_API_KEY;
           const response = await axios.get(
             `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${ulaznica.lokacijaKoncerta}&dt=${ulaznica.datumKoncerta}&aqi=no&alerts=no`
           );
