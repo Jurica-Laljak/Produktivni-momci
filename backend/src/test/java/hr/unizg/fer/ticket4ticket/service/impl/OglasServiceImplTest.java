@@ -18,7 +18,6 @@ import org.springframework.core.env.Environment;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 class OglasServiceImplTest {
 
@@ -41,8 +40,6 @@ class OglasServiceImplTest {
         MockitoAnnotations.openMocks(this);
         when(env.getProperty("max_oglasi_returned", Integer.class)).thenReturn(5); // Postavi limit oglasa na 5
 
-
-
         mockIzvodac = Izvodac.builder()
                 .idIzvodaca(1L)
                 .imeIzvodaca("Ime")
@@ -55,7 +52,7 @@ class OglasServiceImplTest {
         mockUlaznica = Ulaznica.builder()
                 .idUlaznice(1L)
                 .datumKoncerta(LocalDate.now())
-                .lokacijaKoncerta("Zagreb")
+                .lokacijaKoncerta("Arena Zagreb")
                 .odabranaZona(Ulaznica.OdabranaZona.PARTER)
                 .vrstaUlaznice(Ulaznica.VrstaUlaznice.STANDARD)
                 .urlSlika("https://example/image.jpg")

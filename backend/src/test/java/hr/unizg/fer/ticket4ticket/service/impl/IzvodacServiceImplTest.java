@@ -2,10 +2,8 @@ package hr.unizg.fer.ticket4ticket.service.impl;
 
 import hr.unizg.fer.ticket4ticket.dto.IzvodacDto;
 import hr.unizg.fer.ticket4ticket.entity.Izvodac;
-import hr.unizg.fer.ticket4ticket.entity.Zanr;
 import hr.unizg.fer.ticket4ticket.mapper.IzvodacMapper;
 import hr.unizg.fer.ticket4ticket.repository.IzvodacRepository;
-import hr.unizg.fer.ticket4ticket.service.impl.IzvodacServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,12 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.validation.BindException;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
-
-import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -80,7 +72,6 @@ public class IzvodacServiceImplTest {
     public void testCreateIzvodacMissingName() {
         // Arrange
         IzvodacDto izvodacDto = new IzvodacDto();
-        izvodacDto.setImeIzvodaca("");  // Missing name
         izvodacDto.setPrezimeIzvodaca("Prezime");
         izvodacDto.setStarostIzvodaca(30);
         izvodacDto.setFotoIzvodaca("https://example/image.jpg");

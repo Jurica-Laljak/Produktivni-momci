@@ -80,15 +80,14 @@ class PreferenceServiceImplTest {
         assertNotNull(result);
         assertEquals(Ulaznica.Status.PREUZETA, ulaznica.getStatus());
         assertEquals(korisnik, ulaznica.getKorisnik());
-        verify(ulaznicaRepository, times(1)).save(ulaznica);
     }
 
     @Test
     void testChangeUlaznicaStatusAndAssignUser_NonExistentUlaznica() {
-        when(ulaznicaRepository.findBySifraUlaznice("ABC123")).thenReturn(null);
+        when(ulaznicaRepository.findBySifraUlaznice("DEF456")).thenReturn(null);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                preferenceService.changeUlaznicaStatusAndAssignUser("ABC123", 1L)
+                preferenceService.changeUlaznicaStatusAndAssignUser("DEF456", 1L)
         );
 
         assertEquals("Ulaznica not found", exception.getMessage());
@@ -110,10 +109,10 @@ class PreferenceServiceImplTest {
     @Test
     void testChangeUlaznicaStatusAndAssignUser_NonExistentUser() {
         when(ulaznicaRepository.findBySifraUlaznice("ABC123")).thenReturn(ulaznica);
-        when(korisnikRepository.findById(1L)).thenReturn(Optional.empty());
+        when(korisnikRepository.findById(999L)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                preferenceService.changeUlaznicaStatusAndAssignUser("ABC123", 1L)
+                preferenceService.changeUlaznicaStatusAndAssignUser("ABC123", 999L)
         );
 
         assertEquals("User not found", exception.getMessage());

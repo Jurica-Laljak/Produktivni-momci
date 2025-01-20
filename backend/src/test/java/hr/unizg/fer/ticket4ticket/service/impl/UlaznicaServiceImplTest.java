@@ -52,10 +52,10 @@ public class UlaznicaServiceImplTest {
         List<Ulaznica> ulaznice = new ArrayList<>();
         Ulaznica ulaznica1 = new Ulaznica(1L, LocalDate.of(2025,1,18), "Arena Zagreb", TRIBINA_A,
                 Ulaznica.VrstaUlaznice.STANDARD, null, null, Ulaznica.Status.NEPREUZETA,
-                null, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
-        Ulaznica ulaznica2 = new Ulaznica(2L, LocalDate.of(2025,10,12), "KC Vatroslav Lisinski", TRIBINA_B,
+                korisnik, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
+        Ulaznica ulaznica2 = new Ulaznica(2L, LocalDate.of(2025,10,12), "KD Vatroslav Lisinski", TRIBINA_B,
                 Ulaznica.VrstaUlaznice.STUDENT, null, null, Ulaznica.Status.NEPREUZETA,
-                null, new HashSet<>(), new HashSet<>(), "2", new HashSet<>(), new HashSet<>());
+                korisnik, new HashSet<>(), new HashSet<>(), "2", new HashSet<>(), new HashSet<>());
         ulaznice.add(ulaznica1);
         ulaznice.add(ulaznica2);
 
@@ -66,9 +66,9 @@ public class UlaznicaServiceImplTest {
         // Mocking the static method of UlaznicaMapper using MockedStatic
         try (MockedStatic<UlaznicaMapper> mockedStatic = Mockito.mockStatic(UlaznicaMapper.class)) {
             mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica1)).thenReturn(new UlaznicaDto(1L, LocalDate.of(2025,1,18), "Arena Zagreb",
-                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", null, "1", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
+                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", korisnik.getIdKorisnika(), "1", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
             mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica2)).thenReturn(new UlaznicaDto(2L, LocalDate.of(2025,10,12), "KC Vatroslav Lisinski",
-                    "TRIBINA_B", "STUDENT", null, null, "NEPREUZETA", null, "2", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
+                    "TRIBINA_B", "STUDENT", null, null, "NEPREUZETA", korisnik.getIdKorisnika(), "2", new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()));
 
             // Act
             List<UlaznicaDto> result = ulaznicaService.getUlazniceByIdKorisnika(1L);
@@ -104,7 +104,7 @@ public class UlaznicaServiceImplTest {
         List<Ulaznica> ulaznice = new ArrayList<>();
         Ulaznica ulaznica = new Ulaznica(1L, LocalDate.of(2025,1,18), "Arena Zagreb", TRIBINA_A,
                 Ulaznica.VrstaUlaznice.STANDARD, null, null, Ulaznica.Status.NEPREUZETA,
-                null, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
+                korisnik, new HashSet<>(), new HashSet<>(), "1", new HashSet<>(), new HashSet<>());
         ulaznice.add(ulaznica);
 
         // Mocking the repository methods
@@ -114,7 +114,7 @@ public class UlaznicaServiceImplTest {
         // Mocking the static method of UlaznicaMapper
         try (MockedStatic<UlaznicaMapper> mockedStatic = Mockito.mockStatic(UlaznicaMapper.class)) {
             mockedStatic.when(() -> UlaznicaMapper.mapToUlaznicaDto(ulaznica)).thenReturn(new UlaznicaDto(1L, LocalDate.of(2025,1,18), "Arena Zagreb",
-                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", null, "1", new HashSet<>(), new HashSet<>(), null, null));
+                    "TRIBINA_A", "STANDARD", null, null, "NEPREUZETA", korisnik.getIdKorisnika(), "1", new HashSet<>(), new HashSet<>(), null, null));
 
             // Act
             List<UlaznicaDto> result = ulaznicaService.getUlazniceByIdKorisnika(1L);
@@ -151,11 +151,11 @@ public class UlaznicaServiceImplTest {
     @Test
     public void testGetUlazniceByIdKorisnikaUserNotFound() {
         // Arrange
-        when(korisnikRepository.findById(1L)).thenReturn(Optional.empty());
+        when(korisnikRepository.findById(999L)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> {
-            ulaznicaService.getUlazniceByIdKorisnika(1L);
+            ulaznicaService.getUlazniceByIdKorisnika(999L);
         });
     }
 }
