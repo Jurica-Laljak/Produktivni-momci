@@ -7,6 +7,8 @@ import { FaCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { FaTurnUp } from "react-icons/fa6";
+
 
 export default function Oglas({
     idTransakcije,
@@ -65,20 +67,29 @@ export default function Oglas({
             {isOpen && (
             <div className="oglas-container">
                 {/* Prikaz prve ulaznice */}
-                <div className="ulaznica-row">
-                    <Ulaznica {...ulaznica1} />
-                </div>
+                <div className="ulaznica-row"><Ulaznica {...ulaznica1}/></div>
+                    
 
+                    <div className="button-section-2">
+            {(tipTransakcije === "poslanePonude" || tipTransakcije === "zaPrihvatiti") && (
+                <button className="view-button" onClick={() => {handleOdvediMe(idNavigateOglasa)}} style={{fontSize: '18px'}}>
+                    <FaArrowUpRightFromSquare /> Odvedi me
+                </button>
+            )}
+                <button  className="delete-button" onClick={naObrisi} style={{fontSize:'18px', marginLeft: idTransakcije ? '0px' : '8px'}}>
+                    <FaRegTrashAlt/>{idTransakcije ? (tipTransakcije === "provedeno" ? "Obriši transakciju" : "Obriši ponudu") : "Obriši oglas"}
+                </button>
+            </div>
                 {/* Strelica između ulaznica */}
-                <div className="arrow"><FaArrowDown /></div> 
+                <div className="arrow"><FaTurnUp/></div>
 
                 {/* Prikaz druge ulaznice */}
                 <div className="ulaznica-row">
                     {ulaznica2.datumKoncerta === "N/A" ? (
                         <div
                             style={{
-                                width: "50vw",
-                                height: "15vw",
+                                width: "44vw",
+                                height: "14vw",
                                 backgroundColor: "#D9D9D9",
                                 display: "flex",
                                 justifyContent: "center",
@@ -86,27 +97,22 @@ export default function Oglas({
                                 fontSize: "20px",
                                 textDecoration: "underline",
                                 color: "#787878",
-                                marginLeft: "7.5vw",
-                                marginTop:"2.5vh"
+                                marginLeft: "0vw",
+                                marginTop:"2.5vh",
+                                borderRadius:"8px",
+                                boxShadow: "0 0 5px #00000032",
+                                marginBottom:"0.7rem",
+                                marginRight:"0.5vw"
                             }}
                         >
                             Nema ponude
                         </div>
                     ) : (
-                        <Ulaznica {...ulaznica2} />
+                        <Ulaznica {...ulaznica2}/>
                     )}
-                </div> 
-                {/* Gumbi */}
-            <div className="button-section">
-            {(tipTransakcije === "poslanePonude" || tipTransakcije === "zaPrihvatiti") && (
-                <button className="view-button" onClick={() => {handleOdvediMe(idNavigateOglasa)}} style={{fontSize: '18px'}}>
-                    <FaArrowUpRightFromSquare /> Odvedi me
-                </button>
-            )}
-                <button  className="delete-button" onClick={naObrisi} style={{fontSize:'18px'}}>
-                    <FaRegTrashAlt/>{idTransakcije ? (tipTransakcije === "provedeno" ? "Obriši transakciju" : "Obriši ponudu") : "Obriši oglas"}
-                </button>
-            </div>
+                    </div>
+
+                {/* Gumbi */} 
             </div>
 
 )}

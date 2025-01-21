@@ -1,32 +1,48 @@
 .oglas-container {
-  padding-top: 1px;
-  margin-bottom: 15px;
+ /* padding-top: 1px; */
+ margin-bottom: 5px;
   background-color: #C6CDF1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  padding-bottom: 15px;
+ /* padding-bottom: 15px; */
   border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
+
 .outer-container{
-  width: 65vw;
-  margin-top: 40px;
+  width: 60vw;
+  margin-top:20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3vw;
+  margin-bottom: 2vw;
 }
 
 .ulaznica-row {
-  margin-bottom: 10px;
+  padding-left: 2vw;
 }
 
 .arrow {
-  text-align: center;
-  font-size: 44px;
+  font-size: 74px;
+  margin-left: 5vw;
+  margin-bottom: 5vw;
+  rotate: 90deg;
 }
-
+ /*
 .status-section {
   margin-bottom: 10px;
   font-style: italic;
+} */
+
+.button-section-2 {
+  margin: 0 0.6vw;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+
 }
 
 .button-section {
