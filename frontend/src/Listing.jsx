@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useContext  } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import './Listing.css';
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ticketMap } from '../data/ticketMap'
 import axiosPrivate from './api/axiosPrivate';
-import {Context} from "./App"
+import { Context } from "./App"
+import Izvodac from './Izvodac';
 
 export default function Listing({ ulaznica, izvodaci, idOglasa }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -13,7 +14,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa }) {
   const [showDetails, setShowDetails] = useState(false);
   const [weather, setWeather] = useState(null);
   const [forecastAvailable, setForecastAvailable] = useState(true);
-  const {openRazmijeniModal} = useContext(Context)
+  const { openRazmijeniModal } = useContext(Context)
   const [availableTickets, setAvailableTickets] = useState(null);
 
   const toggleFavorite = (e) => {
@@ -36,7 +37,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa }) {
         // Poziv API-ja za dohvaćanje ulaznica
         const response = await axiosPrivate.get('preference/korisnici/ulaznice');
         const userTickets = response.data;
-  
+
         // Broji koliko ulaznica ima trenutni korisnik
         const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
         setAvailableTickets(freeTickets);
@@ -47,17 +48,36 @@ export default function Listing({ ulaznica, izvodaci, idOglasa }) {
     };
 
     fetchUserTickets();
-}, []);
+  }, []);
 
-const handleOpenRazmijeniModal = (oglas) => {
+  useEffect(() => {
+    const fetchGenresForId = async () => {
+      try {
+        // Poziv API-ja za dohvaćanje ulaznica
+        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
+        const userTickets = response.data;
 
-  const mod = {
-    idUlaznice: oglas.ulaznicaId,
-    idOglasa: oglas.idOglasa
+        // Broji koliko ulaznica ima trenutni korisnik
+        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
+        setAvailableTickets(freeTickets);
+      } catch (error) {
+        console.error('Greška pri dohvaćanju ulaznica:', error);
+        setAvailableTickets(0); // Ako dođe do greške, postavi 0
+      }
+    };
+
+    fetchGenresForId
+  }, [])
+
+  const handleOpenRazmijeniModal = (oglas) => {
+
+    const mod = {
+      idUlaznice: oglas.ulaznicaId,
+      idOglasa: oglas.idOglasa
+    };
+
+    openRazmijeniModal(mod);
   };
-
-  openRazmijeniModal(mod);
-};
 
 
   useEffect(() => {
@@ -156,31 +176,39 @@ const handleOpenRazmijeniModal = (oglas) => {
                 />
               </div>
 
-              <div className="details-right">
-                <p className="availability-info">
-                  Vrsta ulaznice: {ulaznica.vrstaUlaznice}
-                </p>
-              </div>
+                <div className="details-right">
+                  <span className="izvodaci-header">Izvođači</span>
+                  {izvodaci.map((izvodac) => (
+                    <div className="izvodaci-wrapper">
+                      <Izvodac izvodac={izvodac} />
+                      <Izvodac izvodac={izvodac} />
+                      <Izvodac izvodac={izvodac} />
+                      <Izvodac izvodac={izvodac} />
+                      <Izvodac izvodac={izvodac} />
+                      <Izvodac izvodac={izvodac} />
+                    </div>
+                  ))}
+                </div>
 
               {localStorage.getItem("token") &&
                 <div className="button-flex">
-                <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
+                  <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
                     backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
                     color: availableTickets > 0 ? 'black' : ''
                   }}
-                >
+                  >
 
-                  Razmijeni ulaznice
-                </button>
-                <span className="button-description">
-                {availableTickets === null
-      ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
-      : availableTickets > 0
-      ? `Imate ${availableTickets} slobodnih ulaznica za razmjenu.`
-      : "Nemate dostupne ulaznice za razmjenu."}
+                    Razmijeni ulaznice
+                  </button>
+                  <span className="button-description">
+                    {availableTickets === null
+                      ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
+                      : availableTickets > 0
+                        ? `Imate ${availableTickets} slobodnih ulaznica za razmjenu.`
+                        : "Nemate dostupne ulaznice za razmjenu."}
 
-                </span>
-              </div>}
+                  </span>
+                </div>}
 
 
               {weather ? (
@@ -267,9 +295,9 @@ const handleOpenRazmijeniModal = (oglas) => {
                 color: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "#425dff" : "none"
                 , fontWeight: remainingDaysToEvent(ulaznica.datumKoncerta) <= 14 ? "bold" : "none"
               }}>{remainingDaysToEvent(ulaznica.datumKoncerta) ? remainingDaysToEvent(ulaznica.datumKoncerta) : ""}
-              {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
-                ? " dana do koncerta"
-                : remainingDaysToEvent(ulaznica.datumKoncerta) == 0 ? "Koncert je danas" : " dan do koncerta"}
+                {remainingDaysToEvent(ulaznica.datumKoncerta) > 1
+                  ? " dana do koncerta"
+                  : remainingDaysToEvent(ulaznica.datumKoncerta) == 0 ? "Koncert je danas" : " dan do koncerta"}
               </p>
             </div>
           </div>
