@@ -85,7 +85,7 @@ export default function Oglas({
 
                 {/* Prikaz druge ulaznice */}
                 <div className="ulaznica-row">
-                    {ulaznica2.datumKoncerta === "N/A" ? (
+                    {ulaznica2 && ulaznica2.datumKoncerta === "N/A" ? (
                         <div
                             style={{
                                 width: "44vw",

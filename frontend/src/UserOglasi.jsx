@@ -247,7 +247,7 @@ export default function UserOglasi() {
 
     const obrisiOglas = async (idOglas) => {
         try {
-            await axiosPrivate.delete(`oglasi/${idOglas}`);
+            await axiosPrivate.delete(`oglasi/izbrisi/${idOglas}`);
             setOglasiBezPonuda((prev) =>
                 prev.filter((u) => u.idOglasa !== idOglas)
             );

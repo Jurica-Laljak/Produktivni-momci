@@ -122,7 +122,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               </div>
             ) : (
               <div className="d-flex justify-content-between align-items-center w-100">
-                <SearchBar setResults={setResults} zanrovi={zanrovi} />
+                <SearchBar setResults={setResults} zanrovi={zanrovi} userData={userData2} />
                   <button
                   className="btn btn-create-ad me-2"
                   onClick={openModal}

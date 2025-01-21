@@ -50,6 +50,9 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         if (korisnikPonuda == null || korisnikOglas == null) {
             throw new IllegalStateException("Korisnik not associated with Ulaznica");
         }
+        else if (korisnikPonuda.getIdKorisnika().equals(korisnikOglas.getIdKorisnika())) {
+            throw new IllegalStateException("Korisnik ponuda and korisnik oglas are the same");
+        }
 
         // Create a new Transakcija instance and set its properties
         Transakcija transakcija = new Transakcija();

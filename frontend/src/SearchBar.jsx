@@ -5,7 +5,7 @@ import axios from 'axios';
 import SearchResultsList from './SearchResultsList';
 import { useNavigate } from 'react-router-dom';
 
-export default function SearchBar({ setResults, zanrovi }) {
+export default function SearchBar({ setResults, zanrovi, userData }) {
 
 
   const [searchInput, setSearchInput] = useState("");
@@ -28,9 +28,11 @@ export default function SearchBar({ setResults, zanrovi }) {
           }
         })
         .then(async (response) => {
+          let filteredResults = response.data;
+          if(userData)
+            filteredResults = filteredResults.filter(oglas => oglas.idKorisnika != userData.idKorisnika)
 
           //prvo cemo filter tako da ostanu samo oglasi koji nisu prodani ili istekli
-          const filteredResults = response.data.filter(element => element.status === "AKTIVAN")
           console.log("Filtered res: ", filteredResults)
           setResults(filteredResults)
           navigate("/search");
