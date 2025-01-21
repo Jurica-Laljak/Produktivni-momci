@@ -43,6 +43,22 @@ button {
   font-size: 24px;
 }
 
+.view-button {
+  color: #425DFF;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  gap: 5px;
+}
+
+.view-button:hover {
+  background-color: #425DFF;
+  color: white;
+}
+
 .delete-button {
   color: red;
   text-decoration: underline;
@@ -51,6 +67,7 @@ button {
   padding: 0;
   border: 0;
   background: none;
+  gap: 5px;
 }
 
 .delete-button:hover {

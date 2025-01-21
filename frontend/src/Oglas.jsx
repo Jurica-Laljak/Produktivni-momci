@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Ulaznica from "./Ulaznica";
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import "./Oglas.css";
 import { FaArrowDown, FaRegTrashAlt } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 export default function Oglas({
     idTransakcije,
@@ -16,16 +18,34 @@ export default function Oglas({
     naOdbij,
     naObrisi,
     imePonuditelja,
-    tipTransakcije, // Dodan prop za prepoznavanje tipa transakcije
+    tipTransakcije,
+    idNavigateOglasa
 }) {
+
+    const [isOpen, setIsOpen] = useState(true); // Stanje za otvaranje/zatvaranje
+
+    const toggleOpen = () => {
+        setIsOpen((prev) => !prev);
+    };
+
+    const navigate = useNavigate();
+
+    const handleOdvediMe = (oglasId) => {
+        //console.log("id oglasa:  ")
+        //console.log(oglasId)
+        navigate(`/#${oglasId}`)
+    }
+
     return (
         <div className={`outer-container ${tipTransakcije === "smece" ? "smece-container" : ""}`}>
             
-            <span className="header-container">
-                <h3>{idTransakcije
+            <span className="header-container" onClick={toggleOpen} style={{ cursor: "pointer" }}>
+                <h3>
+                {isOpen ?<span style={{ color: "#425DFF", cursor: "pointer" }}>▼</span> : <span style={{ color: "#425DFF", cursor: "pointer" }}>▶</span>}{" "}
+                    {idTransakcije
         ? (tipTransakcije === "provedeno" ? `Transakcija #${idTransakcije}` : `Moja ponuda #${idTransakcije}`)
         : `Moj oglas #${oglasId}`}</h3>
-                <h5 style={{ color: '#787878' }}>
+             {isOpen && (   <h5 style={{ color: '#787878' }}>
                     <span style={{ fontWeight: 'bold' }}>
                     {tipTransakcije === "smece" ? (
         <span style={{ fontWeight: "bold" }}>
@@ -40,9 +60,9 @@ export default function Oglas({
     )}
                     </span>{" "}
                     do koncerta
-                </h5>
+                </h5> )}
             </span>
-
+            {isOpen && (
             <div className="oglas-container">
                 {/* Prikaz prve ulaznice */}
                 <div className="ulaznica-row">
@@ -67,6 +87,7 @@ export default function Oglas({
                                 textDecoration: "underline",
                                 color: "#787878",
                                 marginLeft: "7.5vw",
+                                marginTop:"2.5vh"
                             }}
                         >
                             Nema ponude
@@ -74,16 +95,22 @@ export default function Oglas({
                     ) : (
                         <Ulaznica {...ulaznica2} />
                     )}
-                </div>
+                </div> 
                 {/* Gumbi */}
             <div className="button-section">
-                <button  className="delete-button" onClick={() => {naObrisi(); premjestiUKos();}} style={{fontSize:'18px'}}>
+            {(tipTransakcije === "poslanePonude" || tipTransakcije === "zaPrihvatiti") && (
+                <button className="view-button" onClick={() => {handleOdvediMe(idNavigateOglasa)}} style={{fontSize: '18px'}}>
+                    <FaArrowUpRightFromSquare /> Odvedi me
+                </button>
+            )}
+                <button  className="delete-button" onClick={naObrisi} style={{fontSize:'18px'}}>
                     <FaRegTrashAlt/>{idTransakcije ? (tipTransakcije === "provedeno" ? "Obriši transakciju" : "Obriši ponudu") : "Obriši oglas"}
                 </button>
             </div>
             </div>
 
-            {/* Prikaz statusa i gumba */}
+)}
+            {isOpen && (
             <div className="button-section">
                 {tipTransakcije === "zaPrihvatiti" && (
                     <>
@@ -105,10 +132,14 @@ export default function Oglas({
                 )}
                 {tipTransakcije === "ostalo" && null}
                 {tipTransakcije === "provedeno" && null}
-            </div>
+            </div> )}
+     
         </div>
-    );
+
+
+   );
 }
+
 
 
 

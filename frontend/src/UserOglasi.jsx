@@ -284,8 +284,9 @@ export default function UserOglasi() {
                                         naObrisi={() => {obrisiOglas(transakcija.idOglas);
                                             premjestiUKos(transkacija);
                                         }}
-                                        imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} //treba popravit
+                                        imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} 
                                         tipTransakcije="zaPrihvatiti"
+                                        idNavigateOglasa={transakcija.ulaznicaPonuda.oglasiIds} //provjerit
                                     />
                                 )}
                             </div>
@@ -315,8 +316,9 @@ export default function UserOglasi() {
                                         naObrisi={() => {obrisiTransakciju(transakcija.idTransakcije);
                                                         premjestiUKos(transkacija);
                                         }}
-                                        imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)} //treba popravit
+                                        imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)} 
                                         tipTransakcije="poslanePonude"
+                                        idNavigateOglasa={transakcija.ulaznicaOglas.oglasiIds} //provjerit
                                     />
                                 )}
                             </div>
@@ -347,6 +349,7 @@ export default function UserOglasi() {
                                             premjestiUKos(oglas); // Nova funkcija za premještanje u koš
                                         }}
                                         tipTransakcije="ostalo"
+                                        // idNavigateOglasa={oglas.idOglasa} 
                                     />
                                 )}
                             </div>
