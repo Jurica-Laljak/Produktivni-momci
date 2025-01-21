@@ -111,9 +111,11 @@ import axiosPrivate from "./api/axiosPrivate";
 import "./Obavijesti2.css";
 import { FaTrashAlt, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 export default function Obavijesti() {
     const [obavijesti, setObavijesti] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const obrisiObavijest = async (idObavijesti) => {
@@ -140,6 +142,7 @@ export default function Obavijesti() {
                 console.log("DATAAA:")
                 console.log(response.data)
                 setObavijesti(response.data);
+                setLoading(false);
             } catch (err) {
                 console.log("Greška prilikom dohvata obavijesti", err);
             }
@@ -166,7 +169,16 @@ export default function Obavijesti() {
     };
 
     return (
-        <div className="obavijesti-container">
+        <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center"}}>
+        {loading ?
+            <ScaleLoader
+            height={100}
+            radius={15}
+            width={10}
+            margin={4}
+            color='#425DFF'
+            />
+        : <div className="obavijesti-container">
             {obavijesti.map((obavijest) => (
                 <div key={obavijest.idObavijesti} className="obavijest">
                     <h5 className="obavijest-text">{getObavijestText(obavijest)}</h5>
@@ -186,6 +198,7 @@ export default function Obavijesti() {
                     </div>
                 </div>
             ))}
+        </div>}
         </div>
     );
 }

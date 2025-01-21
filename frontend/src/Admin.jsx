@@ -60,6 +60,7 @@ export default function Admin( { userData } ) {
 
     const onSuggestionsFetchRequested = ({ value }) => {
         setSuggestions(getSuggestions(value));
+        setSelectedValue("special-user");
     };
 
     const onSuggestionsClearRequested = () => {
@@ -74,10 +75,17 @@ export default function Admin( { userData } ) {
         setKorisnik(Array(Object(suggestion)));
     }
 
+    function handleKeyDown(event) {
+        if (event.key === 'Enter' && korisnik.length != 0) {
+            handleOnClick();
+        }
+      }
+
     const inputProps = {
         placeholder: 'Korisnik...',
         value: korisnikInput,
-        onChange: onSuggestionsChange
+        onChange: onSuggestionsChange,
+        onKeyDown: handleKeyDown
     };
 
     function handleOnClick() {

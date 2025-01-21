@@ -78,7 +78,7 @@ function AddOglasModal() {
             </button>
   
             {/* Gumb za zatvaranje modala */}
-            <button type="button" onClick={closeModal}>
+            <button type="button" className="modal-close-btn" onClick={closeModal}>
               Zatvori
             </button>
           </form>

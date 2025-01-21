@@ -8,14 +8,13 @@ import axiosPrivate from './api/axiosPrivate';
 import { Context } from "./App"
 import Izvodac from './Izvodac';
 
-export default function Listing({ ulaznica, izvodaci, idOglasa }) {
+export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
   const [weather, setWeather] = useState(null);
   const [forecastAvailable, setForecastAvailable] = useState(true);
   const { openRazmijeniModal } = useContext(Context)
-  const [availableTickets, setAvailableTickets] = useState(null);
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
@@ -30,44 +29,6 @@ export default function Listing({ ulaznica, izvodaci, idOglasa }) {
   const toggleDetails = () => {
     setShowDetails(!showDetails);
   };
-
-  useEffect(() => {
-    const fetchUserTickets = async () => {
-      try {
-        // Poziv API-ja za dohvaćanje ulaznica
-        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
-        const userTickets = response.data;
-
-        // Broji koliko ulaznica ima trenutni korisnik
-        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
-        setAvailableTickets(freeTickets);
-      } catch (error) {
-        console.error('Greška pri dohvaćanju ulaznica:', error);
-        setAvailableTickets(0); // Ako dođe do greške, postavi 0
-      }
-    };
-
-    fetchUserTickets();
-  }, []);
-
-  useEffect(() => {
-    const fetchGenresForId = async () => {
-      try {
-        // Poziv API-ja za dohvaćanje ulaznica
-        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
-        const userTickets = response.data;
-
-        // Broji koliko ulaznica ima trenutni korisnik
-        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
-        setAvailableTickets(freeTickets);
-      } catch (error) {
-        console.error('Greška pri dohvaćanju ulaznica:', error);
-        setAvailableTickets(0); // Ako dođe do greške, postavi 0
-      }
-    };
-
-    fetchGenresForId
-  }, [])
 
   const handleOpenRazmijeniModal = (oglas) => {
 

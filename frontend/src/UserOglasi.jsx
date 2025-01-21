@@ -4,7 +4,7 @@ import Oglas from "./Oglas";
 import { useNavigate } from 'react-router-dom';
 import "./UserOglasi.css";
 import { differenceInDays } from "date-fns";
-
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 export default function UserOglasi() {
     const [zaprimljeneTransakcije, setZaprimljeneTransakcije] = useState([]);
@@ -14,6 +14,7 @@ export default function UserOglasi() {
     const [kosZaSmece, setKosZaSmece] = useState([]); // Novo stanje za "Koš za smeće"
     const [openedSections, setOpenedSections] = useState({}); // Stanje za praćenje otvorenih sekcija
     const [provedeneTransakcije, setProvedeneTransakcije] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const initializeOpenedSections = (transakcije, ponude, ulaznice) => {
         const newSections = {};
@@ -35,24 +36,6 @@ export default function UserOglasi() {
             ...prev,
             [sectionId]: !prev[sectionId],
         }));
-    };
-
-    const premjestiUKos = (oglas) => {
-        const datumPremjestanja = new Date(); // Trenutni datum i vrijeme
-        const oglasZaKos = { ...oglas, dateAdded: datumPremjestanja }; // Dodavanje svojstva `dateAdded`
-    
-        setKosZaSmece((prev) => [...prev, oglasZaKos]); // Dodaj oglas u "Koš za smeće"
-        
-        // Filtriraj iz drugih sekcija
-        setZaprimljeneTransakcije((prev) =>
-            prev.filter((t) => t.idTransakcije !== oglas.idTransakcije)
-        );
-        setPoslanePonude((prev) =>
-            prev.filter((t) => t.idTransakcije !== oglas.idTransakcije)
-        );
-        setOglasiBezPonuda((prev) =>
-            prev.filter((u) => u.idOglasa !== oglas.idOglasa)
-        );
     };
 
     useEffect(() => {
@@ -100,7 +83,6 @@ export default function UserOglasi() {
             return [];
         }
     };
-
 
     // Funkcija za dohvaćanje poslanih ponuda
     const fetchPoslanePonude = async () => {
@@ -202,6 +184,7 @@ export default function UserOglasi() {
     
             // Dohvati provedene transakcije
             await fetchProvedeneTransakcije();
+            setLoading(false);
         };
     
         fetchData();
@@ -231,9 +214,13 @@ export default function UserOglasi() {
             console.error("Greška prilikom odbijanja ponude:", err);
             setError("Došlo je do greške prilikom odbijanja ponude.");
         }
+        window.location.reload();
     };
 
     const obrisiTransakciju = async (idTransakcije) => {
+        if (!confirm(`Jeste li sigurni da želite obrisati ponudu ${idTransakcije}?`))
+            return;
+
         try {
             await axiosPrivate.delete(`transakcije/izbrisi/${idTransakcije}`);
             setPoslanePonude((prev) =>
@@ -246,6 +233,9 @@ export default function UserOglasi() {
     };
 
     const obrisiOglas = async (idOglas) => {
+        if (!confirm(`Jeste li sigurni da želite obrisati oglas ${idOglas}?`))
+            return;
+
         try {
             await axiosPrivate.delete(`oglasi/izbrisi/${idOglas}`);
             setOglasiBezPonuda((prev) =>
@@ -259,7 +249,17 @@ export default function UserOglasi() {
 
     // Renderiranje
     return (
-        <div>
+        <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: loading && "center", alignItems: loading && "center"}}>
+            {loading ?
+                <ScaleLoader
+                height={100}
+                radius={15}
+                width={10}
+                margin={4}
+                color='#425DFF'
+                />
+            :
+            <div>
             <h3>Moji oglasi</h3>
             {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -281,8 +281,8 @@ export default function UserOglasi() {
                                         statusPonude={transakcija.status}
                                         naPrihvati={() => prihvatiPonudu(transakcija.idTransakcije)}
                                         naOdbij={() => odbijPonudu(transakcija.idTransakcije)}
-                                        naObrisi={() => {obrisiOglas(transakcija.idOglas);
-                                            premjestiUKos(transkacija);
+                                        naObrisi={() => {
+                                            obrisiOglas(transakcija.idOglas);
                                         }}
                                         imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} 
                                         tipTransakcije="zaPrihvatiti"
@@ -313,8 +313,8 @@ export default function UserOglasi() {
                                         ulaznica1={transakcija.ulaznicaPonuda}
                                         ulaznica2={transakcija.ulaznicaOglas}
                                         statusPonude={transakcija.status}
-                                        naObrisi={() => {obrisiTransakciju(transakcija.idTransakcije);
-                                                        premjestiUKos(transkacija);
+                                        naObrisi={() => {
+                                            obrisiTransakciju(transakcija.idTransakcije);
                                         }}
                                         imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)} 
                                         tipTransakcije="poslanePonude"
@@ -346,7 +346,6 @@ export default function UserOglasi() {
                                         ulaznica2={{ datumKoncerta: "N/A" }}
                                         naObrisi={() => {
                                             obrisiOglas(oglas.idOglasa); // Stara funkcija za trajno brisanje
-                                            premjestiUKos(oglas); // Nova funkcija za premještanje u koš
                                         }}
                                         tipTransakcije="ostalo"
                                         // idNavigateOglasa={oglas.idOglasa} 
@@ -382,31 +381,7 @@ export default function UserOglasi() {
                 )}
             </section>
 
-            <section>
-                <h3 onClick={() => toggleSection("kosZaSmece")} style={{ color: "#920909", cursor: "pointer" }}>
-                    {openedSections["kosZaSmece"] ? "▼" : "▶"} Koš za smeće
-                </h3>
-                {openedSections["kosZaSmece"] &&
-                    (kosZaSmece.length > 0 ? (
-                        kosZaSmece.map((oglas, index) => {const danasnjiDatum = new Date();
-                            const protekliDani = differenceInDays(danasnjiDatum, new Date(oglas.dateAdded));
-                            const preostaliDani = 14 - protekliDani; // Izračunaj preostale dane do brisanja
-            
-                            return (
-                                <Oglas
-                                    key={oglas.idTransakcije || oglas.idOglasa}
-                                    oglasId={oglas.idTransakcije || oglas.idOglasa}
-                                    danaDo={preostaliDani > 0 ? preostaliDani : 0} // Postavi na 0 ako je isteklo
-                                    ulaznica1={oglas.ulaznica1}
-                                    ulaznica2={oglas.ulaznica2}
-                                    tipTransakcije="smece"
-                                />
-                            );
-                        })
-                    ) : (
-                        <p>Nemate oglasa u košu za smeće.</p>
-                    ))}
-            </section>
+            </div>}
         </div>
     );
 }

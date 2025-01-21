@@ -67,24 +67,28 @@ export default function Oglas({
             {isOpen && (
             <div className="oglas-container">
                 {/* Prikaz prve ulaznice */}
-                <div className="ulaznica-row"><Ulaznica {...ulaznica1}/></div>
+                <div className="ulaznica-row ulaznica-1"><Ulaznica {...ulaznica1}/></div>
                     
 
                     <div className="button-section-2">
-            {(tipTransakcije === "poslanePonude" || tipTransakcije === "zaPrihvatiti") && (
+            {(tipTransakcije === "poslanePonude") && (
                 <button className="view-button" onClick={() => {handleOdvediMe(idNavigateOglasa)}} style={{fontSize: '18px'}}>
                     <FaArrowUpRightFromSquare /> Odvedi me
                 </button>
             )}
-                <button  className="delete-button" onClick={naObrisi} style={{fontSize:'18px', marginLeft: idTransakcije ? '0px' : '8px'}}>
-                    <FaRegTrashAlt/>{idTransakcije ? (tipTransakcije === "provedeno" ? "Obriši transakciju" : "Obriši ponudu") : "Obriši oglas"}
+                <button  className="delete-button" onClick={naObrisi} style={{fontSize:'18px'}}>
+                    {tipTransakcije != "provedeno" &&
+                        <div>
+                            <FaRegTrashAlt/>{idTransakcije ? "Obriši ponudu" : "Obriši oglas"}
+                        </div>
+                    }
                 </button>
             </div>
                 {/* Strelica između ulaznica */}
                 <div className="arrow"><FaTurnUp/></div>
 
                 {/* Prikaz druge ulaznice */}
-                <div className="ulaznica-row">
+                <div className="ulaznica-row ulaznica-2">
                     {ulaznica2 && ulaznica2.datumKoncerta === "N/A" ? (
                         <div
                             style={{

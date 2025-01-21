@@ -139,6 +139,9 @@ public class TransakcijaServiceImpl implements TransakcijaService {
         Transakcija transakcija = transakcijaRepository.findById(transakcijaId)
                 .orElseThrow(() -> new IllegalArgumentException("Transakcija not found"));
 
+        if (transakcija.getStatusTransakcije().equals(Transakcija.StatusTransakcije.PROVEDENA))
+            throw new IllegalStateException("Transakcija provedena");
+
         // Delete the Transakcija entity
         transakcijaRepository.delete(transakcija);
     }

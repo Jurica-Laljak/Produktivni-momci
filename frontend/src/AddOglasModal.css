@@ -59,7 +59,23 @@
   .modal-content button:hover {
     background-color: #2c47d3;
   }
-  
+
+  .modal-close-btn {
+    margin: auto !important;
+    font-size: 16px !important;
+    color: red !important;
+    background-color: white !important;
+    border: 2px solid red !important;
+    border-radius: 15px !important;
+    transition: 0.3s !important;
+  }
+
+  .modal-close-btn:hover {
+    color: white !important;
+    background-color: red !important;
+    box-shadow: 0 0 4px red !important;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;

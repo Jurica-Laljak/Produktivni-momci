@@ -3,25 +3,27 @@ import Ulaznica from "./Ulaznica";
 import axios from 'axios';
 import axiosPrivate from "./api/axiosPrivate";
 import './Ulaznice.css';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 export default function Ulaznice() {
-    const [ulaznice, setUlaznice] = useState([]);
-    const [showModal, setShowModal] = useState(false); 
-    const [ticketCode, setTicketCode] = useState(""); 
-  
+  const [ulaznice, setUlaznice] = useState([]);
+  const [showModal, setShowModal] = useState(false); 
+  const [ticketCode, setTicketCode] = useState(""); 
+  const [loading, setLoading] = useState(true);
 
   const getUlaznice = async () => {
     try{
     const response = await axiosPrivate.get('preference/korisnici/ulaznice')
-    setUlaznice(response.data);   
+    setUlaznice(response.data);
+    setLoading(false);
     console.log(response.data); 
     }
     catch(err){
         console.log("problem s dohvatom ulaznica korisnika: ", err);
     }
-} 
+  }
 
-const handleAddTicket = async () => {
+  const handleAddTicket = async () => {
     try {
       await axiosPrivate.post("preference/ulaznice/preuzmi", { sifraUlaznice: ticketCode });
       setTicketCode(""); 
@@ -32,14 +34,21 @@ const handleAddTicket = async () => {
     }
   };
 
-    useEffect(() => {
-        getUlaznice();
-    },[]);
-
-   
+  useEffect(() => {
+      getUlaznice();
+  },[]);   
 
   return (
-    <div>
+    <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center"}}>
+    {loading ?
+      <ScaleLoader
+      height={100}
+      radius={15}
+      width={10}
+      margin={4}
+      color='#425DFF'
+      />
+    : <div>
       {ulaznice.map((ulaznica, index) => (
         <Ulaznica key={index} {...ulaznica} />
       ))}
@@ -63,6 +72,7 @@ const handleAddTicket = async () => {
           </div>
         )}
       </div>
+    </div>}
     </div>
   );
 };

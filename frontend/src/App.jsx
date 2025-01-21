@@ -28,7 +28,7 @@ function App() {
 
   const location = useLocation();
   const noNavbarRoutes = ['/chooseGenres'];
-  const [results, setResults] = useState([]);
+  const [search, setSearch] = useState([]);
   const [zanrovi, setZanrovi] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const showNavButtons = ['/user', '/userUlaznice', '/userOglasi', '/admin'];
@@ -47,9 +47,6 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ulazniceResponse = await axiosPrivate.get('preference/korisnici/ulaznice');
-        setUlaznice(ulazniceResponse.data); // Postavljanje podataka o ulaznicama
-
         const izvodaciResponse = await axiosPrivate.get('izvodaci'); // Zamijenite s vašim endpointom za izvođače
         setIzvodaci(izvodaciResponse.data); // Postavljanje podataka o izvođačima
       } catch (error) {
@@ -92,7 +89,7 @@ function App() {
 
       <div className='app-container'>
         {/*navbar se prikazuje samo na odredenim putanjama*/}
-        {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2 setResults={setResults} zanrovi={zanrovi}
+        {!noNavbarRoutes.includes(location.pathname) && <AppNavbar2 setSearch={setSearch} zanrovi={zanrovi}
           userData2={userData} setUserData2={setUserData} />}
 
         {/* prikazuje samo na odredenim putanjama*/}
@@ -102,7 +99,7 @@ function App() {
           <Routes>
             {/* nezaštićene komponente */}
             <Route path='/' element={<Home />} />
-            <Route path='/search' element={<SearchResultsList results={results} />} />
+            <Route path='/search' element={<SearchResultsList search={search} userData={userData} />} />
 
             {/* zaštićene komponente */}
             <Route path='/chooseGenres' element={

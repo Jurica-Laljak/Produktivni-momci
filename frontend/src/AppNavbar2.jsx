@@ -40,7 +40,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import axiosPrivate from './api/axiosPrivate';
   import {Context} from "./App"
   
-  export default function AppNavbar2({ setResults, zanrovi, userData2, setUserData2 }) {
+  export default function AppNavbar2({ setSearch, zanrovi, userData2, setUserData2 }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const {openModal,userName,setUserName} = useContext(Context)
@@ -58,10 +58,11 @@ export default function AppNavbar2({ setResults,zanrovi }) {
         try {
           const googleID = JSON.parse(atob(token.split('.')[1]));
 
+          if (expiredToken(googleID))
+            return;
+
           if(googleID.roles.includes("ROLE_ADMIN"))
             setIsAdmin(true);
-
-          console.log("User is Admin: " + isAdmin);
   
           const getUserData = async () => {
             try {
@@ -95,6 +96,20 @@ export default function AppNavbar2({ setResults,zanrovi }) {
     const login = () => {
       window.location.href = `${backendUrl}/oauth2/authorization/google?redirect_uri=${frontednUrl}`;
     }
+
+    const expiredToken = (googleID) => {
+      var today = new Date()
+      var eventDateDate = new Date(googleID.exp * 1000)
+      let differenceInTime = eventDateDate.getTime() - today.getTime()
+
+      console.log(differenceInTime);
+
+      if (differenceInTime < 0) {
+        handleLogout();
+        return true;
+      }
+      return false;
+    }
   
     const isUserRoute =
       location.pathname === '/user' ||
@@ -112,17 +127,17 @@ export default function AppNavbar2({ setResults,zanrovi }) {
           {isLoggedIn ? (
             isUserRoute ? (
               <div className="d-flex justify-content-between align-items-center w-100">
-                <span className="welcome-text" >Dobrodošli <span style={{color:isAdmin ? "#FFB700" : '#425DFF', textShadow:isAdmin && "0 0 8px black"}}>{userName}</span></span>
-                <Link to="/" className="nav-link">
+                <span className="welcome-text" >Dobrodošli <span style={{color:isAdmin ? "#FFB700" : '#425DFF', textShadow:isAdmin && "0 0 8px #926800"}}>{userName}</span></span>
+                <Link to="/" className="nav-link" style={{marginRight: '1rem'}}>
                   <FaHome style={{ fontSize: '3rem', color: '#425DFF' }} />
                 </Link>
-                <button onClick={handleLogout} className="btn btn-primary ms-2" style={{backgroundColor:'#425DFF', color:'white', border:'none'}}>
+                <button onClick={handleLogout} className="btn btn-primary ms-2">
                   Odjavite se
                 </button>
               </div>
             ) : (
               <div className="d-flex justify-content-between align-items-center w-100">
-                <SearchBar setResults={setResults} zanrovi={zanrovi} userData={userData2} />
+                <SearchBar setSearch={setSearch} zanrovi={zanrovi} userData={userData2} />
                   <button
                   className="btn btn-create-ad me-2"
                   onClick={openModal}
@@ -130,21 +145,21 @@ export default function AppNavbar2({ setResults,zanrovi }) {
                   + Kreiraj oglas
                   </button>
                 {/* Dodajemo ikonu zvona */}
-                <Link to="/notifications" className="nav-link">
-                  <FaBell style={{ fontSize: '2.5rem', color: '#425DFF' }} />
+                <Link to="/notifications" className="nav-link" style={{ marginLeft: '2rem' }}>
+                  <FaBell style={{ fontSize: '2.5rem', color: '#425DFF'}} />
                 </Link>
-                <Link to="/user" className="nav-link">
-                  <FaUserCircle style={{ fontSize: '2.5rem', color: isAdmin ? "#FFB700" : '#425DFF' }} />
+                <Link to="/user" className={"nav-link " + (isAdmin && "admin")}>
+                  <FaUserCircle style={{ marginLeft: '2rem', fontSize: '2.5rem', color: isAdmin ? "#FFB700" : '#425DFF' }} />
                 </Link>
               </div>
             )
           ) : (
             <div className="d-flex justify-content-between align-items-center w-100">
-              <SearchBar setResults={setResults} zanrovi={zanrovi} />
+              <SearchBar setSearch={setSearch} zanrovi={zanrovi} />
               <ul className="navbar-nav ms-3">
                 <li className="nav-item">
                   <button
-                    className="nav-link"
+                    className="nav-link google"
                     onClick={login}
                     style={{
                       color: 'black',

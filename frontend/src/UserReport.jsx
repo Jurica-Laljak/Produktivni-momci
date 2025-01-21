@@ -105,10 +105,14 @@ export default function UserReport({ korisnik, transakcije, userData, adminRole 
                                         <div class="col col-6" data-label="statusTransakcije">{statusTransakcijeMap[tr.statusTransakcije].display}</div>
                                         <div class="col col-7" data-label="idOglas">{tr.idOglas ? tr.idOglas : <FiMinus />}</div>
                                         <div class="col col-8" data-label="datumTransakcije">{new Date(tr.datumTransakcije).toLocaleDateString('hr-HR')}</div>
-                                        <div class="col col-9"><button className='btn-delete-transakcija btn-delete' onClick={() => handleOnClickTransakcija(tr.idTransakcije)}>
-                                            <FaRegTrashAlt/>
-                                            Obriši transakciju
-                                        </button></div>
+                                        <div class="col col-9">
+                                            {tr.statusTransakcije != "PROVEDENA" &&
+                                                <button className='btn-delete-transakcija btn-delete' onClick={() => handleOnClickTransakcija(tr.idTransakcije)}>
+                                                    <FaRegTrashAlt/>
+                                                    Obriši transakciju
+                                                </button>
+                                            }
+                                        </div>
                                     </li>
                                 )}
                         </ul>

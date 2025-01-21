@@ -12,6 +12,7 @@ export default function ListingList() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [selectedListing, setSelectedListing] = useState(null);
+  const [availableTickets, setAvailableTickets] = useState(null);
 
   useEffect(() => {
     // Provjera tokena i pohrana u localStorage
@@ -54,6 +55,26 @@ export default function ListingList() {
     };
 
     fetchListings();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserTickets = async () => {
+      try {
+        // Poziv API-ja za dohvaćanje ulaznica
+        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
+        const userTickets = response.data;
+
+        // Broji koliko ulaznica ima trenutni korisnik
+        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
+        setAvailableTickets(freeTickets);
+      } catch (error) {
+        console.error('Greška pri dohvaćanju ulaznica:', error);
+        setAvailableTickets(0); // Ako dođe do greške, postavi 0
+      }
+    };
+
+    if(localStorage.getItem("token"))
+      fetchUserTickets();
   }, []);
 
   useEffect(() => {
@@ -106,6 +127,7 @@ export default function ListingList() {
               ulaznica={listing}
               izvodaci={listing.izvodaci}
               idOglasa={listing.idOglasa}
+              availableTickets={availableTickets}
             />
             </div>
           ))}

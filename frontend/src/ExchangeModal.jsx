@@ -84,7 +84,7 @@ function ExchangeModal() {
             </button>
   
             {/* Gumb za zatvaranje modala */}
-            <button type="button" onClick={closeRazmijeniModal}>
+            <button type="button" className="modal-close-btn" onClick={closeRazmijeniModal}>
               Zatvori
             </button>
           </form>
