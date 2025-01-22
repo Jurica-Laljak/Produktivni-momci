@@ -92,13 +92,13 @@ export default function Oglas({
                     {ulaznica2 && ulaznica2.datumKoncerta === "N/A" ? (
                         <div
                             style={{
-                                width: "44vw",
-                                height: "14vw",
+                                width: "707px",
+                                height: "240px",
                                 backgroundColor: "#D9D9D9",
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                fontSize: "20px",
+                                fontSize: "22px",
                                 textDecoration: "underline",
                                 color: "#787878",
                                 marginLeft: "0vw",
