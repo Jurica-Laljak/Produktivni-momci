@@ -11,6 +11,7 @@ export default function SearchResultsList({ search, userData }) {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [availableTickets, setAvailableTickets] = useState(null);
+  const [transakcije, setTransakcije] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -45,9 +46,12 @@ export default function SearchResultsList({ search, userData }) {
         const response = await axiosPrivate.get('preference/korisnici/ulaznice');
         const userTickets = response.data;
 
+        const tran = await axiosPrivate.get('preference/transakcije/poslane-ponude');
+        const tr = tran.data;
+
         // Broji koliko ulaznica ima trenutni korisnik
-        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
-        setAvailableTickets(freeTickets);
+        setAvailableTickets(userTickets);
+        setTransakcije(tr);
       } catch (error) {
         console.error('Greška pri dohvaćanju ulaznica:', error);
         setAvailableTickets(0); // Ako dođe do greške, postavi 0
@@ -80,7 +84,7 @@ export default function SearchResultsList({ search, userData }) {
                     key={listing.idOglasa}
                     ulaznica={listing}
                     izvodaci={listing.izvodaci}
-                    availableTickets={availableTickets}
+                    availableTickets={availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0)}
                   />
           )}
         </div>
