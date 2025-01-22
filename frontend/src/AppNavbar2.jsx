@@ -35,10 +35,11 @@ export default function AppNavbar2({ setResults,zanrovi }) {
   import { Link, useLocation, useNavigate } from 'react-router-dom';
   import SearchBar from './SearchBar';
   import { FcGoogle } from 'react-icons/fc';
-  import { FaUserCircle, FaHome, FaBell } from 'react-icons/fa'; // Dodali smo FaBell
+  import { FaUserCircle, FaHome, FaBell, FaFolderPlus } from 'react-icons/fa'; // Dodali smo FaBell
   import './AppNavbar.css';
   import axiosPrivate from './api/axiosPrivate';
   import {Context} from "./App"
+import Button from './common/Button';
   
   export default function AppNavbar2({ setSearch, zanrovi, userData2, setUserData2 }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -131,7 +132,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
                 <Link to="/" className="nav-link" style={{marginRight: '1rem'}}>
                   <FaHome style={{ fontSize: '3rem', color: '#425DFF' }} />
                 </Link>
-                <button onClick={handleLogout} className="btn btn-primary ms-2">
+                <button onClick={handleLogout} className="btn btn-primary btn-log-out ms-2">
                   Odjavite se
                 </button>
               </div>
@@ -159,7 +160,7 @@ export default function AppNavbar2({ setResults,zanrovi }) {
               <ul className="navbar-nav ms-3">
                 <li className="nav-item">
                   <button
-                    className="nav-link google"
+                    className="nav-link google btn-log-out"
                     onClick={login}
                     style={{
                       color: 'black',

@@ -43,10 +43,10 @@
   transition: .3s !important;
 }
 
-.btn-primary:hover {
+/* .btn-primary:hover {
   border-color: #425dff !important;
   box-shadow: 0 0 8px #425dff;
-}
+}  */
 
 .welcome-text {
   flex-grow: 1;
@@ -73,16 +73,17 @@
   border-radius: 15px !important;
   font-weight: bold !important;
   font-size: 16px  !important;
-  transition: border-color .3s,box-shadow .3s !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color .3s ease;
+  /* transition: border-color .3s,box-shadow .3s !important; */
   margin: 0 !important;
 }
 
 .btn-create-ad:hover{
-  background-color: white !important;
-  color: black !important;
-  border: 2px solid #425dff !important; 
+  background-color: black !important;
+  color: white !important;
+  /* border: 2px solid #425dff !important;  */
   border-radius: 15px !important;
-  box-shadow: 0 0 8px #425dff;
+  /* box-shadow: 0 0 8px #425dff; */
 }
 
 .btn-log-out {
@@ -91,7 +92,14 @@
   border: 2px solid black !important; 
   border-radius: 15px !important;
   font-weight: bold !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color .3s ease;
   font-size: 16px  !important;
+}
+
+.btn-log-out:hover {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 15px !important;
 }
 
 .nav-link svg {
@@ -99,24 +107,30 @@
 }
 
 .nav-link:hover svg {
-  filter: drop-shadow(0 0 8px #0d6efd);
+  /* filter: drop-shadow(0 0 8px #0d6efd); */
   color: #0d6efd; 
 }
 
 .nav-link.admin:hover svg {
-  filter: drop-shadow(0 0 8px #c99000);
+  /* filter: drop-shadow(0 0 8px #c99000); */
   color: #FFB700;
 }
 
-.nav-link.google {
+/* .nav-link.google {
   transition: border-color .3s,box-shadow .3s !important;
-}
+} */
 
-.nav-link.google:hover {
+/* .nav-link.google:hover {
   border: 2px solid #425dff !important; 
   box-shadow: 0 0 8px #425dff;
-}
+} */
 
 .nav-link.google:hover svg {
   filter: none;
+}
+
+#kreiraj-oglas {
+  padding: 0%;
+  width: fit-content;
+  height: fit-content;
 }

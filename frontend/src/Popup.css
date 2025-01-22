@@ -17,13 +17,15 @@
 .description {
     margin-bottom: 3vh;
     font-size: 3rem;
+}
+
+#description-success {
     font-weight: bold;
-    color: #425dff;
     text-decoration: underline;
 }
 
 
-.link {
+/* .link {
     all: unset;
     width: 100%;
 }
@@ -34,7 +36,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .link-container {
     display: flex;

@@ -4,6 +4,9 @@ import ScaleLoader from "react-spinners/ScaleLoader"
 import { Link } from 'react-router-dom'
 import { FaTicketAlt, FaHome } from "react-icons/fa"
 import './Popup.css'
+import LinkWrapper from "./common/LinkWrapper"
+import Button from "./common/Button"
+
 
 export default function Popup() {
     const { transactionPending, setTransactionPending } = useContext(Context)
@@ -16,31 +19,30 @@ export default function Popup() {
     return (
         <div className="popup-container">
             {
-                transactionPending ? <ScaleLoader
-                    height={100}
-                    radius={15}
-                    width={10}
-                    margin={4}
-                    color='#425dff'
-                />
+                transactionPending ? <>
+                    <span className="description">Vaša transakcija se obrađuje</span>
+                    <ScaleLoader
+                        height={100}
+                        radius={15}
+                        width={10}
+                        margin={4}
+                        color='#425dff'
+                    />
+                </>
                     : <div className="message-container">
-                        <span className="description">Transakcija uspješno provedena</span>
-                        <Link to="/userUlaznice" className="link">
-                            <div className="link-flex">
-                               <div className="link-container">
-                                    <FaTicketAlt /> 
-                                    <span className="link-to-tickets">{"Moje ulaznice"}</span>
-                               </div>
-                            </div>
-                        </Link>
-                        <Link to="/" className="link">
-                            <div className="link-flex">
-                               <div className="link-container">
-                                    <FaHome /> 
-                                    <span className="link-to-tickets">{"Početna stranica"}</span>
-                               </div>
-                            </div>
-                        </Link>
+                        <span className="description" id="description-success">Transakcija uspješno provedena</span>
+                        <LinkWrapper to={"/userUlaznice"}>
+                            <Button icon={<FaTicketAlt />}
+                                style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
+                                Moje ulazice
+                            </Button>
+                        </LinkWrapper>
+                        <LinkWrapper to={"/"}>
+                            <Button icon={<FaHome />}
+                                style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
+                                Početna stranica
+                            </Button>
+                        </LinkWrapper>
                     </div>
             }
         </div>
