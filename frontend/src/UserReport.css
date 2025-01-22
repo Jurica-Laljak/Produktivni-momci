@@ -12,6 +12,7 @@
 }
 
 .btn-delete {
+    margin: 0 !important;
     background: none;
     border: none;
     color: red;
@@ -41,6 +42,7 @@
 }
 
 .btn-grant-admin {
+    margin: 0 !important;
     background: none;
     border: none;
     color: #FFB700;

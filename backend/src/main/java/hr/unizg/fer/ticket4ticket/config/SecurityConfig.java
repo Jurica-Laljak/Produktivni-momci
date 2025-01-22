@@ -5,6 +5,7 @@ import hr.unizg.fer.ticket4ticket.security.filtter.JwtAuthenticationFilter;
 import hr.unizg.fer.ticket4ticket.security.handler.CustomAccessDeniedHandler;
 import hr.unizg.fer.ticket4ticket.security.handler.OAuth2LoginSuccessHandler;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
+import hr.unizg.fer.ticket4ticket.service.AdministratorService;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.RoleService;
 import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
@@ -37,6 +38,7 @@ public class SecurityConfig {
     private final JwtTokenServiceImpl jwtTokenService;
     private final KorisnikService korisnikService;
     private final RoleService roleService;
+    private final AdministratorService administratorService;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -70,7 +72,7 @@ public class SecurityConfig {
                         .redirectionEndpoint(redirect ->
                                 redirect
                                         .baseUri("/login/oauth2/code/google"))
-                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenService, korisnikService, roleService, httpCookieOAuth2AutherizationRequestRepository))
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenService, korisnikService, roleService, administratorService, httpCookieOAuth2AutherizationRequestRepository))
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler))

@@ -34,6 +34,12 @@ export default function Ulaznice() {
     }
   };
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      handleAddTicket();
+    }
+  }
+
   useEffect(() => {
       getUlaznice();
   },[]);   
@@ -66,6 +72,7 @@ export default function Ulaznice() {
                 placeholder="Unesi šifru ulaznice"
                 value={ticketCode}
                 onChange={(e) => setTicketCode(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <button onClick={handleAddTicket}>Dodaj</button>
             </div>

@@ -69,6 +69,10 @@ function App() {
   //dohvacanje svih zanrova
   useEffect(() => {
 
+    if(localStorage.getItem("zanrovi")) {
+      setZanrovi(JSON.parse(localStorage.getItem("zanrovi")));
+      return;
+    }
 
     axios.get(`api/zanrovi`)
       .then(res => {
@@ -77,7 +81,10 @@ function App() {
           map[zanr.idZanra] = zanr.imeZanra;
           return map;
         }, {}))
-
+        localStorage.setItem("zanrovi", JSON.stringify(res.data.reduce((map, zanr) => {
+          map[zanr.idZanra] = zanr.imeZanra;
+          return map;
+        }, {})));
 
       }).finally(console.log(zanrovi))
       .catch(err => console.log(err))

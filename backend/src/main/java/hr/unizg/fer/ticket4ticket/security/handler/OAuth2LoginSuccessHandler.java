@@ -2,6 +2,7 @@ package hr.unizg.fer.ticket4ticket.security.handler;
 
 import hr.unizg.fer.ticket4ticket.dto.KorisnikDto;
 import hr.unizg.fer.ticket4ticket.security.oauth2.HttpCookieOAuth2AutherizationRequestRepository;
+import hr.unizg.fer.ticket4ticket.service.AdministratorService;
 import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.RoleService;
 import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
@@ -20,10 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @AllArgsConstructor
@@ -35,6 +33,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private final KorisnikService korisnikService;
     private final RoleService roleService;
+    private final AdministratorService administratorService;
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
 
     @Override
@@ -53,6 +52,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
         else  {
             roles.add("ROLE_USER");
+            if (administratorService.getAdministratorByEmail(user.getAttribute("email")) != null) {
+                roles.add("ROLE_ADMIN");
+            }
         }
 
         String token = jwtTokenService.createToken(googleId, roles);
@@ -93,6 +95,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             return "/";
         }
 
+        Set<Long> roleIds = new HashSet<>(Set.of(roleService.getRoleByName("ROLE_USER").getIdRole()));
+        if(administratorService.getAdministratorByEmail(user.getAttribute("email")) != null)
+            roleIds.add(roleService.getRoleByName("ROLE_ADMIN").getIdRole());
+
         // User does not exist, populate KorisnikDto with user information
         KorisnikDto noviKorisnik = KorisnikDto.builder()
                 .imeKorisnika(name)
@@ -100,7 +106,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .emailKorisnika(email)
                 .fotoKorisnika(photo)
                 .googleId(googleId)
-                .roleIds(Set.of(roleService.getRoleByName("ROLE_USER").getIdRole()))
+                .roleIds(roleIds)
                 .prikazujObavijesti(true)
                 .build();
 
