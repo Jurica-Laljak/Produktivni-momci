@@ -43,6 +43,10 @@ public class Oglas {
     @OneToMany(mappedBy = "oglas", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Obavijest> obavijesti;
 
+
+    @Column(name = "prodaja", nullable = false)
+    private boolean prodaja = false; // Default value is false
+
     // Enum for status
     public enum Status {
         AKTIVAN,

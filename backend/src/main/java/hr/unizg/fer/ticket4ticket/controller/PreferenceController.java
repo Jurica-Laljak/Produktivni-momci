@@ -126,6 +126,44 @@ public class PreferenceController {
         }
     }
 
+
+
+    @GetMapping("/oglasi/kupi/{id}")
+    @Transactional
+    public ResponseEntity<String> BuyUlaznicaByOglasId(UsernamePasswordAuthenticationToken token, @PathVariable Long id) {
+
+        Long korisnikId = getUserIdFromToken(token); // Get the authenticated user's ID
+
+        // Dohvacanje oglasa
+        OglasInfoDto oglas = oglasService.getOglasById(id);
+
+        // Dohvacanje svih transakcija koje sadrze ulaznicu kao ponudu ili oglas sa statusom CEKA_POTVRDU
+        List<TransakcijaDto> transakcijeOstale = transakcijaService.getTransakcijeWithMatchingUlaznica(oglas.getUlaznicaId(), oglas.getUlaznicaId());
+        System.out.println("Found matching transakcije: " + transakcijeOstale.size());
+
+        for (TransakcijaDto transakcijaDto : transakcijeOstale) {
+            //Brisanje obavijesti vezanih uz te transakcije
+            System.out.println("Deleting obavijest for transakcijaId: " + transakcijaDto.getIdTransakcije());
+            obavijestService.getAndDeleteObavijestiByTransakcijaId(transakcijaDto.getIdTransakcije());
+        }
+
+        // Brisanje transakcija s ulaznicama
+        transakcijaService.deleteTransakcijeWithMatchingUlaznica(oglas.getUlaznicaId(), oglas.getUlaznicaId());
+
+        // Prebacivanje kupljene ulaznice na korisnika
+        ulaznicaService.assignUserToUlaznica(oglas.getUlaznicaId(), korisnikId);
+
+        // Brisanje obavijesti vezanih uz oglas
+        obavijestService.getAndDeleteObavijestiByOglasId(id);
+
+        // Brisanje oglasa
+        oglasService.deleteOglasById(id);
+
+
+
+        return ResponseEntity.ok("Ulaznica successfully bought and cleanup completed.");
+    }
+
     @GetMapping("/oglasi/aktivni")
     public ResponseEntity<List<OglasDto>> getActiveOglasiByUserPreferences(UsernamePasswordAuthenticationToken token) {
         try {
@@ -136,6 +174,8 @@ public class PreferenceController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
     @GetMapping("/transakcije/poslane-ponude")
     public ResponseEntity<List<TransakcijaDto>> getReceivedTransakcijeByUserPreferences(UsernamePasswordAuthenticationToken token) {

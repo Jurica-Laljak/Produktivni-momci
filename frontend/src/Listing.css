@@ -6,6 +6,7 @@ body {
   overflow-x: hidden;
 }
 
+
 /* Card styles */
 .custom-card {
   display: flex;
@@ -165,6 +166,10 @@ body {
   display: flex;
   justify-content: center; 
   align-items: center; 
+}
+
+.close-details:hover{
+  background-color: #425DFF;
 }
 
 .title {
@@ -421,4 +426,8 @@ body {
   align-items: center;
   
   color: #425DFF;
+}
+
+.izvodaci-wrapper{
+  background-color: #C6CDF1;
 }
