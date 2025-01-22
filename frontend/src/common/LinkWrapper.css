@@ -1,5 +1,5 @@
 .link {
-    text-decoration: none;
+    all: unset;
     width: 100%;
 }
 

@@ -14,7 +14,7 @@ function AddOglasModal() {
   const [selectedUlaznica, setSelectedUlaznica] = useState(null);
   const [jeProdaja, setJeProdaja] = useState(false)
   const [buttonStyle, setButtonStyle] = useState(["#ffb700", null, "3px solid #ffb700"])
-  const [buttonHover, setButtonHover] = useState(["white", "##ffb700"])
+  const [buttonHover, setButtonHover] = useState(["white", "#ffb700"])
 
   // Dohvati ulaznice na mountu
   useEffect(() => {
@@ -24,8 +24,12 @@ function AddOglasModal() {
         const response = await axiosPrivate.get("preference/korisnici/ulaznice/without-oglas");
         setUlaznice(response.data);
         console.log("Ulaznice korisnika:", response.data);
+        if (response.data.length > 0) {
+          setSelectedUlaznica(response.data[0])
+        }
         setLoading(false)
       } catch (error) {
+        setLoading(false)
         console.error("Greška prilikom dohvaćanja ulaznica:", error);
       }
     };
@@ -43,16 +47,20 @@ function AddOglasModal() {
     const id = Number(localStorage.getItem("ID"));
     const reqBody = {
       "ulaznicaId": selectedUlaznica.idUlaznice,
+      "prodaja": jeProdaja
     };
 
     console.log("Request Body:", reqBody);
 
     try {
+      setLoading(true)
       const response = await axiosPrivate.post("preference/oglasi/kreiraj", reqBody);
-      // console.log("Oglas uspješno kreiran:", response.data);
+      console.log("Oglas uspješno kreiran:", response.data);
+      setLoading(false)
       alert(`Oglas je uspješno kreiran za ulaznicu: ${selectedUlaznica.sifraUlaznice}`);
       closeModal(); // Zatvaranje modala nakon kreiranja oglasa
     } catch (error) {
+      setLoading(false)
       console.error("Greška prilikom kreiranja oglasa:", error);
       alert("Došlo je do greške prilikom kreiranja oglasa.");
     }
@@ -62,13 +70,13 @@ function AddOglasModal() {
     setJeProdaja(!jeProdaja)
     if (!jeProdaja) {
       setButtonStyle(["#425dff", null, "3px solid #425dff"])
-      setButtonHover(["white", "##425dff"])
+      setButtonHover(["white", "#425dff"])
     } else {
       setButtonStyle(["#ffb700", null, "3px solid #ffb700"])
       setButtonHover(["white", "#ffb700"])
     }
   }
-  
+
   return (
     <div className="modal">
       {
@@ -88,18 +96,22 @@ function AddOglasModal() {
               ulaznice == 0 ?
                 <div>
                   <h1>Nemate dostupnih ulaznica</h1>
-                  <LinkWrapper to={"/userUlaznice"} onClick={closeModal} state={{ sentFrom: "addListing" }}>
-                    <Button icon={<FaTicketAlt />}
-                      style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
-                      Dodaj ulaznicu
-                    </Button>
-                  </LinkWrapper>
-                  <LinkWrapper to={"/"} onClick={closeModal}>
-                    <Button icon={<FaHome></FaHome>}
-                      style={["black", null]} hover={["white", "black"]}>
-                      Početna stranica
-                    </Button>
-                  </LinkWrapper>
+                  <div className="form-wrapper">
+                    <div className="button-wrapper-2">
+                      <LinkWrapper to={"/userUlaznice"} onClick={closeModal} state={{ sentFrom: "addListing" }}>
+                        <Button icon={<FaTicketAlt />}
+                          style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
+                          Dodaj ulaznicu
+                        </Button>
+                      </LinkWrapper>
+                      <LinkWrapper to={"/"} onClick={closeModal}>
+                        <Button icon={<FaHome></FaHome>}
+                          style={["black", null]} hover={["white", "black"]}>
+                          Početna stranica
+                        </Button>
+                      </LinkWrapper>
+                    </div>
+                  </div>
                 </div>
                 :
                 <>
@@ -111,9 +123,7 @@ function AddOglasModal() {
                         <select
                           id="ulaznica"
                           value={selectedUlaznica ? JSON.stringify(selectedUlaznica) : ""}
-                          onChange={(e) => setSelectedUlaznica(JSON.parse(e.target.value))}
-                        >
-                          {/* <option value="">-- Odaberite ulaznicu --</option> */}
+                          onChange={(e) => setSelectedUlaznica(JSON.parse(e.target.value))}>
                           {ulaznice.map((ulaznica) => (
                             <option key={ulaznica.sifraUlaznice} value={JSON.stringify(ulaznica)}>
                               {ulaznica.sifraUlaznice}
@@ -135,7 +145,8 @@ function AddOglasModal() {
                           style={["red", null, "3px solid red"]} hover={["white", "red"]}>
                           Odustani
                         </Button>
-                        <Button style={buttonStyle} hover={buttonHover}>
+                        <Button onClick={handleSubmit}
+                          style={buttonStyle} hover={buttonHover}>
                           Kreiraj oglas
                         </Button>
                       </div>

@@ -139,6 +139,14 @@
     justify-content: space-evenly;
     align-items: center;
   }
+
+  .button-wrapper-2 {
+    grid-column: 1 / span 2;
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    align-items: center;
+  }
   
   
 /*   .modal-content h2 {
