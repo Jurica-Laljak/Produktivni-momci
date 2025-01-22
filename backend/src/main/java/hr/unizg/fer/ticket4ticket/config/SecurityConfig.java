@@ -10,6 +10,7 @@ import hr.unizg.fer.ticket4ticket.service.KorisnikService;
 import hr.unizg.fer.ticket4ticket.service.RoleService;
 import hr.unizg.fer.ticket4ticket.service.impl.JwtTokenServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,10 +23,16 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.function.Consumer;
 
 @Configuration
 @EnableWebSecurity
@@ -42,6 +49,9 @@ public class SecurityConfig {
     private final HttpCookieOAuth2AutherizationRequestRepository httpCookieOAuth2AutherizationRequestRepository;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -68,6 +78,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authEndpoint ->
                                 authEndpoint
+                                        .authorizationRequestResolver(authorizationRequestResolver(this.clientRegistrationRepository))
                                         .authorizationRequestRepository(httpCookieOAuth2AutherizationRequestRepository))
                         .redirectionEndpoint(redirect ->
                                 redirect
@@ -98,4 +109,22 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    private OAuth2AuthorizationRequestResolver authorizationRequestResolver(
+            ClientRegistrationRepository clientRegistrationRepository) {
+
+        DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver =
+                new DefaultOAuth2AuthorizationRequestResolver(
+                        clientRegistrationRepository, "/oauth2/authorization");
+        authorizationRequestResolver.setAuthorizationRequestCustomizer(
+                authorizationRequestCustomizer());
+
+        return  authorizationRequestResolver;
+    }
+
+    private Consumer<OAuth2AuthorizationRequest.Builder> authorizationRequestCustomizer() {
+        return customizer -> customizer
+                .additionalParameters(params -> params.put("prompt", "select_account"));
+    }
+
 }

@@ -14,8 +14,7 @@ VALUES
     (2, 'ROLE_ADMIN');
 
 INSERT INTO public.administrator(id_admin, email_admin)
-VALUES (1, 'ticket4ticket4@gmail.com'),
-       (2, 'macekandrija@gmail.com');
+VALUES (1, 'ticket4ticket4@gmail.com');
 
 INSERT INTO zanr (id_zanra, ime_zanra, slika_zanra) VALUES
                                                         (1, 'POP', 'https://example.com/pop_image.jpg'),
