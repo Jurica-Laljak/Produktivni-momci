@@ -4,6 +4,7 @@ import Listing from './Listing'
 import './ListingList.css'
 import ScaleLoader from "react-spinners/ScaleLoader";
 import axios from 'axios';
+import axiosPrivate from './api/axiosPrivate';
 
 export default function SearchResultsList({ search, userData }) {
 

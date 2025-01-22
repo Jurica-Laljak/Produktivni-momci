@@ -154,8 +154,9 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
               {localStorage.getItem("token") &&
                 <div className="button-flex">
                   <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
-                    backgroundColor: availableTickets > 0 ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
-                    color: availableTickets > 0 ? 'black' : ''
+                    backgroundColor: availableTickets ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                    color: availableTickets ? 'black' : '',
+                    pointerEvents: availableTickets ? '' : 'none'
                   }}
                   >
 
@@ -164,7 +165,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                   <span className="button-description">
                     {availableTickets === null
                       ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
-                      : availableTickets > 0
+                      : availableTickets
                         ? `Imate ${availableTickets} slobodnih ulaznica za razmjenu.`
                         : "Nemate dostupne ulaznice za razmjenu."}
 
