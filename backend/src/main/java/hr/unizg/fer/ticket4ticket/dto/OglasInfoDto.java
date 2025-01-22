@@ -21,6 +21,7 @@ public class OglasInfoDto {
     private String status;
     private Long korisnikId;
     private Long ulaznicaId;
+    private boolean prodaja;
 
     // Fields from UlaznicaDto
     private LocalDate datumKoncerta;

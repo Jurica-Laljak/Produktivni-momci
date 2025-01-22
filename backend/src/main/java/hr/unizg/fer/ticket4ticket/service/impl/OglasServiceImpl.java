@@ -82,6 +82,7 @@ public class OglasServiceImpl implements OglasService {
 
         // Map to OglasInfoDto
         OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                .prodaja(oglas.isProdaja())
                 .idOglasa(oglas.getIdOglasa())
                 .status(oglas.getStatus().name())
                 .korisnikId(oglas.getKorisnik() != null ? oglas.getKorisnik().getIdKorisnika() : null)
@@ -126,6 +127,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -172,6 +174,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -218,6 +221,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -263,6 +267,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -327,6 +332,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     OglasInfoDto oglasInfoDto = OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -377,6 +383,7 @@ public class OglasServiceImpl implements OglasService {
                     }
 
                     return OglasInfoDto.builder()
+                            .prodaja(oglas.isProdaja())
                             .idOglasa(oglas.getIdOglasa())
                             .status(oglas.getStatus().name())
                             .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)
@@ -430,6 +437,7 @@ public class OglasServiceImpl implements OglasService {
                         }
 
                         return OglasInfoDto.builder()
+                                .prodaja(oglas.isProdaja())
                                 .idOglasa(oglas.getIdOglasa())
                                 .status(oglas.getStatus().name())
                                 .korisnikId(korisnikDto != null ? korisnikDto.getIdKorisnika() : null)

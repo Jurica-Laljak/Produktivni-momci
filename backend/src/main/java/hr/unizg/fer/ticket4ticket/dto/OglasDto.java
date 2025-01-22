@@ -14,5 +14,6 @@ public class OglasDto {
     private String status;
     private Long korisnikId;
     private Long ulaznicaId;
+    private boolean prodaja;
     private Set<Long> transakcijeIds; // Set of transaction IDs
 }
