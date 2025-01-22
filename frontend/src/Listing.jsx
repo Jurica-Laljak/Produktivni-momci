@@ -6,7 +6,7 @@ import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ticketMap } from '../data/ticketMap'
 import axiosPrivate from './api/axiosPrivate';
 import { Context } from "./App"
-import Izvodac from './Izvodac';
+import Izvodac from './Izvodac'
 
 export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -138,39 +138,54 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                 />
               </div>
 
-                <div className="details-right">
-                  <span className="izvodaci-header">Izvođači</span>
-                  {izvodaci.map((izvodac) => (
-                    <div className="izvodaci-wrapper">
-                      <Izvodac izvodac={izvodac} />
-                      <Izvodac izvodac={izvodac} />
-                      <Izvodac izvodac={izvodac} />
-                      <Izvodac izvodac={izvodac} />
-                      <Izvodac izvodac={izvodac} />
-                      <Izvodac izvodac={izvodac} />
-                    </div>
-                  ))}
-                </div>
+              <div className="details-right">
+                <span className="izvodaci-header">Izvođači</span>
+                {izvodaci.map((izvodac) => (
+                  <div className="izvodaci-wrapper">
+                      <Izvodac key={izvodac["imeIzvodaca"]} izvodac={izvodac} />
+                  </div>
+                ))}
+              </div>
 
               {localStorage.getItem("token") &&
                 <div className="button-flex">
-                  <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
-                    backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
-                    color: availableTickets.length ? 'black' : '',
-                    pointerEvents: availableTickets.length ? '' : 'none'
-                  }}
-                  >
+                  <div className="button-container">
+                    <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
+                      backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                      color: availableTickets.length ? 'black' : '',
+                      pointerEvents: availableTickets.length ? '' : 'none'
+                    }}
+                    >
 
-                    Razmijeni ulaznice
-                  </button>
-                  <span className="button-description">
-                    {availableTickets === null
-                      ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
-                      : availableTickets.length
-                        ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
-                        : "Nemate dostupne ulaznice za razmjenu."}
+                      Razmijeni ulaznice
+                    </button>
+                    <span className="button-description">
+                      {availableTickets === null
+                        ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
+                        : availableTickets.length
+                          ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
+                          : "Nemate dostupne ulaznice za razmjenu."}
+                    </span>
+                  </div>
+                  <div className="button-container">
+                    <button className="button" id="buy-tickets" onClick={() => (console.log("Razmijeni ulaznice"))} 
+                      style={{
+                      backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                      color: availableTickets.length ? 'black' : '',
+                      pointerEvents: availableTickets.length ? '' : 'none'
+                    }}
+                    >
+                      Kupi ulaznicu
+                    </button>
+                    {/* <span className="button-description">
+                      {availableTickets === null
+                        ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
+                        : availableTickets.length
+                          ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
+                          : "Nemate dostupne ulaznice za razmjenu."}
+                    </span> */}
+                  </div>
 
-                  </span>
                 </div>}
 
 

@@ -16,7 +16,7 @@ export default function ListingList() {
   const [availableTickets, setAvailableTickets] = useState([]);
   const [transakcije, setTransakcije] = useState([]);
   const { closeRazmijeniModal } = useContext(Context)
-  
+
 
   useEffect(() => {
     // Provjera tokena i pohrana u localStorage
@@ -37,7 +37,7 @@ export default function ListingList() {
 
         let listingsData = [];
 
-        if(localStorage.getItem("token")) {
+        if (localStorage.getItem("token")) {
           const response = await axiosPrivate.get('preference/oglasi');
           listingsData = response.data;
         }
@@ -80,25 +80,25 @@ export default function ListingList() {
       }
     };
 
-    if(localStorage.getItem("token"))
+    if (localStorage.getItem("token"))
       fetchUserTickets();
   }, [closeRazmijeniModal]);
 
   useEffect(() => {
-    
-    if(!loading) {
-      const elementId = location.hash.replace('#', ''); // Uzimamo ID iz hash-a
-    const element = document.getElementById(elementId);
-    console.log("element")
-    console.log(elementId)
-    console.log(element)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' }); // Pomakni na element
-      setSelectedListing(elementId);
 
+    if (!loading) {
+      const elementId = location.hash.replace('#', ''); // Uzimamo ID iz hash-a
+      const element = document.getElementById(elementId);
+      console.log("element")
+      console.log(elementId)
+      console.log(element)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' }); // Pomakni na element
+        setSelectedListing(elementId);
+
+      }
     }
-    }
-    
+
   }, [loading])
 
   const deleteStariOglas = async (oglas) => {
@@ -110,32 +110,32 @@ export default function ListingList() {
   };
 
   return (
-    <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center"}}>
+    <div style={{ display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center" }}>
       {loading ?
         <ScaleLoader
-        height={100}
-        radius={15}
-        width={10}
-        margin={4}
-        color='#425DFF'
+          height={100}
+          radius={15}
+          width={10}
+          margin={4}
+          color='#425DFF'
         />
-      : <div className="listingContainer">
-         
+        : <div className="listingContainer">
+
           {listings.map((listing) => (
             <div
-            key={listing.idOglasa}
-            id={`oglas-${listing.idOglasa}`}
-           className={`listing-item ${selectedListing == listing.idOglasa ? 'selected' : ''}`}
-
-            
-          >
-            <Listing
               key={listing.idOglasa}
-              ulaznica={listing}
-              izvodaci={listing.izvodaci}
-              idOglasa={listing.idOglasa}
-              availableTickets={availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0)}
-            />
+              id={`oglas-${listing.idOglasa}`}
+              className={`listing-item ${selectedListing == listing.idOglasa ? 'selected' : ''}`}
+
+
+            >
+              <Listing
+                key={listing.idOglasa}
+                ulaznica={listing}
+                izvodaci={listing.izvodaci}
+                idOglasa={listing.idOglasa}
+                availableTickets={availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0)}
+              />
             </div>
           ))}
         </div>
