@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Listing.css';
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import { FaHeart, FaRegHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { ticketMap } from '../data/ticketMap'
 import axiosPrivate from './api/axiosPrivate';
 import { Context } from "./App"
@@ -142,7 +143,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                 <span className="izvodaci-header">Izvođači</span>
                 {izvodaci.map((izvodac) => (
                   <div className="izvodaci-wrapper">
-                      <Izvodac key={izvodac["imeIzvodaca"]} izvodac={izvodac} />
+                    <Izvodac key={izvodac["imeIzvodaca"]} izvodac={izvodac} />
                   </div>
                 ))}
               </div>
@@ -156,8 +157,8 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                       pointerEvents: availableTickets.length ? '' : 'none'
                     }}
                     >
-
-                      Razmijeni ulaznice
+                      <span>Zamjeni</span>
+                      <span>Ulaznicu</span>
                     </button>
                     <span className="button-description">
                       {availableTickets === null
@@ -168,22 +169,23 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                     </span>
                   </div>
                   <div className="button-container">
-                    <button className="button" id="buy-tickets" onClick={() => (console.log("Razmijeni ulaznice"))} 
-                      style={{
-                      backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
-                      color: availableTickets.length ? 'black' : '',
-                      pointerEvents: availableTickets.length ? '' : 'none'
-                    }}
-                    >
-                      Kupi ulaznicu
-                    </button>
-                    {/* <span className="button-description">
-                      {availableTickets === null
-                        ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
-                        : availableTickets.length
-                          ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
-                          : "Nemate dostupne ulaznice za razmjenu."}
-                    </span> */}
+                    <Link to="/transaction" className="link" state={{ sentFrom: "listing" }}>
+                      <div className="link-flex">
+                        <button className="button" id="buy-tickets"
+                          style={{
+                            backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
+                            color: availableTickets.length ? 'black' : '',
+                            pointerEvents: availableTickets.length ? '' : 'none'
+                          }}
+                        >
+                          <span>Kupi</span>
+                          <span>Ulaznicu</span>
+                        </button>
+                      </div>
+                    </Link>
+                    <span className="button-description">
+                      Transakcija će se nastaviti u skočnom prozoru
+                    </span>
                   </div>
 
                 </div>}

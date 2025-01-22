@@ -8,7 +8,6 @@ import { preloadImage } from './utilities/preloadImage'
 export default function Izvodac({ izvodac }) {
     const [zanr, setZanr] = useState("")
     const [loading, setLoading] = useState(false)
-    console.log("Izvodac:", izvodac)
     useEffect(() => {
         const fetchGenreById = async () => {
             console.log("Zanrid:", izvodac["zanrId"].toString())

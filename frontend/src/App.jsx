@@ -21,6 +21,8 @@ import axiosPrivate from "./api/axiosPrivate";
 import Admin from './Admin';
 import Listing from "./Listing";
 import ExchangeModal from './ExchangeModal';
+import Popup from './Popup';
+import TransactionProtectedRoute from './auth/TransactionProtection';
 
 export const Context = createContext()
 
@@ -39,6 +41,7 @@ function App() {
   const [ulaznice, setUlaznice] = useState([]); // Drži podatke o ulaznicama
   const [izvodaci, setIzvodaci] = useState([]);
   const [isRazmijeniModalOpen, setIsRazmijeniModalOpen] = useState(false);
+  const [transactionPending, setTransactionPending] = useState(false) //true if transaction is pending
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -64,12 +67,12 @@ function App() {
     setIsRazmijeniModalOpen(false);
     setRazmijeniModalData(null);
   };
-  
+
 
   //dohvacanje svih zanrova
   useEffect(() => {
 
-    if(localStorage.getItem("zanrovi")) {
+    if (localStorage.getItem("zanrovi")) {
       setZanrovi(JSON.parse(localStorage.getItem("zanrovi")));
       return;
     }
@@ -90,9 +93,14 @@ function App() {
       .catch(err => console.log(err))
   }, [])
 
- return (
- 
-  <Context.Provider value={{userName,setUserName,isModalOpen,openModal,closeModal,isRazmijeniModalOpen,openRazmijeniModal,closeRazmijeniModal,razmijeniModalData}}>
+  return (
+
+    <Context.Provider value={{
+      userName, setUserName, isModalOpen,
+      openModal, closeModal, isRazmijeniModalOpen,
+      openRazmijeniModal, closeRazmijeniModal,
+      razmijeniModalData, transactionPending, setTransactionPending
+    }}>
 
       <div className='app-container'>
         {/*navbar se prikazuje samo na odredenim putanjama*/}
@@ -136,9 +144,17 @@ function App() {
             }></Route>
             <Route path='/admin' element={
               <ProtectedComponent>
-                <Admin userData={userData}/>
+                <Admin userData={userData} />
               </ProtectedComponent>
             }></Route>
+
+            {/* transaction pending protected */}
+            <Route path='/transaction' element={
+                <TransactionProtectedRoute>
+                  <Popup></Popup>
+                </TransactionProtectedRoute>
+            }>
+            </Route>
 
           </Routes>
         </div>
