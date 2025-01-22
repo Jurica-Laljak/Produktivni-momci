@@ -7,7 +7,6 @@ export default function Ulaznica({ datumKoncerta, lokacijaKoncerta, odabranaZona
         <div className="ticket-container">
           <div className="ticket">
             <div className="qr-code">
-              
               <QRCode value={urlInfo} size={128} />
             </div>
             <div className="ticket-info">

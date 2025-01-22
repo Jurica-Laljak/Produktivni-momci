@@ -12,6 +12,9 @@ function AddOglasModal() {
   const [loading, setLoading] = useState(false)
   const [ulaznice, setUlaznice] = useState([]);
   const [selectedUlaznica, setSelectedUlaznica] = useState(null);
+  const [jeProdaja, setJeProdaja] = useState(false)
+  const [buttonStyle, setButtonStyle] = useState(["#ffb700", null, "3px solid #ffb700"])
+  const [buttonHover, setButtonHover] = useState(["white", "##ffb700"])
 
   // Dohvati ulaznice na mountu
   useEffect(() => {
@@ -55,6 +58,17 @@ function AddOglasModal() {
     }
   };
 
+  function handleSetProdaja() {
+    setJeProdaja(!jeProdaja)
+    if (!jeProdaja) {
+      setButtonStyle(["#425dff", null, "3px solid #425dff"])
+      setButtonHover(["white", "##425dff"])
+    } else {
+      setButtonStyle(["#ffb700", null, "3px solid #ffb700"])
+      setButtonHover(["white", "#ffb700"])
+    }
+  }
+  
   return (
     <div className="modal">
       {
@@ -73,7 +87,7 @@ function AddOglasModal() {
             {
               ulaznice == 0 ?
                 <div>
-                  <h2>Nemate dostupnih ulaznica</h2>
+                  <h1>Nemate dostupnih ulaznica</h1>
                   <LinkWrapper to={"/userUlaznice"} onClick={closeModal} state={{ sentFrom: "addListing" }}>
                     <Button icon={<FaTicketAlt />}
                       style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
@@ -89,37 +103,44 @@ function AddOglasModal() {
                 </div>
                 :
                 <>
-                  <h2>Kreiraj oglas</h2>
-                  <form>
-                    {/* Dropdown za odabir ulaznice */}
-                    <label htmlFor="ulaznica">Odaberite ulaznicu:</label>
-                    <select
-                      id="ulaznica"
-                      value={selectedUlaznica ? JSON.stringify(selectedUlaznica) : ""}
-                      onChange={(e) => setSelectedUlaznica(JSON.parse(e.target.value))}
-                    >
-                      <option value="">-- Odaberite ulaznicu --</option>
-                      {ulaznice.map((ulaznica) => (
-                        <option key={ulaznica.sifraUlaznice} value={JSON.stringify(ulaznica)}>
-                          {ulaznica.sifraUlaznice}
-                        </option>
-                      ))}
-                    </select>
-
-                    {/* Gumb za kreiranje oglasa */}
-                    <button
-                      type="button"
-                      onClick={handleSubmit}
-                      className="btn btn-create-ad"
-                    >
-                      Kreiraj oglas
-                    </button>
-
-                    {/* Gumb za zatvaranje modala */}
-                    <button type="button" className="modal-close-btn" onClick={closeModal}>
-                      Zatvori
-                    </button>
-                  </form>
+                  <div>
+                    <h1>Kreirajte oglas</h1>
+                    <div className="form-wrapper">
+                      <div className="option-wrapper"><span>Ulaznica:</span></div>
+                      <div className="select-wrapper">
+                        <select
+                          id="ulaznica"
+                          value={selectedUlaznica ? JSON.stringify(selectedUlaznica) : ""}
+                          onChange={(e) => setSelectedUlaznica(JSON.parse(e.target.value))}
+                        >
+                          {/* <option value="">-- Odaberite ulaznicu --</option> */}
+                          {ulaznice.map((ulaznica) => (
+                            <option key={ulaznica.sifraUlaznice} value={JSON.stringify(ulaznica)}>
+                              {ulaznica.sifraUlaznice}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="option-wrapper"><span>Tip oglasa:</span></div>
+                      <div className="type-wrapper">
+                        <span className={!jeProdaja ? "zamjena option" : "option"}>Zamjena</span>
+                        <label className="switch">
+                          <input type="checkbox" value={jeProdaja} onChange={(e) => (handleSetProdaja())}></input>
+                          <span className="slider"></span>
+                        </label>
+                        <span className={jeProdaja ? "prodaja option" : "option"}>Prodaja</span>
+                      </div>
+                      <div className="button-wrapper">
+                        <Button onClick={closeModal}
+                          style={["red", null, "3px solid red"]} hover={["white", "red"]}>
+                          Odustani
+                        </Button>
+                        <Button style={buttonStyle} hover={buttonHover}>
+                          Kreiraj oglas
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </>
             }
 

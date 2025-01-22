@@ -39,7 +39,7 @@ export default function Popup() {
                         </LinkWrapper>
                         <LinkWrapper to={"/"}>
                             <Button icon={<FaHome />}
-                                style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>
+                                style={["black", null]} hover={["white", "black"]}>
                                 Početna stranica
                             </Button>
                         </LinkWrapper>
