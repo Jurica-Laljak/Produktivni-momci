@@ -129,19 +129,30 @@ export default function Obavijesti() {
         }
     };
 
-    const handleOdvediMe = (oglasId) => {
-        //console.log("id oglasa:  ")
-        //console.log(oglasId)
-        navigate(`/#${oglasId}`)
+    const handleOdvediMe = (obavijest) => {
+
+        switch (obavijest.obavijestType) {
+            case "PRIHVATIO":
+                navigate(`/userOglasi#${obavijest.transakcijaIdObavijest}`);
+                return;
+            case "PONUDIO":
+                navigate(`/userOglasi#${obavijest.oglasIdObavijest}`);
+                return;
+            case "OGLAS":
+                navigate(`/#${obavijest.oglasIdObavijest}`);
+                return;
+        }
     }
 
     useEffect(() => {
         const getObavijesti = async () => {
             try {
                 const response = await axiosPrivate.get("preference/obavijesti");
+                const transakcije = await axiosPrivate.get("preference/transakcije/za-potvrditi");
                 console.log("DATAAA:")
                 console.log(response.data)
-                setObavijesti(response.data);
+                const obs = response.data.filter(ob => ob.obavijestType == "PONUDIO").map(ob => {ob.oglasIdObavijest = transakcije.data?.find(tr => tr.idTransakcije == ob.transakcijaIdObavijest).idOglas; return ob;})
+                setObavijesti([...obs, ...response.data.filter(obavijest => obavijest.obavijestType != "PONUDIO")]);
                 setLoading(false);
             } catch (err) {
                 console.log("Greška prilikom dohvata obavijesti", err);
@@ -168,6 +179,21 @@ export default function Obavijesti() {
         }
     };
 
+    const getOdvediMe = (obavijest) => {
+        switch (obavijest.obavijestType) {
+            case "PRIHVATIO":
+                return obavijest.transakcijaIdObavijest;
+            case "ODBIO":
+                return null;
+            case "PONUDIO":
+                return obavijest.oglasIdObavijest;
+            case "OGLAS":
+                return obavijest.oglasIdObavijest;
+            default:
+                return null;
+        }
+    }
+
     return (
         <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: "center", alignItems: "center"}}>
         {loading ?
@@ -186,15 +212,17 @@ export default function Obavijesti() {
                         <button className="obrisi" onClick={() => obrisiObavijest(obavijest.idObavijesti)}>
                             <FaTrashAlt /> Obriši
                         </button>
-                        <button
+
+                        {getOdvediMe(obavijest) &&
+                            <button
                             className="odvedi"
                             onClick={() => {
-                                handleOdvediMe(obavijest.oglasIdObavijest)
+                                handleOdvediMe(obavijest)
                                     //console.log(obavijest.oglasIdObavijest)
                             }}
                         >
                             <FaArrowRight /> Odvedi me
-                        </button>
+                        </button>}
                     </div>
                 </div>
             ))}

@@ -10,17 +10,7 @@ function ExchangeModal() {
   
     // Dohvati ulaznice na mountu
     useEffect(() => {
-      const fetchUlaznice = async () => {
-        try {
-          const response = await axiosPrivate.get("preference/korisnici/ulaznice");
-          setUlaznice(response.data);
-          console.log("Ulaznice korisnika:", response.data);
-        } catch (error) {
-          console.error("Greška prilikom dohvaćanja ulaznica:", error);
-        }
-      };
-  
-      fetchUlaznice();
+      setUlaznice(razmijeniModalData.ulaznice);
     }, []);
   
     // Funkcija za podnošenje transakcije

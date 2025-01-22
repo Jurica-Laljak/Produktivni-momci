@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Listing from './Listing';
 import './ListingList.css';
@@ -6,13 +6,17 @@ import axiosPrivate from './api/axiosPrivate';
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { remainingDaysToEvent } from './utilities/remainingDaysToEvent'
 import { useLocation } from 'react-router-dom';
+import { Context } from "./App"
 
 export default function ListingList() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [selectedListing, setSelectedListing] = useState(null);
-  const [availableTickets, setAvailableTickets] = useState(null);
+  const [availableTickets, setAvailableTickets] = useState([]);
+  const [transakcije, setTransakcije] = useState([]);
+  const { closeRazmijeniModal } = useContext(Context)
+  
 
   useEffect(() => {
     // Provjera tokena i pohrana u localStorage
@@ -64,9 +68,12 @@ export default function ListingList() {
         const response = await axiosPrivate.get('preference/korisnici/ulaznice');
         const userTickets = response.data;
 
+        const tran = await axiosPrivate.get('preference/transakcije/poslane-ponude');
+        const tr = tran.data;
+
         // Broji koliko ulaznica ima trenutni korisnik
-        const freeTickets = userTickets.filter(ticket => !ticket.oglas).length;
-        setAvailableTickets(freeTickets);
+        setAvailableTickets(userTickets);
+        setTransakcije(tr);
       } catch (error) {
         console.error('Greška pri dohvaćanju ulaznica:', error);
         setAvailableTickets(0); // Ako dođe do greške, postavi 0
@@ -75,7 +82,7 @@ export default function ListingList() {
 
     if(localStorage.getItem("token"))
       fetchUserTickets();
-  }, []);
+  }, [closeRazmijeniModal]);
 
   useEffect(() => {
     
@@ -127,7 +134,7 @@ export default function ListingList() {
               ulaznica={listing}
               izvodaci={listing.izvodaci}
               idOglasa={listing.idOglasa}
-              availableTickets={availableTickets}
+              availableTickets={availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0)}
             />
             </div>
           ))}

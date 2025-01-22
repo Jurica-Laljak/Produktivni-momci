@@ -16,15 +16,16 @@ export default function UserOglasi() {
     const [provedeneTransakcije, setProvedeneTransakcije] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const initializeOpenedSections = (transakcije, ponude, ulaznice) => {
+    const initializeOpenedSections = (transakcije, ponude, ulaznice, provedeneTransakcije) => {
         const newSections = {};
         // Otvori sve sekcije
         newSections["zaprimljenePonude"] = true;
         newSections["poslanePonude"] = true;
         newSections["ostaliOglasi"] = true;
+        newSections["provedeneTransakcije"] = true;
 
         // Otvori sve oglase unutar sekcija
-        [...transakcije, ...ponude, ...ulaznice].forEach((item) => {
+        [...transakcije, ...ponude, ...ulaznice, ...provedeneTransakcije].forEach((item) => {
             newSections[item.idTransakcije || item.idOglasa] = true;
         });
 
@@ -180,7 +181,7 @@ export default function UserOglasi() {
                 fetchPoslanePonude(),
                 fetchOglasi(),
             ]);
-            initializeOpenedSections(transakcije, ponude, ulaznice);
+            initializeOpenedSections(transakcije, ponude, ulaznice, provedeneTransakcije);
     
             // Dohvati provedene transakcije
             await fetchProvedeneTransakcije();
@@ -190,6 +191,19 @@ export default function UserOglasi() {
         fetchData();
     }, []);
     
+    useEffect(() => {
+        
+        if(!loading) {
+            const elementId = location.hash.replace('#', ''); // Uzimamo ID iz hash-a
+            const element = document.getElementById(elementId);
+            console.log("element")
+            console.log(elementId)
+            console.log(element)
+            if (element)
+                element.scrollIntoView({ behavior: 'smooth' }); // Pomakni na element
+        }
+        
+      }, [loading])
 
     const prihvatiPonudu = async (idTransakcije) => {
         try {

@@ -39,7 +39,7 @@ export default function Oglas({
     }
 
     return (
-        <div className={`outer-container ${tipTransakcije === "smece" ? "smece-container" : ""}`}>
+        <div id={oglasId ? oglasId : idTransakcije} className={`outer-container ${tipTransakcije === "smece" ? "smece-container" : ""}`}>
             
             <span className="header-container" onClick={toggleOpen} style={{ cursor: "pointer" }}>
                 <h3>
