@@ -69,11 +69,11 @@ class OglasServiceImplTest {
 
         // Mock preferirane oglase
         List<Oglas> preferiraniOglasi = Arrays.asList(
-                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>())
+                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false)
         );
 
         when(mockKorisnik.getOmiljeniIzvodaci()).thenReturn(new HashSet<>(Collections.singleton(mockIzvodac)));
@@ -95,16 +95,16 @@ class OglasServiceImplTest {
 
         // Mock preferirane oglase
         List<Oglas> preferiraniOglasi = Arrays.asList(
-                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>())
+                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false)
         );
         when(oglasRepository.findOglasiByKorisnikPreference(korisnikId)).thenReturn(preferiraniOglasi);
 
         // Mock dodatne random oglase
         List<Oglas> randomOglasi = Arrays.asList(
-                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()));
+                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false));
         when(oglasRepository.findRandomOglasiExcludingIdsAndKorisnikId(anyList(), eq(3), eq(korisnikId))).thenReturn(randomOglasi);
 
         List<OglasInfoDto> result = oglasService.getOglasiByKorisnikPreference(korisnikId);
@@ -123,11 +123,11 @@ class OglasServiceImplTest {
 
         // Mock random oglase
         List<Oglas> randomOglasi = Arrays.asList(
-                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>()),
-                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>())
+                new Oglas(1L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(2L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(3L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(4L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false),
+                new Oglas(5L, Oglas.Status.AKTIVAN, mockUlaznica, mockKorisnik, new HashSet<>(), new ArrayList<>(), false)
         );
         when(oglasRepository.findRandomOglasiExcludingIdsAndKorisnikId(anyList(), eq(5), eq(korisnikId))).thenReturn(randomOglasi);
 
