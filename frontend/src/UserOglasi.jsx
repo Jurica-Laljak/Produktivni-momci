@@ -49,7 +49,7 @@ export default function UserOglasi() {
                 })
             );
         }, 24 * 60 * 60 * 1000); // Provjera jednom dnevno (svakih 24 sata)
-    
+
         return () => clearInterval(interval); // Očistite interval prilikom unmounta
     }, []);
 
@@ -154,7 +154,7 @@ export default function UserOglasi() {
             const transakcije = await Promise.all(
                 response.data.filter(data => data.statusTransakcije == "PROVEDENA")
                     .map(async (transakcija) => {
-                    const ulaznicaOglas = await axiosPrivate.get(
+                        const ulaznicaOglas = await axiosPrivate.get(
                             `ulaznice/${transakcija.idUlaznicaOglas}`
                         );
                         const ulaznicaPonuda = await axiosPrivate.get(
@@ -165,7 +165,7 @@ export default function UserOglasi() {
                             ulaznicaOglas: ulaznicaOglas.data,
                             ulaznicaPonuda: ulaznicaPonuda.data,
                         };
-                })
+                    })
             );
             setProvedeneTransakcije(transakcije); // Postavi dobivene transakcije u stanje
         } catch (err) {
@@ -182,18 +182,18 @@ export default function UserOglasi() {
                 fetchOglasi(),
             ]);
             initializeOpenedSections(transakcije, ponude, ulaznice, provedeneTransakcije);
-    
+
             // Dohvati provedene transakcije
             await fetchProvedeneTransakcije();
             setLoading(false);
         };
-    
+
         fetchData();
     }, []);
-    
+
     useEffect(() => {
-        
-        if(!loading) {
+
+        if (!loading) {
             const elementId = location.hash.replace('#', ''); // Uzimamo ID iz hash-a
             const element = document.getElementById(elementId);
             console.log("element")
@@ -202,8 +202,8 @@ export default function UserOglasi() {
             if (element)
                 element.scrollIntoView({ behavior: 'smooth' }); // Pomakni na element
         }
-        
-      }, [loading])
+
+    }, [loading])
 
     const prihvatiPonudu = async (idTransakcije) => {
         try {
@@ -263,139 +263,140 @@ export default function UserOglasi() {
 
     // Renderiranje
     return (
-        <div style={{display: loading && "flex", marginTop: loading && "6rem", justifyContent: loading && "center", alignItems: loading && "center"}}>
+        <div style={{ display: loading && "flex", marginTop: loading && "6rem", justifyContent: loading && "center", alignItems: loading && "center" }}>
             {loading ?
                 <ScaleLoader
-                height={100}
-                radius={15}
-                width={10}
-                margin={4}
-                color='#425DFF'
+                    height={100}
+                    radius={15}
+                    width={10}
+                    margin={4}
+                    color='#425DFF'
                 />
-            :
-            <div>
-            <h3>Moji oglasi</h3>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+                :
+                <div>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
 
-            {/* Zaprimljene Ponude */}
-            <section>
-                <h3 onClick={() => toggleSection("zaprimljenePonude")} style={{ color: "#425DFF", cursor: "pointer" }}>
-                    {openedSections["zaprimljenePonude"] ? "▼" : "▶"} Zaprimljene Ponude
-                </h3>
-                {openedSections["zaprimljenePonude"] && (
-                    zaprimljeneTransakcije.length > 0 ? (
-                        zaprimljeneTransakcije.map((transakcija) => (
-                            <div key={transakcija.idTransakcije}>
-                                {openedSections[transakcija.idTransakcije] && (
+                    {/* Ulaznice koje nisu transakcije */}
+                    <section>
+                        <h3 onClick={() => toggleSection("ostaliOglasi")} style={{ color: "#425DFF" }}>
+                            {openedSections["ostaliOglasi"] ? "▼" : "▶"} Moji oglasi {oglasiBezPonuda.length ? "(" + oglasiBezPonuda.length + ")" : null}
+                        </h3>
+                        {openedSections["ostaliOglasi"] && (
+                            oglasiBezPonuda.length > 0 ? (
+                                oglasiBezPonuda.map((oglas) => (
+                                    <div key={oglas.idOglasa}>
+                                        {openedSections[oglas.idOglasa] && (
+                                            <Oglas
+                                                oglasId={oglas.idOglasa}
+                                                danaDo={oglas.ulaznicaOglas.datumKoncerta}
+                                                ulaznica1={oglas.ulaznicaOglas}
+                                                ulaznica2={{ datumKoncerta: "N/A" }}
+                                                naObrisi={() => {
+                                                    obrisiOglas(oglas.idOglasa); // Stara funkcija za trajno brisanje
+                                                }}
+                                                tipTransakcije="ostalo"
+                                            // idNavigateOglasa={oglas.idOglasa} 
+                                            />
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Nemate kreiranih oglasa.</p>
+                            )
+                        )}
+                    </section>
+
+                    {/* Zaprimljene Ponude */}
+                    <section>
+                        <h3 onClick={() => toggleSection("zaprimljenePonude")} style={{ color: "#425DFF" }}>
+                            {openedSections["zaprimljenePonude"] ? "▼" : "▶"} Zaprimljene Ponude {zaprimljeneTransakcije.length ? "(" + zaprimljeneTransakcije.length + ")" : null}
+                        </h3>
+                        {openedSections["zaprimljenePonude"] && (
+                            zaprimljeneTransakcije.length > 0 ? (
+                                zaprimljeneTransakcije.map((transakcija) => (
+                                    <div key={transakcija.idTransakcije}>
+                                        {openedSections[transakcija.idTransakcije] && (
+                                            <Oglas
+                                                oglasId={transakcija.idOglas}
+                                                danaDo={transakcija.ulaznicaOglas.datumKoncerta}
+                                                ulaznica1={transakcija.ulaznicaOglas}
+                                                ulaznica2={transakcija.ulaznicaPonuda}
+                                                statusPonude={transakcija.status}
+                                                naPrihvati={() => prihvatiPonudu(transakcija.idTransakcije)}
+                                                naOdbij={() => odbijPonudu(transakcija.idTransakcije)}
+                                                naObrisi={() => {
+                                                    obrisiOglas(transakcija.idOglas);
+                                                }}
+                                                imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)}
+                                                tipTransakcije="zaPrihvatiti"
+                                                idNavigateOglasa={transakcija.ulaznicaPonuda.oglasiIds} //provjerit
+                                            />
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Nemate zaprimljenih ponuda.</p>
+                            )
+                        )}
+                    </section>
+
+                    {/* Poslane Ponude */}
+                    <section>
+                        <h3 onClick={() => toggleSection("poslanePonude")} style={{ color: "#425DFF"  }}>
+                            {openedSections["poslanePonude"] ? "▼" : "▶"} Moje Ponude {poslanePonude.length ? "(" + poslanePonude.length + ")" : null}
+                        </h3>
+                        {openedSections["poslanePonude"] && (
+                            poslanePonude.length > 0 ? (
+                                poslanePonude.map((transakcija) => (
+                                    <div key={transakcija.idTransakcije}>
+                                        {openedSections[transakcija.idTransakcije] && (
+                                            <Oglas
+                                                idTransakcije={transakcija.idTransakcije}
+                                                danaDo={transakcija.ulaznicaOglas.datumKoncerta}
+                                                ulaznica1={transakcija.ulaznicaPonuda}
+                                                ulaznica2={transakcija.ulaznicaOglas}
+                                                statusPonude={transakcija.status}
+                                                naObrisi={() => {
+                                                    obrisiTransakciju(transakcija.idTransakcije);
+                                                }}
+                                                imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)}
+                                                tipTransakcije="poslanePonude"
+                                                idNavigateOglasa={transakcija.ulaznicaOglas.oglasiIds} //provjerit
+                                            />
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Nemate poslanih ponuda.</p>
+                            )
+                        )}
+                    </section>
+
+
+
+                    <section>
+                        <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614"  }}>
+                            {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Povijest transakcija {provedeneTransakcije.length ? "(" + provedeneTransakcije + ")" : null}
+                        </h3>
+                        {openedSections["provedeneTransakcije"] && (
+                            provedeneTransakcije.length > 0 ? (
+                                provedeneTransakcije.map((transakcija) => (
                                     <Oglas
-                                        oglasId={transakcija.idOglas}
-                                        danaDo={transakcija.ulaznicaOglas.datumKoncerta}
+                                        key={transakcija.idTransakcije}
+                                        idTransakcije={transakcija.idTransakcije}
+                                        danaDo={transakcija.ulaznicaPonuda.datumKoncerta} // Prikaz datuma završetka
                                         ulaznica1={transakcija.ulaznicaOglas}
                                         ulaznica2={transakcija.ulaznicaPonuda}
-                                        statusPonude={transakcija.status}
-                                        naPrihvati={() => prihvatiPonudu(transakcija.idTransakcije)}
-                                        naOdbij={() => odbijPonudu(transakcija.idTransakcije)}
-                                        naObrisi={() => {
-                                            obrisiOglas(transakcija.idOglas);
-                                        }}
-                                        imePonuditelja={transakcija.korisnikPonuda.imeKorisnika.concat(" ", transakcija.korisnikPonuda.prezimeKorisnika)} 
-                                        tipTransakcije="zaPrihvatiti"
-                                        idNavigateOglasa={transakcija.ulaznicaPonuda.oglasiIds} //provjerit
+                                        tipTransakcije="provedeno"
                                     />
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <p>Nemate zaprimljenih ponuda.</p>
-                    )
-                )}
-            </section>
+                                ))
+                            ) : (
+                                <p>Nemate uspješno provedenih transackija.</p>
+                            )
+                        )}
+                    </section>
 
-            {/* Poslane Ponude */}
-            <section>
-                <h3 onClick={() => toggleSection("poslanePonude")} style={{ color: "#425DFF", cursor: "pointer" }}>
-                    {openedSections["poslanePonude"] ? "▼" : "▶"} Poslane Ponude
-                </h3>
-                {openedSections["poslanePonude"] && (
-                    poslanePonude.length > 0 ? (
-                        poslanePonude.map((transakcija) => (
-                            <div key={transakcija.idTransakcije}>
-                                {openedSections[transakcija.idTransakcije] && (
-                                    <Oglas
-                                        idTransakcije={transakcija.idTransakcije}
-                                        danaDo={transakcija.ulaznicaOglas.datumKoncerta}
-                                        ulaznica1={transakcija.ulaznicaPonuda}
-                                        ulaznica2={transakcija.ulaznicaOglas}
-                                        statusPonude={transakcija.status}
-                                        naObrisi={() => {
-                                            obrisiTransakciju(transakcija.idTransakcije);
-                                        }}
-                                        imePonuditelja={transakcija.korisnikProdavac.imeKorisnika.concat(" ", transakcija.korisnikProdavac.prezimeKorisnika)} 
-                                        tipTransakcije="poslanePonude"
-                                        idNavigateOglasa={transakcija.ulaznicaOglas.oglasiIds} //provjerit
-                                    />
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <p>Nemate poslanih ponuda.</p>
-                    )
-                )}
-            </section>
-
-            {/* Ulaznice koje nisu transakcije */}
-            <section>
-                <h3 onClick={() => toggleSection("ostaliOglasi")} style={{ color: "#425DFF", cursor: "pointer" }}>
-                    {openedSections["ostaliOglasi"] ? "▼" : "▶"} Ostali Oglasi
-                </h3>
-                {openedSections["ostaliOglasi"] && (
-                    oglasiBezPonuda.length > 0 ? (
-                        oglasiBezPonuda.map((oglas) => (
-                            <div key={oglas.idOglasa}>
-                                {openedSections[oglas.idOglasa] && (
-                                    <Oglas
-                                        oglasId={oglas.idOglasa}
-                                        danaDo={oglas.ulaznicaOglas.datumKoncerta}
-                                        ulaznica1={oglas.ulaznicaOglas}
-                                        ulaznica2={{ datumKoncerta: "N/A" }}
-                                        naObrisi={() => {
-                                            obrisiOglas(oglas.idOglasa); // Stara funkcija za trajno brisanje
-                                        }}
-                                        tipTransakcije="ostalo"
-                                        // idNavigateOglasa={oglas.idOglasa} 
-                                    />
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <p>Nemate ulaznica.</p>
-                    )
-                )}
-            </section>
-
-            <section>
-                <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614", cursor: "pointer" }}>
-                    {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Provedene transakcije
-                </h3>
-                {openedSections["provedeneTransakcije"] && (
-                    provedeneTransakcije.length > 0 ? (
-                        provedeneTransakcije.map((transakcija) => (
-                            <Oglas
-                                key={transakcija.idTransakcije}
-                                idTransakcije={transakcija.idTransakcije}
-                                danaDo={transakcija.ulaznicaPonuda.datumKoncerta} // Prikaz datuma završetka
-                                ulaznica1={transakcija.ulaznicaOglas}
-                                ulaznica2={transakcija.ulaznicaPonuda}
-                                tipTransakcije="provedeno"
-                            />
-                        ))
-                    ) : (
-                        <p>Nemate završenih transakcija.</p>
-                    )
-                )}
-            </section>
-
-            </div>}
+                </div>}
         </div>
     );
 }

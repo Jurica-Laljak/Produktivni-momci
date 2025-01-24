@@ -16,7 +16,7 @@ export default function AppFooter() {
             </a>
           </div>
           <div>
-            <h5>2025 Produktivni momci</h5>
+            <h5><strong>Produktivni momci</strong>, 2025.</h5>
           </div>
           <div>
             <a href="https://github.com/Jurica-Laljak/Produktivni-momci/tree/main/Dokumentacija" className="footer-link">

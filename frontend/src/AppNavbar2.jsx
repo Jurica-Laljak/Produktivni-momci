@@ -90,6 +90,7 @@ import Button from './common/Button';
   
     const handleLogout = () => {
       localStorage.removeItem('token');
+      setUserName(null);
       setIsLoggedIn(false);
       navigate('/');
     };
