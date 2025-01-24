@@ -1,41 +1,441 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
 
-
-.card.custom-card {
-  background-color: #fbfbe4; 
-  border-radius: 10px;
+/* Card styles */
+.custom-card {
+  display: flex;
+  flex-direction: column;
+  width: 28rem;
+  border: 7px solid #FFB700;
+  border-radius: 0;
+  /* Pravi kutovi */
+  overflow: hidden;
+  background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
+  position: relative;
+  cursor: pointer;
+  margin: 15px;
+  /* Razmak između kartica */
 }
 
-.card.custom-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  padding-bottom: 1rem;
 }
 
-/* Header Text */
-.card-title {
-  font-size: 1.5rem;
+.card-details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
-.card-text {
-  font-size: 1rem;
+.card-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.icon-container {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 2rem !important;
+  /* Uvećaj veličinu ikona */
+  color: white;
+  /* Dodaj zlatnu boju */
+}
+
+.favorite-icon {
+  margin-left: 5px;
+  /* Dodatno razmicanje ako treba */
+}
+
+.visibility-icon {
+  margin-right: 5px;
+}
+
+
+.heart-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+
+.event-title {
+  font-size: 1.25rem;
+  padding-inline: 5px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  height: 70px;
+}
+
+.event-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.event-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
+.event-info,
+.event-creator {
+  font-size: 1.15rem;
   color: #555;
 }
 
-.izvodaci h6 {
+.name {
+  color: #425dff;
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+/* Detailed view styles */
+.detailed-view {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #C6CDF1;
+  color: white;
+  border: 5px solid #FFB700;
+  padding: 1rem;
+  width: 70%;
+  height: 75%;
+  z-index: 1001;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.close-details {
+  position: absolute;
+  top: -60px;
+  right: -20px;
+  background: none;
+  border-radius: 25px;
+  border: 5px solid #FFB700;
+  color: #555555;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.close-details:hover {
+  color: white;
+  background-color: unset;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.title {
+  display: block;
+  text-align: left;
+  width: fit-content;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+}
+
+.detailed-header {
+  max-width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: left;
+}
+
+.posted-by {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 3rem;
+  font-size: 1.4rem;
+}
+
+.blue-text {
+  display: block;
+  color: #425dff;
+}
+
+.grid-container {
+  width: 100%;
+  height: 84%;
+  display: grid;
+  grid-template-columns: 50% 20% 90%;
+  grid-template-rows: 2fr 1fr;
+  row-gap: 0.1rem;
+  column-gap: 1rem;
+}
+
+.detailed-img-container {
+  width: 100%;
+  grid-column: 1 / span 2;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  text-align: center;
+}
+
+.detailed-img {
+  width: 100%;
+}
+
+.days-left {
+  margin-bottom: 15px;
+  color: black;
+}
+
+.exchange-button {
+  background-color: #f3c500;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.exchange-button:hover {
+  background-color: #ffd700;
+}
+
+.posted-by,
+.availability-info,
+.weather-info {
+  color: black;
+}
+
+/* Detailed View Styles */
+.detailed-header {
+  text-align: center;
+  color: #000;
+}
+
+.detailed-content {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.detailed-img-container {
+  text-align: center;
+}
+
+.details-right {
+  padding: 0px;
+  height: 100%;
+  max-width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: black;
+}
+
+.izvodaci-header {
+  font-size: xx-large;
+  padding: 0px;
+  margin: 0px;
+  text-decoration: underline;
+}
+
+.izvodaci-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 19vw;
+  background-color: white;
+  overflow-x: auto;
+}
+
+
+.exchange-button {
+  background-color: #f3c500;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+
+.button-flex {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background: #555555;
+  color: #CDCDCD;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: 3px solid black;
+  padding: 0;
+  cursor: pointer;
+  width: fit-content;
+  outline: inherit;
+  padding-inline: 12px;
+  padding-block: 6px;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#buy-tickets {
+  background-color: #FFB700;
+  color: black;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link-flex {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.button > span {
+  padding: 1%;
+}
+
+.button:hover {
+  box-shadow: 0 0 8px black;
+}
+
+.button-description {
+  margin-top: 0.3vh;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.weather-flex {
+  grid-row: 2;
+  grid-column: 2 / span 2;
+  text-align: center;
+  font-size: 1rem;
+  color: #000;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.other-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.weather-container {
+  font-size: 1.05rem;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  background-color: #d6d7dc;
+  border-radius: 15px;
+  border: 3px solid black;
+  font-weight: bold;
+}
+
+.weather-description {
+  text-align: start;
+  text-decoration: underline;
   font-size: 1.1rem;
-  color: #6c757d;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  color: #425DFF;
 }
 
-.izvodaci p {
-  font-size: 0.95rem;
-  color: #777;
+.weather-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: end;
+  gap: 0.2rem;
+  
+  color: #425DFF;
 }
 
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.temeperature {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  
+  color: #425DFF;
 }
 
+/* .izvodaci-wrapper{
+  background-color: #C6CDF1;
+} */

@@ -1,27 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './AppFooter.css';
 
 export default function AppFooter() {
   return (
     <footer className="custom-footer">
       <div className="container py-3">
-        <div className="row">
-          <div className="col-md-4">
-            <p><img src='/t4tedit.png' alt='t4t' style={{ height: '20px' }}></img></p>
-            <p>Razmjena i prodaja ulaznica za koncerte.</p>
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <a href="https://github.com/Jurica-Laljak/Produktivni-momci" className="footer-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-link" viewBox="0 0 16 16">
+                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" />
+                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z" />
+              </svg>
+              <span>GitHub</span>
+            </a>
           </div>
-          <div className="col-md-4">
-            <h5>Brze poveznice</h5>
-            <ul className="list-unstyled">
-              <li>Početna</li>
-              <li>O nama</li>
-              <li>Kontakt</li>
-            </ul>
+          <div>
+            <h5><strong>Produktivni momci</strong>, 2025.</h5>
           </div>
-          <div className="col-md-4 text-md-end">
-            <p>&copy; {new Date().getFullYear()} Ticket4Ticket</p>
-            <p>Sva prava pridržana.</p>
+          <div>
+            <a href="https://github.com/Jurica-Laljak/Produktivni-momci/tree/main/Dokumentacija" className="footer-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-link" viewBox="0 0 16 16">
+                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" />
+                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z" />
+              </svg>
+              <span>Dokumentacija</span>
+            </a>
           </div>
         </div>
       </div>

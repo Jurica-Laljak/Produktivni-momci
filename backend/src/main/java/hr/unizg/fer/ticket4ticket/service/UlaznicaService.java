@@ -11,4 +11,13 @@ public interface UlaznicaService {
     UlaznicaDto getUlaznicaById(Long ulaznicaId);
 
     List<UlaznicaDto> getAllUlaznice();
+
+    List<UlaznicaDto> getUlazniceByIdKorisnika(Long idKorisnika);
+
+
+    UlaznicaDto assignUserToUlaznica(Long idUlaznice, Long korisnikId);
+
+    UlaznicaDto getUlaznicaByOglasId(Long oglasId);
+
+    List<UlaznicaDto> getUlazniceWithoutOglas(Long idKorisnika);
 }

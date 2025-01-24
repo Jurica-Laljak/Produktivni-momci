@@ -14,7 +14,9 @@ public class ZanrMapper {
     public static ZanrDto mapToZanrDto(Zanr zanr) {
         ZanrDto dto = new ZanrDto();
         dto.setIdZanra(zanr.getIdZanra());
-        dto.setImeZanra(zanr.getImeZanra());
+
+        // Convert enum to string for DTO
+        dto.setImeZanra(zanr.getImeZanra() != null ? zanr.getImeZanra().name() : null);
         dto.setSlikaZanra(zanr.getSlikaZanra());
 
         Set<Long> korisniciKojiSlusajuIds = zanr.getKorisnici()
@@ -37,9 +39,17 @@ public class ZanrMapper {
     public static Zanr mapToZanr(ZanrDto zanrDto) {
         Zanr zanr = new Zanr();
         zanr.setIdZanra(zanrDto.getIdZanra());
-        zanr.setImeZanra(zanrDto.getImeZanra());
-        zanr.setSlikaZanra(zanrDto.getSlikaZanra());
 
+        // Convert string from DTO to enum
+        if (zanrDto.getImeZanra() != null) {
+            try {
+                zanr.setImeZanra(Zanr.ImeZanra.valueOf(zanrDto.getImeZanra()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid imeZanra value: " + zanrDto.getImeZanra());
+            }
+        }
+
+        zanr.setSlikaZanra(zanrDto.getSlikaZanra());
 
         Set<Korisnik> korisnici = new HashSet<>();
         if (zanrDto.getKorisniciKojiSlusajuIds() != null) {

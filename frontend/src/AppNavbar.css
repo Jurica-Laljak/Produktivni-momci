@@ -1,9 +1,136 @@
-.custom-navbar{
-  background-color:#b1bcf1  !important; 
-  color: black; 
+.custom-navbar {
+  background-color: #C6CDF1 !important;
+  color: black;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;  
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; 
+  border-bottom: 2px solid black;
+  
 }
 
+.navbar-brand {
+  margin-left: 10px; /* Razmak lijevo od logotipa */
+}
+
+.navbar-brand img {
+  max-height: 40px;
+}
+
+.navbar-collapse {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between; /* Ravnomjerno raspoređuje unutar collapse-a */
+  align-items: center;
+}
+
+.navbar-collapse .d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; 
+}
+
+.btn-primary {
+  margin-left: 10px;
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  border-radius: 15px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  transition: .3s !important;
+}
+
+/* .btn-primary:hover {
+  border-color: #425dff !important;
+  box-shadow: 0 0 8px #425dff;
+}  */
+
+.welcome-text {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0; /* Centriranje teksta unutar d-flex */
+}
+
+.nav-link {
+  margin-right: 10px; /* Razmak desno od "Sign in with Google" gumba */
+  display: flex;
+  align-items: center;
+}
+
+.nav-link svg {
+  margin: 0 5px;
+}
+
+
+.btn-create-ad {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important; 
+  border-radius: 15px !important;
+  font-weight: bold !important;
+  font-size: 16px  !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color .3s ease;
+  /* transition: border-color .3s,box-shadow .3s !important; */
+  margin: 0 !important;
+}
+
+.btn-create-ad:hover{
+  background-color: black !important;
+  color: white !important;
+  /* border: 2px solid #425dff !important;  */
+  border-radius: 15px !important;
+  /* box-shadow: 0 0 8px #425dff; */
+}
+
+.btn-log-out {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important; 
+  border-radius: 15px !important;
+  font-weight: bold !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color .3s ease;
+  font-size: 16px  !important;
+}
+
+.btn-log-out:hover {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 15px !important;
+}
+
+.nav-link svg {
+  transition: 0.3s;
+}
+
+.nav-link:hover svg {
+  /* filter: drop-shadow(0 0 8px #0d6efd); */
+  color: #0d6efd; 
+}
+
+.nav-link.admin:hover svg {
+  /* filter: drop-shadow(0 0 8px #c99000); */
+  color: #FFB700;
+}
+
+/* .nav-link.google {
+  transition: border-color .3s,box-shadow .3s !important;
+} */
+
+/* .nav-link.google:hover {
+  border: 2px solid #425dff !important; 
+  box-shadow: 0 0 8px #425dff;
+} */
+
+.nav-link.google:hover svg {
+  filter: none;
+}
+
+#kreiraj-oglas {
+  padding: 0%;
+  width: fit-content;
+  height: fit-content;
+}

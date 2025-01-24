@@ -37,4 +37,11 @@ public class UlaznicaController {
         List<UlaznicaDto> ulaznice = koncertService.getAllUlaznice();
         return new ResponseEntity<>(ulaznice, HttpStatus.OK);
     }
+
+    // Returns the Ulaznica by specified ID
+    @GetMapping("/oglas-id/{id}")
+    public ResponseEntity<UlaznicaDto> getUlaznicaByOglasId(@PathVariable Long id) {
+        UlaznicaDto ulaznicaDto = koncertService.getUlaznicaByOglasId(id);
+        return new ResponseEntity<>(ulaznicaDto, HttpStatus.OK);
+    }
 }

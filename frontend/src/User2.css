@@ -1,0 +1,91 @@
+.user-settings-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+  }
+  
+  .section h3 {
+    color: #3366ff;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .form-control {
+    flex: 2;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    justify-content: center;
+  }
+  
+  .btn-outline-primary {
+    background-color: white;
+    color: #3366ff;
+    border: 1px solid #3366ff;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #3366ff;
+    color: white;
+  }
+  
+  .preference-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .preference-btn svg {
+    font-size: 18px;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .checkbox-group label {
+    font-size: 14px;
+    margin-left: 8px;
+  }
+  
+  .delete-account-btn {
+    background-color: white;
+    color: #ff4d4f;
+    border: 4px solid #ff4d4f;
+    width: 100%;
+  }
+
+  .delete-account-btn:hover {
+    background-color: #ff4d4f;
+    color: white;
+    border-color: #ff4d4f;
+  }
