@@ -15,7 +15,12 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
   const [showDetails, setShowDetails] = useState(false);
   const [weather, setWeather] = useState(null);
   const [forecastAvailable, setForecastAvailable] = useState(true);
-  const { openRazmijeniModal } = useContext(Context)
+  const { openRazmijeniModal, userName } = useContext(Context)
+
+  var borderStyle = null
+  if (availableTickets.length == 0 && (!ulaznica.prodaja) && userName) {
+    borderStyle = {"border-color": "#555555"}
+  }
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
@@ -97,9 +102,9 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
       {showDetails ? (
         <div className="outer">
           <div className="overlay" onClick={toggleDetails}></div>
-          <div className="detailed-view">
+          <div className="detailed-view" style={borderStyle}>
 
-            <button className="close-details" onClick={toggleDetails}>
+            <button className="close-details" onClick={toggleDetails} style={borderStyle}>
               ✖
             </button>
 
@@ -149,46 +154,47 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
               </div>
 
               {localStorage.getItem("token") &&
-                <div className="button-flex">
-                  <div className="button-container">
-                    <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
-                      backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
-                      color: availableTickets.length ? 'black' : '',
-                      pointerEvents: availableTickets.length ? '' : 'none'
-                    }}
-                    >
-                      <span>Zamjeni</span>
-                      <span>Ulaznicu</span>
-                    </button>
-                    <span className="button-description">
-                      {availableTickets === null
-                        ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
-                        : availableTickets.length
-                          ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
-                          : "Nemate dostupne ulaznice za razmjenu."}
-                    </span>
-                  </div>
-                  <div className="button-container">
-                    <Link to="/transaction" className="link" state={{ sentFrom: "listing" }}>
-                      <div className="link-flex">
-                        <button className="button" id="buy-tickets"
-                          style={{
+                <>
+                  {
+                    ulaznica.prodaja ? <div className="button-container">
+                      <Link to="/transaction" className="link" state={{ sentFrom: "listing" }}>
+                        <div className="link-flex">
+                          <button className="button" id="buy-tickets">
+                            <span>Kupi</span>
+                            <span>Ulaznicu</span>
+                          </button>
+                        </div>
+                      </Link>
+                      <span className="button-description">
+                        Transakcija će se nastaviti u skočnom prozoru
+                      </span>
+                    </div>
+
+                      :
+                      < div className="button-flex">
+                        <div className="button-container">
+
+                          <button className="button" onClick={() => handleOpenRazmijeniModal(ulaznica)} style={{
                             backgroundColor: availableTickets.length ? '#FFB700' : '', // Dodaje boju ako je uvjet ispunjen
                             color: availableTickets.length ? 'black' : '',
                             pointerEvents: availableTickets.length ? '' : 'none'
                           }}
-                        >
-                          <span>Kupi</span>
-                          <span>Ulaznicu</span>
-                        </button>
+                          >
+                            <span>Zamjeni</span>
+                            <span>Ulaznicu</span>
+                          </button>
+                          <span className="button-description">
+                            {availableTickets === null
+                              ? "Učitavanje dostupnih ulaznica..." // Prikaz za vrijeme učitavanja
+                              : availableTickets.length
+                                ? `Imate ${availableTickets.length} slobodnih ulaznica za razmjenu.`
+                                : "Nemate dostupne ulaznice za razmjenu."}
+                          </span>
+                        </div>
                       </div>
-                    </Link>
-                    <span className="button-description">
-                      Transakcija će se nastaviti u skočnom prozoru
-                    </span>
-                  </div>
-
-                </div>}
+                  }
+                </>
+                }
 
 
               {weather ? (
@@ -230,10 +236,11 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
           </div>
         </div>)
 
-        : <></>}
+        : <></>
+      }
 
 
-      <div className="custom-card" onClick={toggleDetails}>
+      <div className="custom-card" style={borderStyle} onClick={toggleDetails}>
         <div className="image-container">
           <img
             src={ulaznica.urlSlika}
@@ -284,7 +291,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
         </div>
       </div>
 
-    </div>
+    </div >
   );
 }
 
