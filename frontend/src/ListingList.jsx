@@ -65,12 +65,11 @@ export default function ListingList() {
     const fetchUserTickets = async () => {
       try {
         // Poziv API-ja za dohvaćanje ulaznica
-        const response = await axiosPrivate.get('preference/korisnici/ulaznice');
-        const userTickets = response.data;
+        const response = await axiosPrivate.get("preference/korisnici/ulaznice/without-oglas")
+        const userTickets = response.data
 
         const tran = await axiosPrivate.get('preference/transakcije/poslane-ponude');
         const tr = tran.data;
-
         // Broji koliko ulaznica ima trenutni korisnik
         setAvailableTickets(userTickets);
         setTransakcije(tr);
@@ -134,7 +133,7 @@ export default function ListingList() {
                 ulaznica={listing}
                 izvodaci={listing.izvodaci}
                 idOglasa={listing.idOglasa}
-                availableTickets={availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0)}
+                availableTickets={availableTickets/* availableTickets?.filter(ticket => transakcije?.filter(tr => ticket.idUlaznice == tr.idUlaznicaPonuda)?.filter(tr => tr.idOglas == listing.idOglasa).length == 0) */}
               />
             </div>
           ))}

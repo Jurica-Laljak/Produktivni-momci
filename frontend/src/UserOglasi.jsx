@@ -388,7 +388,7 @@ export default function UserOglasi() {
 
                     <section>
                         <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614" }}>
-                            {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Povijest transakcija {provedeneTransakcije.length ? "(" + provedeneTransakcije + ")" : null}
+                            {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Povijest transakcija {provedeneTransakcije.length ? "(" + provedeneTransakcije.length + ")" : null}
                         </h3>
                         {openedSections["provedeneTransakcije"] && (
                             provedeneTransakcije.length > 0 ? (

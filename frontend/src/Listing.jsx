@@ -18,7 +18,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
   const { openRazmijeniModal, userName } = useContext(Context)
 
   var borderStyle = null
-  if (availableTickets.length == 0 && (!ulaznica.prodaja) && userName) {
+  if (!userName || (!ulaznica.prodaja && (!availableTickets || availableTickets.length == 0))) {  //korisnik ne može razmjeniti/kupiti ulaznicu
     borderStyle = { "border-color": "#555555" }
   }
 
