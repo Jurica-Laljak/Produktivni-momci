@@ -19,7 +19,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
 
   var borderStyle = null
   if (availableTickets.length == 0 && (!ulaznica.prodaja) && userName) {
-    borderStyle = {"border-color": "#555555"}
+    borderStyle = { "border-color": "#555555" }
   }
 
   const toggleFavorite = (e) => {
@@ -96,6 +96,16 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
     }
   }, [showDetails, ulaznica.lokacijaKoncerta, ulaznica.datumKoncerta]);
 
+  const handleSale = async () => {
+    try {
+      const response = await axiosPrivate.post("transakcije/kreiraj", reqBody);
+
+    } catch (error) {
+      console.error("Greška prilikom kreiranja oglasa:", error);
+      alert("Došlo je do greške prilikom kupnje ulaznice.");
+    }
+  }
+
   return (
     <div id={idOglasa}>
       {showDetails ? (
@@ -156,7 +166,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                 <>
                   {
                     ulaznica.prodaja ? <div className="button-container">
-                      <Link to="/transaction" className="link" state={{ sentFrom: "listing" }} onClick={() => handleKupnja(ulaznica)}>
+                      <Link to="/transaction" className="link" state={{ sentFrom: "listing", idOglasa: idOglasa.toString() }}>
                         <div className="link-flex">
                           <button className="button" id="buy-tickets">
                             <span>Kupi</span>
@@ -193,7 +203,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                       </div>
                   }
                 </>
-                }
+              }
 
 
               {weather ? (

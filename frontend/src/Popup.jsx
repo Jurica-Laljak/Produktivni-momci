@@ -1,21 +1,36 @@
 import { useContext, useEffect, useState } from "react"
 import { Context } from "./App"
 import ScaleLoader from "react-spinners/ScaleLoader"
-import { Link } from 'react-router-dom'
+import { Link, useLocation, Navigate } from 'react-router-dom'
 import { FaTicketAlt, FaHome } from "react-icons/fa"
 import './Popup.css'
 import LinkWrapper from "./common/LinkWrapper"
 import Button from "./common/Button"
+import axiosPrivate from "./api/axiosPrivate"
+import axios from "axios"
 
 
 export default function Popup() {
+    const [message, setMessage] = useState("Transakcija uspješno provedena")
+    const location = useLocation()
+    if (!location || !location.state || location.state.sentFrom !== "listing") {
+        return <Navigate to="/"></Navigate>
+    } 
     const { transactionPending, setTransactionPending } = useContext(Context)
     useEffect(() => {
         setTransactionPending(true)
-        setTimeout(() => {
+        try {
+            const res = axiosPrivate.get(`/preference/oglasi/kupi/${location.state.idOglasa}`)
+            console.log("succesfully bought ticket", location.state.idOglasa)
+            setTimeout(() => {
+                setTransactionPending(false)
+            }, Math.floor(Math.random() * 3000) + 2000)
+        } catch(err) {
             setTransactionPending(false)
-        }, Math.floor(Math.random() * 3000) + 2000)
+            setMessage("Transakcija neuspješna")
+        }
     }, [])
+    
     return (
         <div className="popup-container">
             {
@@ -30,7 +45,7 @@ export default function Popup() {
                     />
                 </>
                     : <div className="message-container">
-                        <span className="description" id="description-success">Transakcija uspješno provedena</span>
+                        <span className="description" id="description-success">{message}</span>
                         <LinkWrapper to={"/userUlaznice"}>
                             <Button icon={<FaTicketAlt />}
                                 style={["#4b66fc", null]} hover={["white", "#4b66fc"]}>

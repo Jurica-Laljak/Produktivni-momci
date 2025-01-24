@@ -150,9 +150,7 @@ function App() {
 
             {/* transaction pending protected */}
             <Route path='/transaction' element={
-                <TransactionProtectedRoute>
                   <Popup></Popup>
-                </TransactionProtectedRoute>
             }>
             </Route>
 

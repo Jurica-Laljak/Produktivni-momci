@@ -65,9 +65,18 @@ export default function Ulaznice() {
           <div className="dodaj-ulaznicu-wrapper">
             <button className="dodaj-ulaznicu" onClick={() => setShowModal(true)}>+ Dodaj ulaznicu</button>
           </div>
-          {ulaznice.map((ulaznica, index) => (
-            <Ulaznica key={index} {...ulaznica} />
-          ))}
+          {
+            ulaznice && ulaznice.length > 0 ?
+              <>
+                {ulaznice.map((ulaznica, index) => (
+                  <Ulaznica key={index} {...ulaznica} />
+                ))}
+              </>
+              : <div className="missing-text">
+                Nemate dostupnih ulaznica
+              </div>
+          }
+
           <div className="add-ticket-container">
             {showModal && (
               <div className="modal">
