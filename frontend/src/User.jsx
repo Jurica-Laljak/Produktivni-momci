@@ -1,255 +1,255 @@
-import React, { useState,useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import axiosPrivate from "./api/axiosPrivate";
 import "./User2.css";
 import { FiSettings } from "react-icons/fi";
-import {Context} from "./App" 
+import { Context } from "./App"
 
 
-    export default function User( {userData} ){
+export default function User({ userData }) {
 
-      const [formData, setFormData] = useState({
-          imeKorisnika: userData.imeKorisnika,
-          prezimeKorisnika: userData.prezimeKorisnika,
-          brMobKorisnika:"091"
-      })
-  
-      const [isEditing, setIsEditing] = useState({
-        imeKorisnika: false,
-        prezimeKorisnika: false,
-        brMobKorisnika: false,
-      });
+  const [formData, setFormData] = useState({
+    imeKorisnika: userData.imeKorisnika,
+    prezimeKorisnika: userData.prezimeKorisnika,
+    brMobKorisnika: "091"
+  })
 
-      const [isChanged, setIsChanged] = useState({
-        imeKorisnika: false,
-        prezimeKorisnika: false,
-        brMobKorisnika: false,
-      });
-      
-      const [notificationsOn,setNotificationsOn ] = useState(true); 
+  const [isEditing, setIsEditing] = useState({
+    imeKorisnika: false,
+    prezimeKorisnika: false,
+    brMobKorisnika: false,
+  });
 
-      const {userName, setUserName} = useContext(Context);
-  
-      const navigate = useNavigate()
+  const [isChanged, setIsChanged] = useState({
+    imeKorisnika: false,
+    prezimeKorisnika: false,
+    brMobKorisnika: false,
+  });
 
-      // dohvati ime prezime i broj telefona korsinika i podatak da li ima ukljucene obavijesti
-      useEffect(() => {
-        const token = localStorage.getItem('token');
-        setNotificationsOn(userData.prikazujObavijesti);
+  const [notificationsOn, setNotificationsOn] = useState(true);
 
-          try {
-            const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
-          
-  
-            const getUserData = async () => {
-              try{
-                  const response = await  axiosPrivate.get(`korisnici/g/${googleID.sub}`)
-                  const userData = response.data;
-                  const ime = userData.imeKorisnika || "";
-                  const prezime = userData.prezimeKorisnika || "";
-                  const broj = userData.brMobKorisnika  || "";
-                    const user = {
-                        imeKorisnika: ime,
-                        prezimeKorisnika: prezime,
-                        brMobKorisnika: broj
-                    }
-                    
-                    setFormData(user);
+  const { userName, setUserName } = useContext(Context);
 
-                }
-              catch(err){
-                  console.log("Doslo je do greske", err);
-              }
-            }  
-             
-             getUserData();
-  
-           
-            
-          } catch (error) {
-            console.error('Error decoding token:', error);
-          }
-        
-      }, []);
+  const navigate = useNavigate()
 
-  
-      const handleEditPreferences = () => {
-          navigate("/chooseGenres")
-      }
+  // dohvati ime prezime i broj telefona korsinika i podatak da li ima ukljucene obavijesti
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setNotificationsOn(userData.prikazujObavijesti);
+
+    try {
+      const googleID = JSON.parse(atob(token.split('.')[1])); // Decode JWT token 
 
 
-      const handleEditToggle = (field) => {
-        setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
-      };
-    
-      const handleInputChange = (e) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
-
-        setIsChanged((prev) => ({
-          ...prev,
-          [id]: value !== formData[id],
-        }));
-      };
-    
-      const handleSave = async (field) => {
-         // Provjera formata broja mobitela
-         console.log("Save")
-         console.log(formData[field])
-         if (field === "brMobKorisnika") {
-          const isValidNumber = /^09\d{7}$/.test(formData[field]);
-          if (!isValidNumber) {
-          alert("Unesite ispravan broj mobitela u formatu '0911234567'.");
-          return; // Prekini ako broj nije ispravan
-            }
-  }
-       
-        const updatedField = { [field]: formData[field] };
-    
+      const getUserData = async () => {
         try {
-          const response = await axiosPrivate.patch("preference/korisnici/update-info", updatedField);
-    
-          if (response.status == 200) {
-            // Uspješna promjena
-            if(field !== "brMobKorisnika"){
-            const token = localStorage.getItem('token');
-            const googleID = JSON.parse(atob(token.split('.')[1]));
-            
-            const response2 = await axiosPrivate.get(`korisnici/g/${googleID.sub}`);
-            const userData = response2.data;
-            const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
-            console.log("ciaoooooooooooooooooooo")
-            setUserName(imePrezime);
-            } 
-
-            alert(`${field} je uspješno izmijenjen.`);
-            setIsEditing((prev) => ({ ...prev, [field]: false }));
-            setIsChanged((prev) => ({ ...prev, [field]: false }));
-          } else {
-            // Greška prilikom spremanja
-            alert("Došlo je do greške prilikom spremanja. Pokušajte ponovno.");
+          const response = await axiosPrivate.get(`korisnici/g/${googleID.sub}`)
+          const userData = response.data;
+          const ime = userData.imeKorisnika || "";
+          const prezime = userData.prezimeKorisnika || "";
+          const broj = userData.brMobKorisnika || "";
+          const user = {
+            imeKorisnika: ime,
+            prezimeKorisnika: prezime,
+            brMobKorisnika: broj
           }
-        } catch (error) {
-          console.error("Greška prilikom ažuriranja:", error);
-          alert("Došlo je do greške prilikom ažuriranja.");
+
+          setFormData(user);
+
         }
-      };
-    
-      const handleCheckBoxChange = async (e) => {
-          const isChecked = e.target.checked;
-
-          try{
-            const response = await axiosPrivate.patch("preference/korisnici/update-info", 
-              {prikazujObavijesti:isChecked});
-
-              if(response.status == 200){
-                setNotificationsOn(isChecked);
-              }
-
-          } catch(err){
-            console.log("greska prilikom updatea korisinikovih preferenca za obavijesti ", err)
-          }
-      }
-
-      const handleDeleteAccount = async () => {
-        if(confirm("Jeste li sigurni da želite obrisati svoj korisnički račun?")) {
-          try {
-            const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
-            console.log('Delete successful:', response.data);
-            localStorage.removeItem("token");
-          navigate("/")
-          } catch (error) {
-            console.error('Error deleting data:', error);
-          }
+        catch (err) {
+          console.log("Doslo je do greske", err);
         }
       }
-       
-      return (
-        <div className="user-settings-container">
-          <div className="settings-row">
-            <div className="section">
-              <h3>Osobni podaci</h3>
-              {["imeKorisnika", "prezimeKorisnika"].map((field, idx) => (
-                <div key={idx} className="form-group">
-                  <label htmlFor={field}>
-                    {field === "imeKorisnika"
-                      ? "Ime"
-                      : field === "prezimeKorisnika"
-                      ? "Prezime"
-                      : "Broj telefona"}
-                  </label>
-                  {isEditing[field] ? (
-                    <input
-                      type="text"
-                      id={field}
-                      className="form-control"
-                      value={formData[field] || ""}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      id={field}
-                      className="form-control"
-                      value={formData[field] || ""}
-                      disabled
-                    />
-                  )}
-                 <button
-                  className={`btn btn-outline-${
-                 isEditing[field]
-                ? isChanged[field]
-               ? "success"
-             : "secondary" 
-             : "primary"
-                 }`}
-                        onClick={() =>
-                      isEditing[field]
-                   ? isChanged[field]
-                  ? handleSave(field)
-                 : alert("Nema promjena za spremanje.") 
-                  : handleEditToggle(field)
-               }
-             disabled={isEditing[field] && !isChanged[field]} 
->
-           {isEditing[field] ? "Spremi" : "Uredi"}
-          </button>
 
-                </div>
-              ))}
-            </div>
-    
-            <div className="section">
-              <h3>Preferencije</h3>
+      getUserData();
+
+
+
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
+
+  }, []);
+
+
+  const handleEditPreferences = () => {
+    navigate("/chooseGenres")
+  }
+
+
+  const handleEditToggle = (field) => {
+    setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+
+    setIsChanged((prev) => ({
+      ...prev,
+      [id]: value !== formData[id],
+    }));
+  };
+
+  const handleSave = async (field) => {
+    // Provjera formata broja mobitela
+    console.log("Save")
+    console.log(formData[field])
+    if (field === "brMobKorisnika") {
+      const isValidNumber = /^09\d{7}$/.test(formData[field]);
+      if (!isValidNumber) {
+        alert("Unesite ispravan broj mobitela u formatu '0911234567'.");
+        return; // Prekini ako broj nije ispravan
+      }
+    }
+
+    const updatedField = { [field]: formData[field] };
+
+    try {
+      const response = await axiosPrivate.patch("preference/korisnici/update-info", updatedField);
+
+      if (response.status == 200) {
+        // Uspješna promjena
+        if (field !== "brMobKorisnika") {
+          const token = localStorage.getItem('token');
+          const googleID = JSON.parse(atob(token.split('.')[1]));
+
+          const response2 = await axiosPrivate.get(`korisnici/g/${googleID.sub}`);
+          const userData = response2.data;
+          const imePrezime = userData.imeKorisnika + ' ' + userData.prezimeKorisnika;
+          console.log("ciaoooooooooooooooooooo")
+          setUserName(imePrezime);
+        }
+
+        alert(`${field} je uspješno izmijenjen.`);
+        setIsEditing((prev) => ({ ...prev, [field]: false }));
+        setIsChanged((prev) => ({ ...prev, [field]: false }));
+      } else {
+        // Greška prilikom spremanja
+        alert("Došlo je do greške prilikom spremanja. Pokušajte ponovno.");
+      }
+    } catch (error) {
+      console.error("Greška prilikom ažuriranja:", error);
+      alert("Došlo je do greške prilikom ažuriranja.");
+    }
+  };
+
+  const handleCheckBoxChange = async (e) => {
+    const isChecked = e.target.checked;
+
+    try {
+      const response = await axiosPrivate.patch("preference/korisnici/update-info",
+        { prikazujObavijesti: isChecked });
+
+      if (response.status == 200) {
+        setNotificationsOn(isChecked);
+      }
+
+    } catch (err) {
+      console.log("greska prilikom updatea korisinikovih preferenca za obavijesti ", err)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    if (confirm("Jeste li sigurni da želite obrisati svoj korisnički račun?")) {
+      try {
+        const response = await axiosPrivate.delete("preference/korisnici/izbrisi");
+        console.log('Delete successful:', response.data);
+        localStorage.removeItem("token");
+        setUserName(null);
+        navigate("/")
+      } catch (error) {
+        console.error('Error deleting data:', error);
+      }
+    }
+  }
+
+  return (
+    <div className="user-settings-container">
+      <div className="settings-row">
+        <div className="section">
+          <h3>Osobni podaci</h3>
+          {["imeKorisnika", "prezimeKorisnika"].map((field, idx) => (
+            <div key={idx} className="form-group">
+              <label htmlFor={field}>
+                {field === "imeKorisnika"
+                  ? "Ime"
+                  : field === "prezimeKorisnika"
+                    ? "Prezime"
+                    : "Broj telefona"}
+              </label>
+              {isEditing[field] ? (
+                <input
+                  type="text"
+                  id={field}
+                  className="form-control"
+                  value={formData[field] || ""}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <input
+                  type="text"
+                  id={field}
+                  className="form-control"
+                  value={formData[field] || ""}
+                  disabled
+                />
+              )}
               <button
-                className="btn btn-outline-primary preference-btn"
-                onClick={() => navigate("/chooseGenres")}
+                className={`btn btn-outline-${isEditing[field]
+                    ? isChanged[field]
+                      ? "success"
+                      : "secondary"
+                    : "primary"
+                  }`}
+                onClick={() =>
+                  isEditing[field]
+                    ? isChanged[field]
+                      ? handleSave(field)
+                      : alert("Nema promjena za spremanje.")
+                    : handleEditToggle(field)
+                }
+                disabled={isEditing[field] && !isChanged[field]}
               >
-                 Uredi preferencije
-                 <FiSettings />
+                {isEditing[field] ? "Spremi" : "Uredi"}
               </button>
+
             </div>
-          </div>
-    
-          <div className="section">
-            <h3>Obavijesti</h3>
-            <div className="checkbox-group">
-                <div>
-                  <input type="checkbox" id="allow-notifications"  checked={notificationsOn} onChange={handleCheckBoxChange}/>
-                </div>
-                <div>Dozvoli obavijesti unutar aplikacije</div>
-                
-              
-              
-            </div>
-          </div>
-    
-          <button className="btn btn-danger delete-account-btn" onClick={handleDeleteAccount}>
-            Obriši korisnički račun
+          ))}
+        </div>
+
+        <div className="section">
+          <h3>Preferencije</h3>
+          <button
+            className="btn btn-outline-primary preference-btn"
+            onClick={() => navigate("/chooseGenres")}
+          >
+            Uredi preferencije
+            <FiSettings />
           </button>
         </div>
-      );
-    };
+      </div>
+
+      <div className="section">
+        <h3>Obavijesti</h3>
+        <div className="checkbox-group">
+          <div>
+            <input type="checkbox" id="allow-notifications" checked={notificationsOn} onChange={handleCheckBoxChange} />
+          </div>
+          <div>Dozvoli obavijesti unutar aplikacije</div>
+
+
+
+        </div>
+      </div>
+
+      <button className="btn btn-danger delete-account-btn" onClick={handleDeleteAccount}>
+        Obriši korisnički račun
+      </button>
+    </div>
+  );
+};
 
 

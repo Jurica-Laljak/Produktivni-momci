@@ -7,11 +7,12 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import Button from "./common/Button";
 
 export default function Ulaznice() {
-  
+
   const [ulaznice, setUlaznice] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [ticketCode, setTicketCode] = useState("");
   const [loading, setLoading] = useState(true);
+  const [errorDialogue, setErrorDialogue] = useState("")
 
   const getUlaznice = async () => {
     try {
@@ -32,13 +33,17 @@ export default function Ulaznice() {
       setShowModal(false);
       getUlaznice();
     } catch (err) {
-      console.log("problem s dodavanjem ulaznice: ", err);
+      setTicketCode("")
+      setErrorDialogue("Ulaznica nije dostupna")
     }
   };
 
   function handleKeyDown(event) {
     if (event.key === 'Enter') {
       handleAddTicket();
+    }
+    if (errorDialogue.length > 0) {
+      setErrorDialogue("")
     }
   }
 
@@ -57,11 +62,13 @@ export default function Ulaznice() {
           color='#425DFF'
         />
         : <div>
+          <div className="dodaj-ulaznicu-wrapper">
+            <button className="dodaj-ulaznicu" onClick={() => setShowModal(true)}>+ Dodaj ulaznicu</button>
+          </div>
           {ulaznice.map((ulaznica, index) => (
             <Ulaznica key={index} {...ulaznica} />
           ))}
           <div className="add-ticket-container">
-            <button className="add-ticket-btn" onClick={() => setShowModal(true)}>+ Dodaj ulaznicu</button>
             {showModal && (
               <div className="modal">
                 <div className="modal-content">
@@ -69,13 +76,22 @@ export default function Ulaznice() {
                     &times;
                   </span>
                   <h2>Dodaj Ulaznicu</h2>
-                  <input
-                    type="text"
-                    placeholder="Unesi šifru ulaznice"
-                    value={ticketCode}
-                    onChange={(e) => setTicketCode(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                  />
+                  <div className="input-wrapper" style={{
+                    "display": "grid",
+                    "grid-template-columns": "auto auto",
+                    "width": "100%",
+                    "margin-block": "2vh",
+                    "border": errorDialogue.length > 0 ? "2px solid red" : null
+                  }}>
+                    <input
+                      type="text"
+                      placeholder="Šifra ulaznice..."
+                      value={ticketCode}
+                      onChange={(e) => setTicketCode(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                    />
+                    <div className="error-dialogue" style={{ "color": "red" }}>{errorDialogue}</div>
+                  </div>
                   <button onClick={handleAddTicket}>+ Dodaj ulaznicu</button>
                 </div>
               </div>

@@ -47,7 +47,6 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
     openRazmijeniModal(mod);
   };
 
-
   useEffect(() => {
     if (showDetails) {
       // Izračunaj razliku u danima između trenutnog datuma i datuma koncerta
@@ -157,7 +156,7 @@ export default function Listing({ ulaznica, izvodaci, idOglasa, availableTickets
                 <>
                   {
                     ulaznica.prodaja ? <div className="button-container">
-                      <Link to="/transaction" className="link" state={{ sentFrom: "listing" }}>
+                      <Link to="/transaction" className="link" state={{ sentFrom: "listing" }} onClick={() => handleKupnja(ulaznica)}>
                         <div className="link-flex">
                           <button className="button" id="buy-tickets">
                             <span>Kupi</span>

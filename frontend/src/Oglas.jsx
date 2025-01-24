@@ -21,7 +21,8 @@ export default function Oglas({
     naObrisi,
     imePonuditelja,
     tipTransakcije,
-    idNavigateOglasa
+    idNavigateOglasa,
+    prodaja
 }) {
 
     const [isOpen, setIsOpen] = useState(false); // Stanje za otvaranje/zatvaranje
@@ -46,7 +47,10 @@ export default function Oglas({
                     {isOpen ? <span style={{ color: "black", cursor: "pointer" }}>▼</span> : <span style={{ color: "black", cursor: "pointer" }}>▶</span>}{" "}
                     {idTransakcije
                         ? (tipTransakcije === "provedeno" ? `Transakcija #${idTransakcije}` : `Moja ponuda #${idTransakcije}`)
-                        : `Moj oglas #${oglasId}`}
+                        : <>
+                            {prodaja ? "Oglas za prodaju " : "Oglas za razmjenu "}
+                            #{oglasId}
+                            </>}
                 </h3>
                 {isOpen && (<h5 style={{ color: '#787878' }}>
                     <span style={{ fontWeight: 'bold' }}>
@@ -86,38 +90,39 @@ export default function Oglas({
                             }
                         </button>
                     </div>
-                    {/* Strelica između ulaznica */}
-                    <div className="arrow"><FaTurnUp /></div>
-
-                    {/* Prikaz druge ulaznice */}
-                    <div className="ulaznica-row ulaznica-2">
-                        {ulaznica2 && ulaznica2.datumKoncerta === "N/A" ? (
-                            <div
-                                style={{
-                                    width: "707px",
-                                    height: "240px",
-                                    backgroundColor: "#D9D9D9",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    fontSize: "22px",
-                                    textDecoration: "underline",
-                                    color: "#787878",
-                                    marginLeft: "0vw",
-                                    marginTop: "2.5vh",
-                                    borderRadius: "8px",
-                                    boxShadow: "0 0 5px #00000032",
-                                    marginBottom: "0.7rem",
-                                    marginRight: "0.5vw"
-                                }}
-                            >
-                                Nema ponude
-                            </div>
-                        ) : (
-                            <Ulaznica {...ulaznica2} />
-                        )}
-                    </div>
-
+                    {!prodaja ? <>
+                        {/* Strelica između ulaznica */}
+                        <div className="arrow"><FaTurnUp /></div>
+    
+                        {/* Prikaz druge ulaznice */}
+                        <div className="ulaznica-row ulaznica-2">
+                            {ulaznica2 && ulaznica2.datumKoncerta === "N/A" ? (
+                                <div
+                                    style={{
+                                        width: "707px",
+                                        height: "240px",
+                                        backgroundColor: "#D9D9D9",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        fontSize: "22px",
+                                        textDecoration: "underline",
+                                        color: "#787878",
+                                        marginLeft: "0vw",
+                                        marginTop: "2.5vh",
+                                        borderRadius: "8px",
+                                        boxShadow: "0 0 5px #00000032",
+                                        marginBottom: "0.7rem",
+                                        marginRight: "0.5vw"
+                                    }}
+                                >
+                                    Nema ponude
+                                </div>
+                            ) : (
+                                <Ulaznica {...ulaznica2} />
+                            )}
+                        </div>
+                    </> : <></>}
                     {/* Gumbi */}
                 </div>
 

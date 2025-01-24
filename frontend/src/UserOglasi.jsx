@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosPrivate from "./api/axiosPrivate";
 import Oglas from "./Oglas";
 import { useNavigate } from 'react-router-dom';
 import "./UserOglasi.css";
 import { differenceInDays } from "date-fns";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { Context } from "./App"
 
 export default function UserOglasi() {
     const [zaprimljeneTransakcije, setZaprimljeneTransakcije] = useState([]);
@@ -15,6 +16,7 @@ export default function UserOglasi() {
     const [openedSections, setOpenedSections] = useState({}); // Stanje za praćenje otvorenih sekcija
     const [provedeneTransakcije, setProvedeneTransakcije] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { openModal, closeModal } = useContext(Context)
 
     const initializeOpenedSections = (transakcije, ponude, ulaznice, provedeneTransakcije) => {
         const newSections = {};
@@ -189,7 +191,7 @@ export default function UserOglasi() {
         };
 
         fetchData();
-    }, []);
+    }, [closeModal]);
 
     useEffect(() => {
 
@@ -274,6 +276,14 @@ export default function UserOglasi() {
                 />
                 :
                 <div>
+                    <div className="dodaj-oglas-wrapper">
+                        <button
+                            className="dodaj-oglas-button"
+                            onClick={openModal}
+                        >
+                            + Kreiraj oglas
+                        </button>
+                    </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
 
                     {/* Ulaznice koje nisu transakcije */}
@@ -285,8 +295,10 @@ export default function UserOglasi() {
                             oglasiBezPonuda.length > 0 ? (
                                 oglasiBezPonuda.map((oglas) => (
                                     <div key={oglas.idOglasa}>
+                                        {console.log("oglas:", oglas)}
                                         {openedSections[oglas.idOglasa] && (
                                             <Oglas
+                                                prodaja={oglas.prodaja}
                                                 oglasId={oglas.idOglasa}
                                                 danaDo={oglas.ulaznicaOglas.datumKoncerta}
                                                 ulaznica1={oglas.ulaznicaOglas}
@@ -342,7 +354,7 @@ export default function UserOglasi() {
 
                     {/* Poslane Ponude */}
                     <section>
-                        <h3 onClick={() => toggleSection("poslanePonude")} style={{ color: "#425DFF"  }}>
+                        <h3 onClick={() => toggleSection("poslanePonude")} style={{ color: "#425DFF" }}>
                             {openedSections["poslanePonude"] ? "▼" : "▶"} Moje Ponude {poslanePonude.length ? "(" + poslanePonude.length + ")" : null}
                         </h3>
                         {openedSections["poslanePonude"] && (
@@ -375,7 +387,7 @@ export default function UserOglasi() {
 
 
                     <section>
-                        <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614"  }}>
+                        <h3 onClick={() => toggleSection("provedeneTransakcije")} style={{ color: "#308614" }}>
                             {openedSections["provedeneTransakcije"] ? "▼" : "▶"} Povijest transakcija {provedeneTransakcije.length ? "(" + provedeneTransakcije + ")" : null}
                         </h3>
                         {openedSections["provedeneTransakcije"] && (

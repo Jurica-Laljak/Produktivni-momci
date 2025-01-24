@@ -20,6 +20,26 @@ button {
     cursor: pointer;
 }
 
+.dodaj-oglas-wrapper {
+    width: 100%;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+}
+
+.dodaj-oglas-button {
+    background-color: white;
+    color: black;
+    border-radius: 15px;
+    border: 3px solid black;
+}
+
+.dodaj-oglas-button:hover {
+    background-color: black;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 section > h3 {
     cursor: pointer;
 }
