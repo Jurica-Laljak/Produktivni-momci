@@ -51,8 +51,8 @@ export default function ListingList() {
         stariOglasi?.map(oglas => deleteStariOglas(oglas));
 
         console.log("Listings data: ", listingsData)
-        setLoading(false);
         setListings(listingsData);
+        setLoading(false);
       } catch (error) {
         console.error("Greška pri dohvaćanju oglasa:", error);
       }
