@@ -10,7 +10,7 @@ export default function SearchResultsList({ search, userData }) {
 
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
-  const [availableTickets, setAvailableTickets] = useState(null);
+  const [availableTickets, setAvailableTickets] = useState([]);
   const [transakcije, setTransakcije] = useState([]);
 
   useEffect(() => {
